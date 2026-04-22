@@ -1,6 +1,8 @@
 import dotenv from "dotenv";
 dotenv.config();
-
+if (!process.env.DATABASE_URI) {
+  throw new Error("DATABASE_URI is not defined in environment variables");
+}
 
 export const envVariables = {
   CLIENT_ID: process.env.GOOGLE_CLIENT || "",

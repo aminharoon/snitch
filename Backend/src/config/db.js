@@ -8,9 +8,9 @@ export const connectDB = async () => {
     const response = await mongoose.connect(
       `${envVariables.DATABASE_URI}/${DATABASE_NAME}`,
     );
-    console.log(`✅ successfully connect with data base `);
+    console.log(`✅ successfully connect with DB `);
   } catch (e) {
-    console.log("❌ failed to connect with the data base ");
-    throw new ApiError(404, `❌ something went wrong ${e.message}`);
+    console.error(`\n❌ failed to connect with DB ${e.message}`);
+    throw new ApiError(404, `\n❌ something went wrong ${e.message}`);
   }
 };

@@ -10,5 +10,5 @@ connectDB()
     });
   })
   .catch((err) => {
-    console.log("❌ connection failed to db ", err.message);
+    console.error("\n❌ connection failed while db ", err.message);
   });
