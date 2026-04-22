@@ -5,12 +5,14 @@ import ApiResponse from "../utils/ApiResponse.js"
 
 
 const generateAccessAndRefreshToken = async (user) => {
+
     try {
         const accessToken = await user.generateAccessToken()
         const refreshToken = await user.generateRefreshToken()
 
         user.refreshToken = refreshToken
         await user.save({ validateBeforeSave: false })
+
         return { accessToken, refreshToken }
 
     } catch (e) {
@@ -45,6 +47,63 @@ const register = async (req, res) => {
 
 }
 
+const login = async (req, res) => {
+    const { email, password } = req.body
+    try {
+        const user = await userModel.findOne({ email }).select("+password")
+        if (!user) {
+            throw new ApiError(404, `user not found ${e.message}`)
+        }
+        const isPasswordMatch = await user.comparePassword(password)
+
+        if (!isPasswordMatch) {
+            throw new ApiError(401, "invalid credentials")
+        }
+
+        const { accessToken, refreshToken } = await generateAccessAndRefreshToken(user)
+
+        const options = {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "strict",
+            maxAge: 15 * 60 * 1000
+        }
+
+        return res
+            .status(200)
+            .cookie("AccessToken", accessToken, options)
+            .cookie("RefreshToken", refreshToken, options)
+            .json(new ApiResponse(200, "user Logged Successfully ", { user }))
+
+    } catch (e) {
+        console.log(`something went wrong in login controller ${e.message}`)
+        throw new ApiError(500, `something went wrong ${e.message}`)
+
+    }
+}
+
+const logout = async (req, res) => {
+    const user = req.user
+    await userModel.findByIdAndUpdate(user._id, { refreshToken: null })
+
+    res.status(200)
+        .clearCookie("AccessToken")
+        .clearCookie("RefreshToken")
+        .json(new ApiResponse(200, "user logged out successfully", { user }))
+
+
+
+}
+const getMe = async (req, res) => {
+    const user = req.user
+
+    res.status(200).json(new ApiResponse(200, "User fetched Successfully ", { user }))
+
+}
+
 export const authController = {
-    register
+    register,
+    login,
+    logout,
+    getMe
 }

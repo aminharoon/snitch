@@ -38,8 +38,20 @@ const userSchema = new mongoose.Schema({
     refreshToken: {
         type: String,
         select: false
+    },
+    isLoggedIn: {
+        type: Boolean
+
     }
-})
+}, { timestamps: true })
+
+userSchema.set("toJSON", {
+    transform: (_, ret) => {
+        delete ret.password;
+        delete ret.refreshToken;
+        return ret;
+    },
+});
 
 userSchema.pre("save", async function () {
     if (!this.isModified("password")) return
@@ -47,12 +59,14 @@ userSchema.pre("save", async function () {
 })
 
 userSchema.methods.comparePassword = async function (password) {
+
     return await bcrypt.compare(password, this.password)
 }
 
 userSchema.methods.generateAccessToken = async function () {
     return jwt.sign({
         _id: this._id,
+        fullname: this.fullName,
         email: this.email,
         username: this.username
     }, envVariables.ACCESS_TOKEN, { expiresIn: "15m" })
