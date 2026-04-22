@@ -5,5 +5,5 @@ import { validateRegister } from "../validation/auth.validation.js"
 const authRouter = express.Router()
 
 
-app.post("/register", validateRegister, authController.register)
+authRouter.post("/register", validateRegister, authController.register)
 export default authRouter

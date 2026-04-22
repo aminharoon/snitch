@@ -5,10 +5,7 @@ const handleValidationErrors = (req, res, next) => {
         return res.status(400).json({
             success: false,
             message: 'Validation failed',
-            errors: errors.array().map(err => ({
-                field: err.param,
-                message: err.msg
-            }))
+            errors: errors.array()
         })
     }
     next()
@@ -25,11 +22,18 @@ export const validateRegister = [
 
     body("phoneNumber")
         .optional()
-        .isMobilePhone().withMessage("Invalid phone number"),
+        .isMobilePhone().withMessage("Invalid phone number")
+        .isLength({ min: 10, max: 15 }).withMessage("Phone number must be between 10 and 15 digits")
+        .matches(/^\d+$/).withMessage("Phone number must contain only digits"),
+
 
     body("password")
         .notEmpty().withMessage("Password required")
-        .isLength({ min: 6 }).withMessage("Min 6 chars"),
+        .isLength({ min: 8 }).withMessage("Min 8 chars")
+        .matches(/[A-Z]/).withMessage("At least 1 uppercase")
+        .matches(/[a-z]/).withMessage("At least 1 lowercase")
+        .matches(/[0-9]/).withMessage("At least 1 number")
+        .matches(/[@$!%*?&]/).withMessage("At least 1 special char"),
 
     body("fullName")
         .notEmpty().withMessage("Full name required")
@@ -50,6 +54,6 @@ export const validateLogin = [
 
     body('password')
         .notEmpty().withMessage('Password is required')
-        .isLength({ min: 6 }).withMessage('Password must be at least 6 characters long'),
+        .isLength({ min: 8 }).withMessage('Password must be at least 8 characters long'),
     handleValidationErrors
 ]

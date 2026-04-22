@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
-import { envVariables } from "../config/config";
+import { envVariables } from "../config/config.js";
 
 const userSchema = new mongoose.Schema({
     username: {
@@ -16,11 +16,14 @@ const userSchema = new mongoose.Schema({
     },
     phoneNumber: {
         type: String,
+        select: false
 
     },
     password: {
         type: String,
-        required: true
+        required: true,
+        unique: true,
+        select: false
     },
     fullName: {
         type: String,
@@ -33,7 +36,8 @@ const userSchema = new mongoose.Schema({
         default: "buyer"
     },
     refreshToken: {
-        type: String
+        type: String,
+        select: false
     }
 })
 
