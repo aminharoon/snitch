@@ -1,8 +1,5 @@
 class ApiResponse {
-  statusCode;
-  success;
-  message;
-  data;
+
 
   constructor(
     statusCode,

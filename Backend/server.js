@@ -1,7 +1,8 @@
 import app from "./src/app.js";
 import { connectDB } from "./src/config/db.js";
+import { PORT } from "./src/constants.js";
 
-let PORT = 3000 || 8000;
+
 connectDB()
   .then(() => {
     app.listen(PORT, () => {
