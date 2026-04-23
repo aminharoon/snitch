@@ -39,7 +39,8 @@ export const getme = async () => {
     } catch (e) {
         console.log(`SERVICES something went wrong while calling the get me api ${e.message}`)
         if (e.response?.status === 401) {
-            logout()
+            await refreshToken()
+            return getme()
         }
     }
 }
@@ -51,6 +52,23 @@ export const logout = async () => {
 
     } catch (e) {
         console.log(`something went wrong while hitting the logout api  ${e.message}`)
+
+    }
+}
+
+export const refreshToken = async () => {
+
+    try {
+        const response = api.get("/refreshToken")
+
+
+
+    } catch (e) {
+        if (e.message?.status === 401) {
+            await logout()
+            return refreshToken()
+        }
+        console.log(`SERVICES : something went wrong while calling the refreshToken function ${e.message}`)
 
     }
 }
