@@ -26,7 +26,7 @@ const generateAccessAndRefreshToken = async (user) => {
 
 const register = async (req, res) => {
 
-    const { username, fullName, email, phoneNumber, password } = req.body
+    const { username, fullName, email, phoneNumber, password, isSeller } = req.body
     try {
         const existingUser = await userModel.findOne({
             $or: [{ email }, { phoneNumber }]
@@ -34,9 +34,9 @@ const register = async (req, res) => {
         if (existingUser) {
             throw new ApiError(400, "Email or phone number is already in use");
         }
-        const user = await userModel.create({ username, email, phoneNumber, password, fullName })
+        const user = await userModel.create({ username, email, phoneNumber, password, fullName, role: isSeller ? "seller" : "buyer" })
 
-        res.status(201).json(new ApiResponse(201, "User account created successfully ", { user }))
+        res.status(201).json(new ApiResponse(201, "User account created successfully ", user))
 
 
     } catch (e) {
@@ -75,7 +75,7 @@ const login = async (req, res) => {
             .status(200)
             .cookie("AccessToken", accessToken, options)
             .cookie("RefreshToken", refreshToken, options)
-            .json(new ApiResponse(200, "user Logged Successfully ", { user }))
+            .json(new ApiResponse(200, "user Logged Successfully ", user))
 
     } catch (e) {
         console.log(`something went wrong in login controller ${e.message}`)

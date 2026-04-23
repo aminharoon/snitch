@@ -42,6 +42,9 @@ export const validateRegister = [
     body("role")
         .optional()
         .isIn(["buyer", "seller"]).withMessage("Invalid role"),
+    body("isSeller")
+        .optional()
+        .isBoolean().withMessage("isSeller must be a boolean"),
     handleValidationErrors
 ]
 
