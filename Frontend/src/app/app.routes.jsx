@@ -1,12 +1,13 @@
 import { createBrowserRouter } from "react-router";
+import {Register,Login} from "../features/auth/pages/index"
 
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <h1>this is Home</h1>,
+    element: <Register />,
   },
   {
-    path: "/about",
-    element: <h1>this is About </h1>,
+    path: "/login",
+    element: <Login />,
   },
 ]);
