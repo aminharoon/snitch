@@ -1,9 +1,9 @@
 import axios from "axios";
-import { useDispatch } from "react-redux";
+
 
 
 const api = axios.create({
-    baseURL: "http://localhost:3000/api/auth",
+    baseURL: "/api/auth",
     withCredentials: true
 })
 
@@ -15,7 +15,7 @@ export const register = async ({ fullName, email, phoneNumber, password, isSelle
 
         return response.data
     } catch (e) {
-        console.log(`something went wrong while register the user ${e.message}`)
+        console.log(`SERVICES something went wrong while register the user ${e.message}`)
 
     }
 }
@@ -26,7 +26,7 @@ export const login = async ({ email, password }) => {
         return response.data
     } catch (e) {
 
-        console.log(`something went wrong while login the user i  ${e.message}`)
+        console.log(`SERVICES  went wrong while login the user   ${e.message}`)
 
 
     }
@@ -51,7 +51,7 @@ export const logout = async () => {
         return response.data
 
     } catch (e) {
-        console.log(`something went wrong while hitting the logout api  ${e.message}`)
+        console.log(`SERVICES something went wrong while hitting the logout api  ${e.message}`)
 
     }
 }

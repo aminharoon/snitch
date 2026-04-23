@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import { Link } from 'react-router';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router';
 
 const Register = () => {
   const { handleRegister } = useAuth();
@@ -14,7 +15,7 @@ const Register = () => {
     password: '',
     isSeller: false,
   });
-
+const navigate = useNavigate()
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData((prev) => ({
@@ -23,9 +24,10 @@ const Register = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    handleRegister(formData);
+    await handleRegister(formData);
+    navigate("/")
   };
 
 
@@ -34,6 +36,28 @@ const Register = () => {
       <div className="w-full max-w-md bg-[#1a1a1a] rounded-2xl p-8 border border-[#333]">
         <h2 className="text-[#F5C518] text-3xl font-bold mb-6 text-center">Create Account</h2>
         
+        {/* Google Login Button */}
+        <button
+          type="button"
+          className="w-full flex items-center justify-center gap-3 bg-white hover:bg-gray-100 text-black font-semibold py-3 rounded-lg transition-all duration-300 transform active:scale-[0.98] mb-6 shadow-md"
+        >
+          <img 
+            src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" 
+            alt="Google" 
+            className="w-5 h-5"
+          />
+          Continue with Google
+        </button>
+
+        <div className="relative mb-6">
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full border-t border-[#333]"></div>
+          </div>
+          <div className="relative flex justify-center text-sm">
+            <span className="px-2 bg-[#1a1a1a] text-gray-500">Or continue with email</span>
+          </div>
+        </div>
+
         <form onSubmit={handleSubmit} className="space-y-5">
         
         

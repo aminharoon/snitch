@@ -8,6 +8,16 @@ if (!process.env.DATABASE_URI) {
 if (!process.env.ACCESS_TOKEN) {
   throw new Error("ACCESS_TOKEN is not defined in environment variables");
 }
+if (!process.env.REFRESH_TOKEN) {
+  throw new Error("REFRESH_TOKEN is not defined in environment variables");
+}
+if (!process.env.GOOGLE_CLIENT) {
+  throw new Error("GOOGLE_CLIENT is not defined in environment variables");
+}
+if (!process.env.GOOGLE_CLIENT_SECRET) {
+  throw new Error("GOOGLE_CLIENT_SECRET is not defined in environment variables");
+}
+
 
 export const envVariables = {
   CLIENT_ID: process.env.GOOGLE_CLIENT || "",
