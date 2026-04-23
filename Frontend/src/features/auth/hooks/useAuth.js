@@ -1,5 +1,5 @@
 import { setUser, setLoading, setError } from "../auth.slice.js"
-import { register, login } from "../services/auth.api.services.js"
+import { register, login, getme, logout } from "../services/auth.api.services.js"
 import { useDispatch } from "react-redux"
 import toast from "react-hot-toast"
 
@@ -10,7 +10,7 @@ export const useAuth = () => {
         try {
             dispatch(setLoading(true))
             const response = await register({ fullName, email, phoneNumber, password, isSeller })
-            
+
             if (response) {
                 dispatch(setUser(response.user))
                 toast.success("Account created successfully!")
@@ -28,9 +28,10 @@ export const useAuth = () => {
         try {
             dispatch(setLoading(true))
             const response = await login({ email, password })
-            
+
             if (response) {
-                dispatch(setUser(response.user))
+                console.log(response.data)
+                dispatch(setUser(response.data))
                 toast.success("Welcome back!")
             }
             dispatch(setLoading(false))
@@ -42,8 +43,55 @@ export const useAuth = () => {
         }
     }
 
+    const handleGetMe = async () => {
+        dispatch(setLoading(true))
+        try {
+
+            const response = await getme()
+
+            if (response) {
+                dispatch(setUser(response.data))
+
+                toast.success("user fetched successfully ")
+            }
+            dispatch(setLoading(false))
+
+        } catch (e) {
+            console.log(`HOOK something went wrong while calling the getme api ${e.message}`)
+            dispatch(setLoading(false))
+            if (e.response?.status === 401) {
+                dispatch(handleLogout());
+            }
+            const errorMessage = e.message?.data?.message || e.message || "failed to fetch the user "
+            toast.error(errorMessage)
+
+
+        }
+    }
+
+
+    const handleLogout = async () => {
+        dispatch(setLoading(true))
+
+        try {
+            const response = await handleLogout()
+            if (response) {
+                dispatch(setUser(response.data))
+                dispatch(setLoading(false))
+                toast.success("user is logout successfully ")
+            }
+        } catch (e) {
+            toast.error(e.message || "something went wrong while logout")
+
+        }
+
+    }
+
+
     return {
         handleRegister,
-        handleLogin
+        handleLogin,
+        handleGetMe,
+        handleLogout
     }
-}
+}

@@ -1,11 +1,16 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import { Link } from 'react-router';
 import { useSelector } from 'react-redux';
 
 const Login = () => {
-  const { handleLogin } = useAuth();
-  const loading = useSelector((state) => state.auth.loading);
+
+
+  const { handleLogin,handleGetMe } = useAuth();
+
+
+
+  const {loading,user} = useSelector((state) => state.auth);
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
@@ -18,13 +23,22 @@ const Login = () => {
       ...prev,
       [name]: value,
     }));
+   
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit =async (e) => {
     e.preventDefault();
-    handleLogin(formData);
+    await handleLogin(formData);
+  setFormData({
+    email:"",
+    password:""
+  })
   };
 
+  useEffect(()=>{
+    handleGetMe()
+  },[])
+ 
   return (
     <div className="min-h-screen bg-[#0f0f0f] flex items-center justify-center p-4">
       <div className="w-full max-w-md bg-[#1a1a1a] rounded-2xl p-8 border border-[#333]">
