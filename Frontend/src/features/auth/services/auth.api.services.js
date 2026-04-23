@@ -6,9 +6,9 @@ const api = axios.create({
 })
 
 
-export const register = async ({ username, fullName, email, phoneNumber, password }) => {
+export const register = async ({ username, fullName, email, phoneNumber, password, isSeller }) => {
     try {
-        const response = await api.post("/register", { username, fullName, email, phoneNumber, password })
+        const response = await api.post("/register", { username, fullName, email, phoneNumber, password, isSeller })
         // response.data will return the user obj user:{_id,something .....}
         return response.data
     } catch (e) {
