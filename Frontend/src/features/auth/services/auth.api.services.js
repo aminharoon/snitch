@@ -6,9 +6,9 @@ const api = axios.create({
 })
 
 
-export const register = async ({ username, fullName, email, phoneNumber, password, isSeller }) => {
+export const register = async ({ fullName, email, phoneNumber, password, isSeller }) => {
     try {
-        const response = await api.post("/register", { username, fullName, email, phoneNumber, password, isSeller })
+        const response = await api.post("/register", { fullName, email, phoneNumber, password, isSeller })
         // response.data will return the user obj user:{_id,something .....}
         return response.data
     } catch (e) {
@@ -19,10 +19,12 @@ export const register = async ({ username, fullName, email, phoneNumber, passwor
 export const login = async ({ email, password }) => {
     try {
         const response = await api.post("/login", { email, password })
-        // response.data will return the user obj user:{_id,something .....}
+
         return response.data
     } catch (e) {
-        console.log(`something went wrong while login the user ${e.message}`)
+
+        console.log(`something went wrong while login the user i  ${e.message}`)
+
 
     }
 }

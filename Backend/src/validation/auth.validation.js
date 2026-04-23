@@ -11,10 +11,7 @@ const handleValidationErrors = (req, res, next) => {
     next()
 }
 export const validateRegister = [
-    body("username")
-        .notEmpty().withMessage("Username required")
-        .isLength({ min: 3 }).withMessage("Min 3 chars")
-        .trim(),
+
 
     body("email")
         .notEmpty().withMessage("Email required")
