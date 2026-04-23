@@ -1,6 +1,8 @@
+import jwt from "jsonwebtoken"
 import { userModel } from "../models/user.model.js"
 import ApiError from "../utils/ApiError.js"
 import ApiResponse from "../utils/ApiResponse.js"
+import { envVariables } from "../config/config.js"
 
 
 
@@ -94,6 +96,8 @@ const logout = async (req, res) => {
 
 
 }
+
+
 const getMe = async (req, res) => {
     const user = req.user
 
@@ -101,9 +105,51 @@ const getMe = async (req, res) => {
 
 }
 
+const refreshTheToken = async (req, res) => {
+    const { RefreshToken } = req.cookies
+
+    if (!RefreshToken) {
+        throw new ApiError(401, "Refresh token is not available in the cookies")
+    }
+    try {
+
+        const decoded = await jwt.verify(RefreshToken, envVariables.REFRESH_TOKEN)
+
+
+        const user = await userModel.findById(decoded._id).select("+refreshToken")
+
+        if (!user) {
+            throw new ApiError(401, "user not found ")
+        }
+
+        if (RefreshToken !== user.refreshToken) {
+            throw new ApiError(401, "invalid token ")
+        }
+
+        const { accessToken, refreshToken } = await generateAccessAndRefreshToken(user)
+        const options = {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "strict"
+        }
+
+        return res
+            .status(200)
+            .cookie("AccessToken", accessToken, options)
+            .cookie("RefreshToken", refreshToken, options)
+            .json(new ApiResponse(200, "refresh Token is successfully refreshed  ", { user }))
+    } catch (e) {
+        throw new ApiError(500, `something went wrong from our side ${e.message}`)
+
+    }
+
+
+}
+
 export const authController = {
     register,
     login,
     logout,
-    getMe
+    getMe,
+    refreshTheToken
 }

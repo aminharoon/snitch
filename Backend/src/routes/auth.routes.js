@@ -10,5 +10,6 @@ authRouter.post("/register", validateRegister, authController.register)
 authRouter.post("/login", validateLogin, authController.login)
 authRouter.get("/logout", verifyUser, authController.logout)
 authRouter.get("/get-me", verifyUser, authController.getMe)
+authRouter.get("/refreshToken", authController.refreshTheToken)
 
 export default authRouter
