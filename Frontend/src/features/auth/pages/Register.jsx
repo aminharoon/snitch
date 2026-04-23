@@ -38,6 +38,7 @@ const navigate = useNavigate()
         
         {/* Google Login Button */}
         <button
+        onClick={()=>window.location.href = "/api/auth/google"}
           type="button"
           className="w-full flex items-center justify-center gap-3 bg-white hover:bg-gray-100 text-black font-semibold py-3 rounded-lg transition-all duration-300 transform active:scale-[0.98] mb-6 shadow-md"
         >

@@ -31,6 +31,6 @@ passport.use(new googleStrategy({
 
 /**uses the routes */
 app.use("/api/auth", authRouter)
-app.use("/api/auth/google", googleAuthRouter)
+app.use("/api/auth", googleAuthRouter)
 app.use(errorMiddleware);
 export default app;
