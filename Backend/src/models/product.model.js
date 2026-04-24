@@ -24,7 +24,8 @@ const productSchema = new mongoose.Schema({
         },
         currency: {
             type: String,
-            enum: ["USD", "INR"]
+            enum: ["USD", "INR"],
+            required: true
         }
     },
     seller: {

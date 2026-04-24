@@ -45,6 +45,7 @@ const login = async (req, res) => {
 
         const { accessToken, refreshToken } = await generateAccessAndRefreshToken(user)
         user.isLoggedIn = true
+        await user.save({ validateBeforeSave: false })
 
 
         const options = {

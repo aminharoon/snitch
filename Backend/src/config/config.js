@@ -27,4 +27,7 @@ export const envVariables = {
   REFRESH_TOKEN: process.env.REFRESH_TOKEN || "",
   STACK: process.env.STACK || "",
   DATABASE_URI: process.env.DATABASE_URI || "",
+  IMAGE_KIT_API: process.env.IMAGE_KIT || "",
+  CLOUDINARY_API: process.env.CLOUDINARY_APi || "",
+  CLOUDINARY_SECRET: process.env.CLOUDINARY_SECRET || ""
 };
