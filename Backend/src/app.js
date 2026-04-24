@@ -12,7 +12,7 @@ import { envVariables } from '../src/config/config.js'
  */
 
 import authRouter from "./routes/auth.routes.js";
-import googleAuthRouter from "./routes/auth.google.js";
+import googleAuthRouter from "./routes/auth.google.route.js";
 
 const app = express();
 app.use(express.json());
