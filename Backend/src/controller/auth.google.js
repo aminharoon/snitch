@@ -1,8 +1,7 @@
 import { userModel } from "../models/user.model.js"
-import ApiError from "../utils/ApiError.js"
-import ApiResponse from "../utils/ApiResponse.js"
+
 import { envVariables } from "../config/config.js"
-import { generateAccessAndRefreshToken } from "./auth.controller.js"
+import { ApiError, ApiResponse, generateAccessAndRefreshToken } from "../utils/index.js"
 
 const googleAuthCallback = async (req, res) => {
 

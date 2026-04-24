@@ -1,27 +1,8 @@
 import jwt from "jsonwebtoken"
 import { userModel } from "../models/user.model.js"
-import ApiError from "../utils/ApiError.js"
-import ApiResponse from "../utils/ApiResponse.js"
+
 import { envVariables } from "../config/config.js"
-
-
-
-export const generateAccessAndRefreshToken = async (user) => {
-
-    try {
-        const accessToken = await user.generateAccessToken()
-        const refreshToken = await user.generateRefreshToken()
-
-        user.refreshToken = refreshToken
-        await user.save({ validateBeforeSave: false })
-
-        return { accessToken, refreshToken }
-
-    } catch (e) {
-        throw new ApiError(`something went wrong while generate and access and refresh token ${e.message}`)
-
-    }
-}
+import { ApiError, ApiResponse, generateAccessAndRefreshToken } from "../utils/index.js"
 
 
 const register = async (req, res) => {

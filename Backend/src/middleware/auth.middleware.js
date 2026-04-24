@@ -1,5 +1,5 @@
 import { envVariables } from "../config/config.js"
-import ApiError from "../utils/ApiError.js"
+import { ApiError } from "../utils/index.js"
 import jwt from "jsonwebtoken"
 
 export const verifyUser = async (req, res, next) => {
