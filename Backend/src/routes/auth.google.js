@@ -6,6 +6,6 @@ const googleAuthRouter = express.Router()
 
 googleAuthRouter.get("/google", passport.authenticate("google", { scope: ["profile", "email"] }))
 
-googleAuthRouter.get("/google/callback", passport.authenticate("google", { session: false }), googleAuth.googleAuthCallback)
+googleAuthRouter.get("/google/callback", passport.authenticate("google", { session: false, failureRedirect: "http://localhost:5173/login" }), googleAuth.googleAuthCallback)
 
 export default googleAuthRouter

@@ -6,7 +6,7 @@ import { envVariables } from "../config/config.js"
 
 
 
-const generateAccessAndRefreshToken = async (user) => {
+export const generateAccessAndRefreshToken = async (user) => {
 
     try {
         const accessToken = await user.generateAccessToken()
@@ -63,6 +63,8 @@ const login = async (req, res) => {
         }
 
         const { accessToken, refreshToken } = await generateAccessAndRefreshToken(user)
+        user.isLoggedIn = true
+
 
         const options = {
             httpOnly: true,
