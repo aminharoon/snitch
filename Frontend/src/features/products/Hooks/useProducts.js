@@ -46,8 +46,6 @@ export const useProduct = () => {
             toast.error(`${e.message}`)
             Dispatch(setLoading(false))
             Dispatch(setError(`faild to set the data ${e.message}`))
-
-
         }
     }
 

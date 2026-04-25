@@ -30,7 +30,7 @@ authRouter.get("/logout", verifyUser, authController.logout)
  * @desc Get the authenticated user's information
  * @access Private (only authenticated users can access their information)  
  */
-authRouter.get("/get-me", verifyUser, authController.getMe)
+authRouter.get("/me", verifyUser, authController.getMe)
 
 /**
  * @route GET /api/auth/refreshToken

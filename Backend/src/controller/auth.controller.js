@@ -85,7 +85,7 @@ const logout = async (req, res) => {
 const getMe = async (req, res) => {
     const user = req.user
 
-    res.status(200).json(new ApiResponse(200, "User fetched Successfully ", { user }))
+    res.status(200).json(new ApiResponse(200, "User fetched Successfully ", user))
 
 }
 
@@ -121,7 +121,7 @@ const refreshTheToken = async (req, res) => {
             .status(200)
             .cookie("AccessToken", accessToken, options)
             .cookie("RefreshToken", refreshToken, options)
-            .json(new ApiResponse(200, "refresh Token is successfully refreshed  ", { user }))
+            .json(new ApiResponse(200, "refresh Token is successfully refreshed  ", user))
     } catch (e) {
         throw new ApiError(500, `something went wrong from our side ${e.message}`)
 

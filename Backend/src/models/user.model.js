@@ -71,7 +71,7 @@ userSchema.methods.generateAccessToken = async function () {
         fullname: this.fullName,
         email: this.email,
         username: this.username
-    }, envVariables.ACCESS_TOKEN, { expiresIn: "5d" })
+    }, envVariables.ACCESS_TOKEN, { expiresIn: "30m" })
 }
 
 userSchema.methods.generateRefreshToken = async function () {

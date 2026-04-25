@@ -44,9 +44,9 @@ export const useAuth = () => {
     }
 
     const handleGetMe = async () => {
+
         dispatch(setLoading(true))
         try {
-
             const response = await getme()
 
             if (response) {
@@ -64,8 +64,9 @@ export const useAuth = () => {
             }
             const errorMessage = e.message?.data?.message || e.message || "failed to fetch the user "
             toast.error(errorMessage)
-
-
+        }
+        finally {
+            dispatch(setLoading(false))
         }
     }
 
@@ -82,7 +83,7 @@ export const useAuth = () => {
             }
         } catch (e) {
             toast.error(e.message || "something went wrong while logout")
-
+            dispatch(setLoading(false))
         }
 
     }

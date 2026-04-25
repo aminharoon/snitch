@@ -34,16 +34,22 @@ export const login = async ({ email, password }) => {
 
 export const getme = async () => {
     try {
-        const response = await api.get("/get-me")
-        return response.data
+        const res = await api.get("/me");
+        return res.data;
+
     } catch (e) {
-        console.log(`SERVICES something went wrong while calling the get me api ${e.message}`)
         if (e.response?.status === 401) {
-            await refreshToken()
-            return getme()
+            const refreshed = await refreshToken();
+
+            if (refreshed) {
+                return await getme(); // retry once
+            }
         }
+
+        throw e;
     }
-}
+};
+
 
 export const logout = async () => {
     try {
@@ -59,16 +65,16 @@ export const logout = async () => {
 export const refreshToken = async () => {
 
     try {
-        const response = api.get("/refreshToken")
-
-
+        const response = await api.get("/refreshToken")
+        return true
 
     } catch (e) {
-        if (e.message?.status === 401) {
+        if (e.response?.status === 401) {
             await logout()
-            return refreshToken()
+            return false
         }
         console.log(`SERVICES : something went wrong while calling the refreshToken function ${e.message}`)
-
+        return false
     }
+
 }
