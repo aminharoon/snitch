@@ -2,14 +2,22 @@ import React, { useEffect } from 'react';
 import { useProduct } from '../Hooks/useProducts';
 import { useSelector } from 'react-redux';
 import ProductCard from '../Componts/ProductCard';
+import { useNavigate } from 'react-router';
+
 
 const Home = () => {
   const { handleGetAllProducts } = useProduct();
   const { allProducts, loading } = useSelector((state) => state.product);
-
+const navigate = useNavigate()
   useEffect(() => {
     handleGetAllProducts();
   }, []);
+
+  const handleGetSingleProductDetail=(product)=>{
+      console.log(product._id)
+      navigate(`/product/${product._id}`)
+
+  }
   return (
     <div className="min-h-screen bg-[#050505] text-white">
       {/* Hero / Header Section */}
@@ -48,7 +56,7 @@ const Home = () => {
               <ProductCard 
                 key={product._id} 
                 product={product}
-                onClick={(p) => console.log('Navigate to details:', p._id)}
+                onClick={() => handleGetSingleProductDetail(product)}
               />
             ))}
           </div>

@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router";
 import {Register,Login} from "../features/auth/pages/index"
-import {CreateProduct, Dashboard,Home} from "../features/products/Pages/index"
+import {CreateProduct, Dashboard,Home,SingleProductDet} from "../features/products/Pages/index"
 import {ProtectedComponent} from "../features/auth/components/index"
 
 
@@ -37,6 +37,10 @@ export const router = createBrowserRouter([
           </ProtectedComponent>
       }
     ]
+  },
+  {
+    path:"/product/:id",
+    element:<SingleProductDet />
   }
   
 ]);

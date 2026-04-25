@@ -38,3 +38,13 @@ export const getAllProducts = async () => {
 
     }
 }
+
+export const getSingleProductDetails = async (productID) => {
+    try {
+        const response = await api.get(`/${productID}`)
+        return response.data
+    } catch (e) {
+        console.log(`SERVICES something went wrong while getting the single product details ${e.message}`)
+
+    }
+}

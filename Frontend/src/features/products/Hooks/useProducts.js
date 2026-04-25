@@ -1,6 +1,6 @@
 import { useState } from "react"
-import { getSellerProducts, createProduct, getAllProducts } from "../services/api.products.js"
-import { setSellerProducts, setLoading, setError, setAllProducts } from "../State/state.product.js"
+import { getSellerProducts, createProduct, getAllProducts, getSingleProductDetails } from "../services/api.products.js"
+import { setSellerProducts, setLoading, setError, setAllProducts, setSingleProduct } from "../State/state.product.js"
 import toast from "react-hot-toast"
 import { useDispatch } from "react-redux"
 
@@ -71,9 +71,24 @@ export const useProduct = () => {
         }
     }
 
+    const getSingleProductDet = async (productID) => {
+        try {
+            Dispatch(setLoading(true))
+            const response = await getSingleProductDetails(productID)
+            if (response) {
+                toast.success("All Products fetched successfully")
+                Dispatch(setSingleProduct(response.data))
+                Dispatch(setLoading(false))
+            }
+        } catch (e) {
+            console.log(`HOOK something went wrong ${e.message}`)
+
+        }
+    }
+
     return {
         handleCreateProduct,
-        handleGetSellerProducts, getAllProducts, handleGetAllProducts
+        handleGetSellerProducts, getAllProducts, handleGetAllProducts, getSingleProductDet
     }
 }
 
