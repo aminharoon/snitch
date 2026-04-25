@@ -18,7 +18,7 @@ export const uploadOnCloudnary = (buffer) => {
         const stream = cloudinary.uploader.upload_stream(
             {
                 resource_type: "auto",
-                folder: "Snitch"
+                folder: "Snitch/products"
             },
             (error, result) => {
                 if (error) return reject(error)
