@@ -5,16 +5,6 @@ const api = axios.create({
     withCredentials: true
 })
 
-export const getSellerProducts = async () => {
-    try {
-        const response = await api.get()
-        return response.data
-
-    } catch (e) {
-        console.log(`SERVICES : something went wrong while calling the getAllProducts Api ${e.message}`)
-
-    }
-}
 
 export const createProduct = async (formData) => {
     console.log("FormData contents:", Object.fromEntries(formData.entries()));
@@ -23,6 +13,17 @@ export const createProduct = async (formData) => {
         return response.data
     } catch (e) {
         console.log(`SERVICES : something went wrong while calling the create  products Api ${e.message}`)
+
+    }
+}
+
+export const getSellerProducts = async () => {
+    try {
+        const response = await api.get()
+        return response.data
+
+    } catch (e) {
+        console.log(`SERVICES : something went wrong while calling the getAllProducts Api ${e.message}`)
 
     }
 }

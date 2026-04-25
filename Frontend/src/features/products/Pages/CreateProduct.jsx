@@ -1,8 +1,10 @@
 import React, { useState, useRef } from "react";
 import { useProduct } from "../Hooks/useProducts.js";
+import { useSelector } from "react-redux";
 
 const CreateProduct = () => {
   const { handleCreateProduct, loading } = useProduct();
+  const {error} = useSelector((state)=>state.product)
   const fileInputRef = useRef(null);
 
 

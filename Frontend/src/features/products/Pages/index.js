@@ -1,1 +1,1 @@
-export { default as CreateProduct } from "./CreateProduct.jsx"
+export { default as CreateProduct } from "./CreateProduct"

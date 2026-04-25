@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router";
 import {Register,Login} from "../features/auth/pages/index"
-import {CreateProduct} from "../features/products/pages/index"
+import {CreateProduct} from "../features/products/Pages/index"
 
 export const router = createBrowserRouter([
   {
