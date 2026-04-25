@@ -31,4 +31,6 @@ productRoute.get("/seller", verifyUser, productController.getAllProducts)
  */
 productRoute.delete("/delete/:productID", verifyUser, productController.deleteProduct)
 
+
+
 export default productRoute
