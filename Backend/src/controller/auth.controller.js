@@ -83,8 +83,8 @@ const logout = async (req, res) => {
 
 
 const getMe = async (req, res) => {
-    const user = req.user
-
+    const User = req.user
+    const user = await userModel.findById(User._id)
     res.status(200).json(new ApiResponse(200, "User fetched Successfully ", user))
 
 }

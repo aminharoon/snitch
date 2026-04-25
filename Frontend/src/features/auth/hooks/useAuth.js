@@ -12,8 +12,10 @@ export const useAuth = () => {
             const response = await register({ fullName, email, phoneNumber, password, isSeller })
 
             if (response) {
+
                 dispatch(setUser(response.user))
                 toast.success("Account created successfully!")
+                return response.data
             }
             dispatch(setLoading(false))
         } catch (error) {
@@ -29,10 +31,12 @@ export const useAuth = () => {
             dispatch(setLoading(true))
             const response = await login({ email, password })
 
+
             if (response) {
-                console.log(response.data)
+
                 dispatch(setUser(response.data))
                 toast.success("Welcome back!")
+                return response.data
             }
             dispatch(setLoading(false))
         } catch (error) {
@@ -51,8 +55,8 @@ export const useAuth = () => {
 
             if (response) {
                 dispatch(setUser(response.data))
-
                 toast.success("user fetched successfully ")
+                return response.data
             }
             dispatch(setLoading(false))
 
@@ -80,6 +84,7 @@ export const useAuth = () => {
                 dispatch(setUser(response.data))
                 dispatch(setLoading(false))
                 toast.success("user is logout successfully ")
+                return response.data
             }
         } catch (e) {
             toast.error(e.message || "something went wrong while logout")

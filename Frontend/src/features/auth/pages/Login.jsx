@@ -4,7 +4,12 @@ import { Link } from 'react-router';
 import { useSelector } from 'react-redux';
 import { GoogleAuthButton } from '../components';
 import { useNavigate } from 'react-router';
+
+
+
 const Login = () => {
+
+  
   const navigate = useNavigate()
 
 
@@ -12,7 +17,7 @@ const Login = () => {
 
 
 
-  const {loading,user} = useSelector((state) => state.auth);
+  const {loading} = useSelector((state) => state.auth);
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
@@ -29,13 +34,18 @@ const Login = () => {
   };
 
   const handleSubmit =async (e) => {
-    e.preventDefault();
-    await handleLogin(formData);
-  setFormData({
-    email:"",
-    password:""
-  })
-  navigate("seller/dashboard")
+         e.preventDefault();
+         const user = await handleLogin(formData);
+           setFormData({
+                 email:"",
+                 password:""
+          })
+     if(user.role !== "seller"){
+           navigate("/")
+       }
+       else{
+             navigate("/seller/dashboard")
+        }
   };
 
 
