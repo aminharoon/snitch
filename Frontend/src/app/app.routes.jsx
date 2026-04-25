@@ -3,6 +3,7 @@ import {Register,Login} from "../features/auth/pages/index"
 import {CreateProduct, Dashboard} from "../features/products/Pages/index"
 import {ProtectedComponent} from "../features/auth/components/index"
 
+
 export const router = createBrowserRouter([
   {
     path: "/",
