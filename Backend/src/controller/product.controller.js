@@ -79,10 +79,30 @@ const deleteProduct = async (req, res) => {
 
 }
 
+const getAllProductsForBuyers = async (req, res) => {
 
+    try {
+        const products = await productModel.find()
+        if (!products) {
+            throw new ApiError(404, `products are not `)
+        }
+        res.status(200).json(new ApiResponse(200, "Products Fetched successfully ", products))
+    } catch (e) {
+        throw new ApiError(500, `something went wrong ${e.message}`)
+
+    }
+}
+
+const getSingleProductDetails = async (req, res) => {
+    const { productID } = req.params
+    const product = await productModel.findById({ _id: productID })
+    res.status(200).json(new ApiResponse(200, "Product details fetched successfully", product))
+}
 export const productController = {
     createProduct,
     getAllProducts,
-    deleteProduct
+    deleteProduct,
+    getAllProductsForBuyers,
+    getSingleProductDetails
 }
 

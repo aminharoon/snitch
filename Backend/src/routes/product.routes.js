@@ -31,6 +31,19 @@ productRoute.get("/seller", verifyUser, productController.getAllProducts)
  */
 productRoute.delete("/delete/:productID", verifyUser, productController.deleteProduct)
 
+/**
+ * @route GET /api/products
+ * @desc Get all the products 
+ * @access public
+ */
+productRoute.get("/", productController.getAllProductsForBuyers)
 
+/**
+ * @route GET /api/products/:productID
+ * @desc Get single product details 
+ * @access public
+ */
+
+productRoute.get("/:productID", productController.getSingleProductDetails)
 
 export default productRoute

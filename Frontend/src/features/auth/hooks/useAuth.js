@@ -48,7 +48,6 @@ export const useAuth = () => {
     }
 
     const handleGetMe = async () => {
-
         dispatch(setLoading(true))
         try {
             const response = await getme()
@@ -58,18 +57,17 @@ export const useAuth = () => {
                 toast.success("user fetched successfully ")
                 return response.data
             }
-            dispatch(setLoading(false))
-
         } catch (e) {
             console.log(`HOOK something went wrong while calling the getme api ${e.message}`)
-            dispatch(setLoading(false))
             if (e.response?.status === 401) {
-                dispatch(handleLogout());
+                await handleLogout();
             }
-            const errorMessage = e.message?.data?.message || e.message || "failed to fetch the user "
-            toast.error(errorMessage)
-        }
-        finally {
+            const errorMessage = e.response?.data?.message || e.message || "failed to fetch the user "
+            // Only show toast if it's not a 401 (which is handled by logout)
+            if (e.response?.status !== 401) {
+                toast.error(errorMessage)
+            }
+        } finally {
             dispatch(setLoading(false))
         }
     }
@@ -79,18 +77,17 @@ export const useAuth = () => {
         dispatch(setLoading(true))
 
         try {
-            const response = await handleLogout()
-            if (response) {
-                dispatch(setUser(response.data))
-                dispatch(setLoading(false))
-                toast.success("user is logout successfully ")
-                return response.data
-            }
+            const response = await logout()
+            dispatch(setUser(null))
+            toast.success("user is logout successfully ")
+            return response?.data
         } catch (e) {
-            toast.error(e.message || "something went wrong while logout")
+            console.log(`SERVICES something went wrong while hitting the logout api ${e.message}`)
+            // Even if logout fails on server, we should clear local state
+            dispatch(setUser(null))
+        } finally {
             dispatch(setLoading(false))
         }
-
     }
 
 

@@ -27,3 +27,14 @@ export const getSellerProducts = async () => {
 
     }
 }
+
+export const getAllProducts = async () => {
+    try {
+        const response = await api.get("/")
+        return response.data
+
+    } catch (e) {
+        console.log(`SERVICES something went wrong while fetching the products ${e.message}`)
+
+    }
+}
