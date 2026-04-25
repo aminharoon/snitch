@@ -19,7 +19,7 @@ export const createProduct = async (formData) => {
 
 export const getSellerProducts = async () => {
     try {
-        const response = await api.get()
+        const response = await api.get("/seller")
         return response.data
 
     } catch (e) {

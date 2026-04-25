@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router";
 import {Register,Login} from "../features/auth/pages/index"
-import {CreateProduct} from "../features/products/Pages/index"
+import {CreateProduct, Dashboard} from "../features/products/Pages/index"
 
 export const router = createBrowserRouter([
   {
@@ -12,12 +12,17 @@ export const router = createBrowserRouter([
     element: <Register />,
   },
   {
-    path:"/dashboard",
-    element:<h1>Well come </h1>
-  },
-  {
-    path:"/seller/create-products",
-    element:<CreateProduct />
+    path:"/seller",
+    children:[
+      {
+        path:"create-products", // provide only the relative path -> child does't have "/"
+        element:<CreateProduct />
+      },
+      {
+        path:"dashboard",
+        element:<Dashboard />
+      }
+    ]
   }
   
 ]);

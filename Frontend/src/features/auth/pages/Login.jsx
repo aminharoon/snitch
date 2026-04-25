@@ -35,12 +35,10 @@ const Login = () => {
     email:"",
     password:""
   })
-  navigate("/dashboard")
+  navigate("seller/dashboard")
   };
 
-  useEffect(()=>{
-    // handleGetMe()
-  },[])
+
  
   return (
     <div className="min-h-screen bg-[#0f0f0f] flex items-center justify-center p-4">

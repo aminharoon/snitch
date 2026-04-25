@@ -36,8 +36,9 @@ export const useProduct = () => {
 
 
             if (data) {
-                toast.success("sellers porducts fetched successfully ")
-                Dispatch(setSellerProducts(data.products))
+                toast.success("Sellers porducts fetched successfully ")
+
+                Dispatch(setSellerProducts(data.data))
                 Dispatch(setLoading(false))
             }
         } catch (e) {
@@ -52,8 +53,7 @@ export const useProduct = () => {
 
     return {
         handleCreateProduct,
-        handleGetSellerProducts,
-        loading
+        handleGetSellerProducts
     }
 }
 

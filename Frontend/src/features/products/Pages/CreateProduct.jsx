@@ -1,15 +1,17 @@
 import React, { useState, useRef } from "react";
 import { useProduct } from "../Hooks/useProducts.js";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router";
 
 const CreateProduct = () => {
-  const { handleCreateProduct, loading } = useProduct();
-  const {error} = useSelector((state)=>state.product)
+  const { handleCreateProduct } = useProduct();
+  const {loading} = useSelector((state)=>state.product)
   const fileInputRef = useRef(null);
+  const navigate= useNavigate()
 
 
   const initialSateOfFormData={
-      title: "",
+    title: "",
     description: "",
     priceAmount: "",
     priceCurrency: "",
@@ -94,6 +96,7 @@ const CreateProduct = () => {
       await handleCreateProduct(data);
       setFormData(initialSateOfFormData)
       setImages([])
+      navigate("/seller/dashboard")
     } catch (err) {
       console.error("Submission failed:", err);
     }
@@ -208,6 +211,7 @@ const CreateProduct = () => {
                   onChange={handleChange}
                   className="w-full px-5 py-4 rounded-xl bg-[#0f0f0f] text-white border border-[#333] focus:border-[#F5C518] focus:outline-none transition-colors appearance-none cursor-pointer font-medium"
                 >
+                  <option value="INR">INR (₹)</option>
                   <option value="INR">INR (₹)</option>
                   <option value="USD">USD ($)</option>
                 </select>
