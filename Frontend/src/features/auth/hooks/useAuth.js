@@ -1,4 +1,4 @@
-import { setUser, setLoading, setError } from "../auth.slice.js"
+import { setUser, setLoading, setError } from "../state/auth.slice.js"
 import { register, login, getme, logout } from "../services/auth.api.services.js"
 import { useDispatch } from "react-redux"
 import toast from "react-hot-toast"
