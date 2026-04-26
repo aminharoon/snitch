@@ -1,25 +1,35 @@
 import React, { useEffect } from 'react';
 import { useProduct } from '../Hooks/useProducts';
 import { useSelector } from 'react-redux';
+import { Navbar } from '../../../components';
 import ProductCard from '../Componts/ProductCard';
 import { useNavigate } from 'react-router';
 
 
 const Home = () => {
+
+
   const { handleGetAllProducts } = useProduct();
   const { allProducts, loading } = useSelector((state) => state.product);
-const navigate = useNavigate()
+  const { user } = useSelector((state) => state.auth); // Check auth state
+ 
+
+  const navigate = useNavigate()
+
+
+
   useEffect(() => {
     handleGetAllProducts();
   }, []);
 
   const handleGetSingleProductDetail=(product)=>{
-      console.log(product._id)
+     
       navigate(`/product/${product._id}`)
 
   }
   return (
-    <div className="min-h-screen bg-[#050505] text-white">
+    <div className="min-h-screen bg-[#050505] text-white pt-20">
+      <Navbar user={user} isLoggedIn={!!user} userName={user?.fullName } />
       {/* Hero / Header Section */}
       <header className="relative py-20 px-6 overflow-hidden border-b border-white/5">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] bg-gradient-to-b from-blue-500/10 to-transparent blur-[120px] pointer-events-none" />
