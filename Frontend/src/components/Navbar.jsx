@@ -1,31 +1,29 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router';
-import { useAuth } from '../features/auth/hooks/useAuth';
+import React, { useState } from "react";
+import { useNavigate } from "react-router";
+import { useAuth } from "../features/auth/hooks/useAuth";
 
-const Navbar = ({user, isLoggedIn = false, userName  }) => {
+const Navbar = ({ user, isLoggedIn = false, userName }) => {
   const navigate = useNavigate();
 
-  const [hidden, setHidden] = useState(true)
-  const {handleLogout} = useAuth()
+  const [hidden, setHidden] = useState(true);
+  const { handleGetMe, handleLogout } = useAuth();
 
   const handleGetProfile = () => {
-    setHidden((pre) => !pre)
-  }
+    setHidden((pre) => !pre);
+  };
 
-  const handleNavigate =()=>{
-    if(user.role !=="seller")return 
-    navigate("/seller/dashboard")
-  }
+  const handledashboard = async () => {
+    await handleGetMe();
+    navigate("/seller/dashboard");
+  };
 
- 
   return (
     <nav className="sticky top-0 z-50 bg-black backdrop-blur-md border-b border-white/5 py-2">
       <div className="max-w-7xl mx-auto px-6 h-10 flex items-center justify-between gap-8">
-        
         {/* Left: Logo */}
-        <div 
+        <div
           className="flex-shrink-0 cursor-pointer group"
-          onClick={() => navigate('/')}
+          onClick={() => navigate("/")}
         >
           <span className="text-2xl font-bold tracking-tighter text-white group-hover:text-gray-300 transition-colors">
             SNITCH
@@ -33,16 +31,29 @@ const Navbar = ({user, isLoggedIn = false, userName  }) => {
         </div>
 
         {/* Center: Search Bar */}
-        <div className={`flex-1 max-w-2xl    ${!isLoggedIn ?"hidden":" hidden"} }`}>
+        <div
+          className={`flex-1 max-w-2xl    ${!isLoggedIn ? "hidden" : " hidden"} }`}
+        >
           <div className="relative group">
             <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none text-gray-500 group-focus-within:text-white transition-colors">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
-                <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={2}
+                stroke="currentColor"
+                className="w-4 h-4"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+                />
               </svg>
             </div>
-            <input 
-              type="text" 
-              placeholder="Search for products, brands and more..." 
+            <input
+              type="text"
+              placeholder="Search for products, brands and more..."
               className="w-full bg-white/5 border border-white/10 rounded-full py-2.5 pl-11 pr-4 text-sm text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-white/20 focus:bg-white/10 transition-all"
             />
           </div>
@@ -52,7 +63,7 @@ const Navbar = ({user, isLoggedIn = false, userName  }) => {
         <div className="flex items-center gap-4">
           {isLoggedIn ? (
             <div className="relative">
-              <div 
+              <div
                 className="flex items-center gap-3 group cursor-pointer"
                 onClick={handleGetProfile}
               >
@@ -70,23 +81,36 @@ const Navbar = ({user, isLoggedIn = false, userName  }) => {
               >
                 <ul className="flex flex-col py-2 text-sm text-white">
                   <li
-                  onClick={()=>{ navigate("/"); setHidden(true); }}
-                  className="px-4 py-2 hover:bg-white/10 cursor-pointer text-left">
+                    onClick={() => {
+                      navigate("/");
+                      setHidden(true);
+                    }}
+                    className="px-4 py-2 hover:bg-white/10 cursor-pointer text-left"
+                  >
                     Home
                   </li>
-                  <li 
-                  onClick={() => setHidden(true)}
-                  className="px-4 py-2 hover:bg-white/10 cursor-pointer text-left">
+                  <li
+                    onClick={() => setHidden(true)}
+                    className="px-4 py-2 hover:bg-white/10 cursor-pointer text-left"
+                  >
                     Profile
                   </li>
                   <li
-                  onClick={()=>{ handleNavigate(); setHidden(true); }}
-                    className={`px-4 py-2 hover:bg-white/10 cursor-pointer text-left ${user.role =="buyer"?"hidden":"block"}`}>
+                    onClick={() => {
+                      handledashboard();
+                      setHidden(true);
+                    }}
+                    className={`px-4 py-2 hover:bg-white/10 cursor-pointer text-left ${user.role == "buyer" ? "hidden" : "block"}`}
+                  >
                     Dashboard
                   </li>
                   <li
-                  onClick={()=>{ handleLogout(); setHidden(true); }}
-                  className="px-4 py-2 hover:bg-red-500/20 text-red-400 cursor-pointer text-left">
+                    onClick={() => {
+                      handleLogout();
+                      setHidden(true);
+                    }}
+                    className="px-4 py-2 hover:bg-red-500/20 text-red-400 cursor-pointer text-left"
+                  >
                     Logout
                   </li>
                 </ul>
@@ -94,29 +118,39 @@ const Navbar = ({user, isLoggedIn = false, userName  }) => {
             </div>
           ) : (
             <div className="flex items-center gap-2">
-              <button 
-                onClick={() => navigate('/login')}
+              <button
+                onClick={() => navigate("/login")}
                 className="px-5 py-2 text-sm font-medium text-gray-300 hover:text-white transition-colors"
               >
                 Login
               </button>
-              <button 
-                onClick={() => navigate('/register')}
+              <button
+                onClick={() => navigate("/register")}
                 className="px-5 py-2 text-sm font-medium bg-white text-black rounded-full hover:bg-gray-200 transition-all transform active:scale-95"
               >
                 Register
               </button>
             </div>
           )}
-          
+
           {/* Mobile Search Icon (visible only on small screens) */}
           <button className="md:hidden p-2 text-gray-400 hover:text-white">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
-              <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={2}
+              stroke="currentColor"
+              className="w-5 h-5"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+              />
             </svg>
           </button>
         </div>
-
       </div>
     </nav>
   );

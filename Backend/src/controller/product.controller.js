@@ -8,15 +8,6 @@ const createProduct = async (req, res) => {
     const { title, description, priceAmount, priceCurrency } = req.body
     const seller = req.user
 
-    if (!req.files || req.files.length === 0) {
-        return res.status(400).json(new ApiResponse(400, "At least one image is required"))
-    }
-
-    if (!title || !description || !priceAmount) {
-        return res.status(400).json(new ApiResponse(400, "All fields are required"))
-    }
-
-
     const images = await Promise.all(req.files.map(async (file) => {
 
         return await uploadOnCloudnary(file.buffer)
@@ -98,11 +89,16 @@ const getSingleProductDetails = async (req, res) => {
     const product = await productModel.findById({ _id: productID })
     res.status(200).json(new ApiResponse(200, "Product details fetched successfully", product))
 }
+
+const updateProduct = async (req, res) => {
+
+}
 export const productController = {
     createProduct,
     getAllProducts,
     deleteProduct,
     getAllProductsForBuyers,
-    getSingleProductDetails
+    getSingleProductDetails,
+    updateProduct
 }
 

@@ -35,18 +35,39 @@ const productSchema = new mongoose.Schema({
         require: true
 
     },
-    // sizes: {
-    //     size: {
-    //         type: String,
-    //         enum: ["S", "M", "L", "XL"],
-    //         default: "L"
-    //     },
-    //     stock: {
-    //         type: Number,
-    //         enum: [0, 1, 2, 3, 4, 5],
-    //         default: 3
-    //     }
-    // }
+    variants: [
+        {
+            images: [
+                {
+                    url: {
+                        type: String,
+                        require: true
+                    }
+                }
+            ],
+            stock: {
+                type: Number,
+                default: 0
+            },
+            attributes: {
+                type: Map,
+                of: String
+            },
+            price: {
+                amount: {
+                    type: Number,
+                    require: true
+                },
+                currency: {
+                    type: String,
+                    enum: ['USD', 'INR'],
+                    default: 'INR'
+                }
+            }
+
+        }
+    ]
+
 }, { timestamps: true })
 
 export const productModel = mongoose.model("product", productSchema)

@@ -58,6 +58,8 @@ export const useAuth = () => {
                 return response.data
             }
         } catch (e) {
+            dispatch(setUser(null))
+            dispatch(setLoading(false))
             console.log(`HOOK something went wrong while calling the getme api ${e.message}`)
             if (e.response?.status === 401) {
                 await handleLogout();

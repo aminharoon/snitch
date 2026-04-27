@@ -7,16 +7,12 @@ import { useSelector } from "react-redux";
 import { useAuth } from "../features/auth/hooks/useAuth.js";
 
 const App = () => {
- 
-  const {user} = useSelector((state)=>state.auth)
-  const {handleGetMe} = useAuth()
-     useEffect(()=>{
-  handleGetMe()
+  const { handleGetMe } = useAuth();
+  const { user } = useSelector((state) => state.auth);
+  useEffect(() => {
+    handleGetMe();
+  }, []);
 
-
-  },[])
-
- 
   return (
     <>
       <Toaster position="top-center" reverseOrder={false} />
@@ -26,4 +22,3 @@ const App = () => {
 };
 
 export default App;
-

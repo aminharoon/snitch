@@ -1,7 +1,13 @@
 import { createBrowserRouter } from "react-router";
-import { Register, Login } from "../features/auth/pages/index"
-import { CreateProduct, Dashboard, Home, SingleProductDet,SellerProductDetails } from "../features/products/Pages/index"
-import { ProtectedComponent } from "../features/auth/components/index"
+import { Register, Login } from "../features/auth/pages/index";
+import {
+  CreateProduct,
+  Dashboard,
+  Home,
+  SingleProductDet,
+  UpdateSellerProduct,
+} from "../features/products/Pages/index";
+import { ProtectedComponent } from "../features/auth/components/index";
 import Layout from "./Layout";
 
 export const router = createBrowserRouter([
@@ -22,6 +28,10 @@ export const router = createBrowserRouter([
         element: <Register />,
       },
       {
+        path: "/product/:id",
+        element: <SingleProductDet />,
+      },
+      {
         path: "/seller",
         children: [
           {
@@ -30,7 +40,7 @@ export const router = createBrowserRouter([
               <ProtectedComponent role="seller">
                 <CreateProduct />
               </ProtectedComponent>
-            )
+            ),
           },
           {
             path: "dashboard",
@@ -38,22 +48,18 @@ export const router = createBrowserRouter([
               <ProtectedComponent role="seller">
                 <Dashboard />
               </ProtectedComponent>
-            )
+            ),
           },
           {
-            path:"addVariants",
-            element:(
-              <ProtectedComponent role="seller" >
-                <SellerProductDetails/>
+            path: "product/:id",
+            element: (
+              <ProtectedComponent role="seller">
+                <UpdateSellerProduct />
               </ProtectedComponent>
-            )
-          }
-        ]
+            ),
+          },
+        ],
       },
-      {
-        path: "/product/:id",
-        element: <SingleProductDet />
-      }
-    ]
-  }
+    ],
+  },
 ]);

@@ -46,4 +46,11 @@ productRoute.get("/", productController.getAllProductsForBuyers)
 
 productRoute.get("/:productID", productController.getSingleProductDetails)
 
+/**
+ * @route POST /api/products/update/:productID
+ * @desc Update a product by its ID
+ * @access Private (only the seller of the product can update it)
+ */
+productRoute.post("/update/:productID", upload.array("images", 4), createProductValidation, verifyUser, productController.updateProduct)
+
 export default productRoute

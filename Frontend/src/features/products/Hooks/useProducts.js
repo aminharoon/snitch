@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { getSellerProducts, createProduct, getAllProducts, getSingleProductDetails } from "../services/api.products.js"
+import { getSellerProducts, createProduct, getAllProducts, getSingleProductDetails, deleteProduct } from "../services/api.products.js"
 import { setSellerProducts, setLoading, setError, setAllProducts, setSingleProduct } from "../State/state.product.js"
 import toast from "react-hot-toast"
 import { useDispatch } from "react-redux"
@@ -76,9 +76,11 @@ export const useProduct = () => {
             Dispatch(setLoading(true))
             const response = await getSingleProductDetails(productID)
             if (response) {
-                toast.success("All Products fetched successfully")
+                toast.success("Details about the single product")
                 Dispatch(setSingleProduct(response.data))
                 Dispatch(setLoading(false))
+                return response.data
+
             }
         } catch (e) {
             console.log(`HOOK something went wrong ${e.message}`)
@@ -86,9 +88,26 @@ export const useProduct = () => {
         }
     }
 
+    const handleDeleteProduct = async (productID) => {
+        try {
+            Dispatch(setLoading(true))
+            const response = await deleteProduct(productID)
+            if (response) {
+                Dispatch(setSellerProducts(data.data))
+                Dispatch(setLoading(false))
+                toast.success(`product has been deleted successfully`)
+            }
+        } catch (e) {
+            Dispatch(setLoading(false))
+            console.log(`HOOK something went wrong while deleting product ${e.message}`)
+
+        }
+    }
+
     return {
         handleCreateProduct,
         handleGetSellerProducts, getAllProducts, handleGetAllProducts, getSingleProductDet
+        , handleDeleteProduct
     }
 }
 

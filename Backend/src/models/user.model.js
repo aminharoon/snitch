@@ -44,39 +44,7 @@ const userSchema = new mongoose.Schema({
     isLoggedIn: {
         type: Boolean
 
-    },
-    variants: [
-        {
-            images: [
-                {
-                    url: {
-                        type: String,
-                        require: true
-                    }
-                }
-            ],
-            stock: {
-                type: Number,
-                default: 0
-            },
-            attributes: {
-                type: Map,
-                of: String
-            },
-            price: {
-                amount: {
-                    type: Number,
-                    require: true
-                },
-                currency: {
-                    type: String,
-                    enum: ['USD', 'INR'],
-                    default: 'INR'
-                }
-            }
-
-        }
-    ]
+    }
 }, { timestamps: true })
 
 userSchema.set("toJSON", {

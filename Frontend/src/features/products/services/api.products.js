@@ -48,3 +48,15 @@ export const getSingleProductDetails = async (productID) => {
 
     }
 }
+
+export const deleteProduct = async (productID) => {
+    try {
+        const response = await api.delete(`/delete/${productID}`)
+        return response.data
+
+
+    } catch (e) {
+        console.log(`SERVICES somehting went wrong while deleting the product ${e.message}`)
+
+    }
+}
