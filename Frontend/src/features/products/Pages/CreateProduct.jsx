@@ -164,8 +164,8 @@ const CreateProduct = () => {
               value={formData.description}
               onChange={handleChange}
               placeholder="Describe your product features, dimensions, and condition..."
-              rows="5"
-              className={`w-full px-5 py-4 rounded-xl bg-[#0f0f0f] text-white border ${errors.description ? "border-red-500" : "border-[#333]"} focus:border-[#F5C518] focus:outline-none transition-colors placeholder:text-gray-600 font-medium leading-relaxed resize-none`}
+              rows="2"
+              className={`w-full px-5 py-4 rounded-xl bg-[#0f0f0f] text-white border ${errors.description ? "border-red-500" : "border-[#333]"} focus:border-[#F5C518] focus:outline-none transition-colors placeholder:text-gray-600 font-medium leading-relaxed resize-none [scrollbar-width:none]`}
             ></textarea>
             {errors.description && (
               <p className="mt-2 text-sm text-red-500 ml-1">{errors.description}</p>
@@ -190,7 +190,7 @@ const CreateProduct = () => {
                 value={formData.priceAmount}
                 onChange={handleChange}
                 placeholder="0.00"
-                className={`w-full px-5 py-4 rounded-xl bg-[#0f0f0f] text-white border ${errors.priceAmount ? "border-red-500" : "border-[#333]"} focus:border-[#F5C518] focus:outline-none transition-colors placeholder:text-gray-600 font-medium`}
+                className={`w-full px-5 py-4 rounded-xl bg-[#0f0f0f] text-white border ${errors.priceAmount ? "border-red-500" : "border-[#333]"} focus:border-[#F5C518] focus:outline-none transition-colors placeholder:text-gray-600 font-medium no-spinner`}
               />
               {errors.priceAmount && (
                 <p className="mt-2 text-sm text-red-500 ml-1">{errors.priceAmount}</p>
@@ -211,7 +211,7 @@ const CreateProduct = () => {
                   onChange={handleChange}
                   className="w-full px-5 py-4 rounded-xl bg-[#0f0f0f] text-white border border-[#333] focus:border-[#F5C518] focus:outline-none transition-colors appearance-none cursor-pointer font-medium"
                 >
-                  <option value="INR">INR (₹)</option>
+                
                   <option value="INR">INR (₹)</option>
                   <option value="USD">USD ($)</option>
                 </select>
@@ -227,12 +227,12 @@ const CreateProduct = () => {
           {/* Image Upload Section */}
           <div>
             <label className="block text-sm font-medium text-gray-400 mb-3 ml-1">
-              Product Images (Max 5)
+              Product Images (Max 4)
             </label>
 
             <div
-              onClick={() => images.length < 5 && fileInputRef.current.click()}
-              className={`group relative border-2 border-dashed rounded-2xl p-10 text-center transition-all ${images.length >= 5 ? "bg-[#1a1a1a] border-[#333] cursor-not-allowed opacity-50" : "border-[#333] hover:border-[#F5C518] hover:bg-[#F5C518]/5 cursor-pointer"}`}
+              onClick={() => images.length < 4 && fileInputRef.current.click()}
+              className={`group relative border-2 border-dashed rounded-2xl p-10 text-center transition-all ${images.length >= 4 ? "bg-[#1a1a1a] border-[#333] cursor-not-allowed opacity-50" : "border-[#333] hover:border-[#F5C518] hover:bg-[#F5C518]/2 cursor-pointer"}`}
             >
               <input
                 type="file"
@@ -242,14 +242,10 @@ const CreateProduct = () => {
                 accept="image/*"
                 className="hidden"
               />
-              <div className="flex flex-col items-center">
-                <div className="w-12 h-12 bg-[#0f0f0f] text-[#F5C518] rounded-full flex items-center justify-center mb-4 border border-[#333] group-hover:border-[#F5C518] transition-colors">
-                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                  </svg>
-                </div>
+              <div className="flex flex-col items-center h-1 justify-center">
+            
                 <span className="text-gray-300 font-bold">Add Product Images</span>
-                <span className="text-gray-500 text-sm mt-1">PNG, JPG or JPEG up to 10MB</span>
+                <span className="text-gray-500 text-sm">PNG, JPG or JPEG up to 10MB</span>
               </div>
             </div>
 
