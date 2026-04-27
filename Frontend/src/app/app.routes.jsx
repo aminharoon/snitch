@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router";
 import { Register, Login } from "../features/auth/pages/index"
-import { CreateProduct, Dashboard, Home, SingleProductDet } from "../features/products/Pages/index"
+import { CreateProduct, Dashboard, Home, SingleProductDet,SellerProductDetails } from "../features/products/Pages/index"
 import { ProtectedComponent } from "../features/auth/components/index"
 import Layout from "./Layout";
 
@@ -37,6 +37,14 @@ export const router = createBrowserRouter([
             element: (
               <ProtectedComponent role="seller">
                 <Dashboard />
+              </ProtectedComponent>
+            )
+          },
+          {
+            path:"addVariants",
+            element:(
+              <ProtectedComponent role="seller" >
+                <SellerProductDetails/>
               </ProtectedComponent>
             )
           }

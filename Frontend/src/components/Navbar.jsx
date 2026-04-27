@@ -19,8 +19,8 @@ const Navbar = ({user, isLoggedIn = false, userName  }) => {
 
  
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-[#050505]/80 backdrop-blur-md border-b border-white/5 ">
-      <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between gap-8">
+    <nav className="sticky top-0 z-50 bg-black backdrop-blur-md border-b border-white/5 py-2">
+      <div className="max-w-7xl mx-auto px-6 h-10 flex items-center justify-between gap-8">
         
         {/* Left: Logo */}
         <div 
@@ -51,11 +51,11 @@ const Navbar = ({user, isLoggedIn = false, userName  }) => {
         {/* Right: Auth Section */}
         <div className="flex items-center gap-4">
           {isLoggedIn ? (
-            <button
-              onClick={handleGetProfile}
-              className={`relative`}
-            >
-              <div className="flex items-center gap-3 group cursor-pointer">
+            <div className="relative">
+              <div 
+                className="flex items-center gap-3 group cursor-pointer"
+                onClick={handleGetProfile}
+              >
                 <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-gray-700 to-gray-500 flex items-center justify-center text-xs font-bold text-white border border-white/10 group-hover:border-white/30 transition-all">
                   {userName.charAt(0)}
                 </div>
@@ -64,30 +64,34 @@ const Navbar = ({user, isLoggedIn = false, userName  }) => {
                 </span>
               </div>
               <div
-                className={`absolute right-0 mt-2 w-44 bg-black/80 backdrop-blur-md rounded-lg shadow-lg border border-white/10 -left-1 ${
+                className={`absolute right-0 mt-2 w-44 bg-black/80 backdrop-blur-md rounded-lg shadow-lg border border-white/10 -left-1 z-[999] ${
                   hidden ? "hidden" : "block"
                 }`}
               >
                 <ul className="flex flex-col py-2 text-sm text-white">
-                  <li className="px-4 py-2 hover:bg-white/10 cursor-pointer text-left">
+                  <li
+                  onClick={()=>{ navigate("/"); setHidden(true); }}
+                  className="px-4 py-2 hover:bg-white/10 cursor-pointer text-left">
                     Home
                   </li>
-                  <li className="px-4 py-2 hover:bg-white/10 cursor-pointer text-left">
+                  <li 
+                  onClick={() => setHidden(true)}
+                  className="px-4 py-2 hover:bg-white/10 cursor-pointer text-left">
                     Profile
                   </li>
                   <li
-                  onClick={()=>handleNavigate()}
+                  onClick={()=>{ handleNavigate(); setHidden(true); }}
                     className={`px-4 py-2 hover:bg-white/10 cursor-pointer text-left ${user.role =="buyer"?"hidden":"block"}`}>
                     Dashboard
                   </li>
                   <li
-                  onClick={()=>handleLogout()}
+                  onClick={()=>{ handleLogout(); setHidden(true); }}
                   className="px-4 py-2 hover:bg-red-500/20 text-red-400 cursor-pointer text-left">
                     Logout
                   </li>
                 </ul>
               </div>
-            </button>
+            </div>
           ) : (
             <div className="flex items-center gap-2">
               <button 

@@ -34,7 +34,7 @@ const Dashboard = () => {
     <div className="min-h-screen bg-[#0f0f0f] text-white p-4 md:p-8 ">
       <div className="max-w-7xl mx-auto">
         {/* Header Section */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4 mt-12">
+        <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4 ">
           <div>
             <h1 className="text-3xl font-bold text-white mb-2">Seller Dashboard</h1>
             <p className="text-gray-400">Manage and track your listed products</p>

@@ -79,7 +79,11 @@ const SingleProductDet = () => {
      
     }
   }
- 
+  
+  const handleAddVariants =()=>{
+    if(user?.role !=="seller") return
+    navigate("/seller/addVariants")
+  }
 
   return (
     <div className="min-h-screen bg-[#050505] text-white pt-20 pb-12">
@@ -162,8 +166,9 @@ const SingleProductDet = () => {
             </div>
 
             {/* Actions */}
-            <div className={`mt-auto space-y-4 ${user?.role =="buyer"?"block":"hidden"}`}>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          
+               <div className={`mt-auto space-y-4 `}>
+                  <div className={`grid grid-cols-1 sm:grid-cols-2 gap-4 ${user?.role === "seller" ? "hidden" : "block"}`}>
                 <button
                  onClick={handleAddToKart}
                 className="flex-grow py-4 bg-white text-black font-bold rounded-2xl hover:bg-gray-200 transition-all duration-300 flex items-center justify-center gap-2 group">
@@ -177,12 +182,31 @@ const SingleProductDet = () => {
                 className="flex-grow py-4 bg-[#111] border border-white/10 text-white font-bold rounded-2xl hover:bg-white hover:text-black transition-all duration-300">
                   Buy Now
                 </button>
-              </div>
-              <p className="text-[11px] text-gray-600 text-center uppercase tracking-widest font-medium">
-                Free Shipping & 30-Day Easy Returns
-              </p>
+                  </div>
+                  
+                   {user && user.role =="seller"? <div className={`mt-auto space-y-4`}>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <button
+                         onClick={handleAddVariants}
+                         className="flex-grow py-4 bg-white text-black font-bold rounded-2xl hover:bg-gray-200 transition-all duration-300 flex items-center justify-center gap-2 group">
+                          Add Variants 
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5 transition-transform group-hover:translate-x-1">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.119-1.243l1.263-12c.07-.665.656-1.119 1.243-1.119h12.5a1.125 1.125 0 0 1 1.243 1.119Z" />
+                         </svg>
+                       </button>
+               
+                      </div>
+          
+                     </div>:null}
+
+                  <p className="text-[11px] text-gray-600 text-center uppercase tracking-widest font-medium">
+                    Free Shipping & 30-Day Easy Returns
+                  </p>
+             
+               </div>
+
             </div>
-          </div>
+        
 
         </div>
       </div>

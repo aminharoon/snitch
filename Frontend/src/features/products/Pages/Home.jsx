@@ -29,12 +29,11 @@ const Home = () => {
   }
   return (
     <div className="min-h-screen bg-[#050505] text-white pt-20">
-      <Navbar user={user} isLoggedIn={!!user} userName={user?.fullName } />
+ 
       {/* Hero / Header Section */}
-      <header className="relative py-20 px-6 overflow-hidden border-b border-white/5">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] bg-gradient-to-b from-blue-500/10 to-transparent blur-[120px] pointer-events-none" />
-        <div className="max-w-7xl mx-auto relative z-10">
-          <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-4 bg-gradient-to-r from-white to-gray-500 bg-clip-text text-transparent">
+      <header className="relative  px-6 overflow-hidden border-b border-white/5 ">
+        <div className="max-w-7xl mx-auto relative z-1">
+          <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-4 bg-gradient-to-r from-white to-gray-500 bg-clip-text text-transparent ">
             Discover Excellence.
           </h1>
           <p className="text-gray-400 text-lg md:text-xl max-w-2xl leading-relaxed">

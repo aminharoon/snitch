@@ -112,7 +112,7 @@ const CreateProduct = () => {
 
   return (
     <div className="min-h-screen bg-[#0f0f0f] py-12 px-4 sm:px-6 lg:px-8 flex flex-col items-center">
-      <div className="w-full max-w-2xl mt-12">
+      <div className="w-full max-w-2xl ">
         {/* Header Section */}
         <div className="text-center mb-10">
           <h1 className="text-4xl font-bold text-[#F5C518] tracking-tight mb-3">
