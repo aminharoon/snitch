@@ -1,13 +1,23 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import React, { useEffect, useState, useRef } from "react";
+import { useParams, useNavigate } from "react-router";
 import { useProduct } from "../Hooks/useProducts";
 import { useSelector } from "react-redux";
 
 const UpdateSellerProduct = () => {
   const { id } = useParams();
-  const { user } = useSelector((state) => state.auth);
+  const navigate = useNavigate();
+
   const { getSingleProductDet } = useProduct();
+
+  useEffect(() => {
+    if (id) {
+      getSingleProductDet(id);
+      console.log("this function has been called ");
+    }
+  }, [id]);
+
   const { singleProduct, loading } = useSelector((state) => state.product);
+  const fileInputRef = useRef(null);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditingProduct, setIsEditingProduct] = useState(false);
@@ -24,14 +34,29 @@ const UpdateSellerProduct = () => {
     },
     stock: 0,
     attributes: [{ key: "", value: "" }],
-    images: [],
+    images: [], // Array of { file, preview }
   });
 
-  useEffect(() => {
-    if (id) {
-      getSingleProductDet(id);
-    }
-  }, [id]);
+  const handleImageChange = (e) => {
+    const files = Array.from(e.target.files);
+    const newImages = files.map((file) => ({
+      file,
+      preview: URL.createObjectURL(file),
+    }));
+    setNewVariant((prev) => ({
+      ...prev,
+      images: [...prev.images, ...newImages],
+    }));
+  };
+
+  const removeImage = (index) => {
+    setNewVariant((prev) => {
+      const updatedImages = [...prev.images];
+      URL.revokeObjectURL(updatedImages[index].preview);
+      updatedImages.splice(index, 1);
+      return { ...prev, images: updatedImages };
+    });
+  };
 
   useEffect(() => {
     if (singleProduct) {
@@ -171,14 +196,14 @@ const UpdateSellerProduct = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#050505] text-white pt-20 pb-12 px-4 sm:px-6">
-      <div className="max-w-4xl mx-auto space-y-12">
+    <div className="h-screen bg-[#050505] text-white pt-4 pb-4 px-4 sm:px-10 overflow-hidden">
+      <div className="max-w-5xl mx-auto space-y-4 h-full flex flex-col">
         {/* Product Info Card */}
-        <div className="bg-[#1a1a1a] rounded-3xl p-6 border border-[#333] flex flex-col md:flex-row gap-8 relative">
+        <div className="bg-[#1a1a1a] rounded-3xl p-5 border border-[#333] flex flex-col md:flex-row gap-8 relative flex-shrink-0">
           {!isEditingProduct ? (
             <button
               onClick={() => setIsEditingProduct(true)}
-              className="absolute top-6 right-6 text-gray-400 hover:text-[#F5C518] transition-colors p-2 bg-[#0f0f0f] rounded-lg border border-[#333]"
+              className="absolute top-3 right-3 text-gray-400 hover:text-[#F5C518] transition-colors p-1.5 bg-[#0f0f0f] rounded-lg border border-[#333]"
               title="Edit Product"
             >
               <svg
@@ -198,7 +223,7 @@ const UpdateSellerProduct = () => {
             </button>
           ) : null}
 
-          <div className="w-full md:w-1/3 aspect-square rounded-2xl overflow-hidden bg-[#111] border border-[#333]">
+          <div className="w-full md:w-[220px] aspect-square rounded-2xl overflow-hidden bg-[#111] border border-[#333] flex-shrink-0">
             {images && images.length > 0 ? (
               <img
                 src={images[0].url}
@@ -206,7 +231,7 @@ const UpdateSellerProduct = () => {
                 className="w-full h-full object-cover"
               />
             ) : (
-              <div className="w-full h-full flex items-center justify-center text-gray-600">
+              <div className="w-full h-full flex items-center justify-center text-gray-600 text-xs">
                 No Image
               </div>
             )}
@@ -234,7 +259,7 @@ const UpdateSellerProduct = () => {
                       description: e.target.value,
                     })
                   }
-                  className="w-full bg-[#0f0f0f] border border-[#333] rounded-xl px-4 py-3 text-white h-32 resize-none focus:outline-none focus:border-[#F5C518] transition-colors"
+                  className="w-full bg-[#0f0f0f] border border-[#333] rounded-xl px-4 py-3 text-white h-32 text-sm resize-none focus:outline-none focus:border-[#F5C518] transition-colors"
                   placeholder="Product Description"
                 />
                 <div className="flex items-center gap-4">
@@ -288,7 +313,9 @@ const UpdateSellerProduct = () => {
             ) : (
               <>
                 <h1 className="text-3xl font-bold text-white">{title}</h1>
-                <p className="text-gray-400 leading-relaxed">{description}</p>
+                <p className="text-gray-400 leading-relaxed text-sm line-clamp-3">
+                  {description}
+                </p>
                 <div className="text-2xl font-bold text-[#F5C518]">
                   {price?.currency === "USD" ? "$" : "₹"}
                   {price?.amount?.toLocaleString()}
@@ -299,34 +326,19 @@ const UpdateSellerProduct = () => {
         </div>
 
         {/* Variants Section */}
-        <div className="space-y-6">
+        <div className="space-y-2 flex-1 overflow-hidden flex flex-col">
           <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-bold text-white">Product Variants</h2>
+            <h2 className="text-xl font-bold text-white">Product Variants</h2>
             <button
               onClick={() => setIsModalOpen(true)}
-              className="bg-[#F5C518] hover:bg-[#e0b415] text-black font-bold px-6 py-2 rounded-xl transition-all duration-300 shadow-lg shadow-[#F5C518]/10 active:scale-95 flex items-center gap-2"
+              className="bg-[#F5C518] hover:bg-[#e0b415] text-black font-bold px-4 py-3 rounded-lg text-sm transition-all flex items-center gap-2"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={2.5}
-                stroke="currentColor"
-                className="w-5 h-5"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M12 4.5v15m7.5-7.5h-15"
-                />
-              </svg>
               Add New Variant
             </button>
           </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-2 overflow-y-auto pr-1 [scrollbar-width:none]">
             {(!variants || variants.length === 0) && (
-              <div className="col-span-full bg-[#1a1a1a] rounded-2xl border border-dashed border-[#333] p-12 text-center text-gray-500">
+              <div className="col-span-full bg-[#1a1a1a] rounded-2xl border border-dashed border-[#333] p-8 text-center text-gray-500">
                 No variants added yet. Click "Add New Variant" to get started.
               </div>
             )}
@@ -334,10 +346,10 @@ const UpdateSellerProduct = () => {
               variants.map((variant, index) => (
                 <div
                   key={index}
-                  className="bg-[#1a1a1a] rounded-2xl p-4 border border-[#333] flex flex-col gap-4"
+                  className="bg-[#1a1a1a] rounded-xl p-3.5 border border-[#333] flex flex-col gap-3"
                 >
                   <div className="flex gap-4">
-                    <div className="w-20 h-20 rounded-xl overflow-hidden bg-[#111] border border-[#333] flex-shrink-0">
+                    <div className="w-16 h-16 rounded-lg overflow-hidden bg-[#111] border border-[#333] flex-shrink-0">
                       {variant.images && variant.images.length > 0 ? (
                         <img
                           src={variant.images[0].url}
@@ -351,7 +363,7 @@ const UpdateSellerProduct = () => {
                       )}
                     </div>
                     <div className="flex-1">
-                      <div className="text-[#F5C518] font-bold text-lg mb-1">
+                      <div className="text-[#F5C518] font-bold text-lg mb-0.5">
                         {variant.price?.currency === "USD" ? "$" : "₹"}
                         {(
                           variant.price?.amount || price?.amount
@@ -429,10 +441,10 @@ const UpdateSellerProduct = () => {
               </button>
             </div>
 
-            <div className="p-6 space-y-8">
+            <div className="p-4 space-y-4">
               {/* Pricing & Stock */}
-              <div className="grid grid-cols-2 gap-6">
-                <div className="space-y-2">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-1">
                   <label className="text-xs font-bold uppercase tracking-widest text-gray-500">
                     Price (INR)
                   </label>
@@ -448,10 +460,10 @@ const UpdateSellerProduct = () => {
                         },
                       })
                     }
-                    className="w-full bg-[#0f0f0f] border border-[#333] rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#F5C518] transition-colors"
+                    className="w-full bg-[#0f0f0f] border border-[#333] rounded-xl px-4 py-3 text-white text-lg font-medium focus:outline-none focus:border-[#F5C518] transition-colors"
                   />
                 </div>
-                <div className="space-y-2">
+                <div className="space-y-1">
                   <label className="text-xs font-bold uppercase tracking-widest text-gray-500">
                     Stock Available
                   </label>
@@ -464,7 +476,7 @@ const UpdateSellerProduct = () => {
                         stock: Number(e.target.value),
                       })
                     }
-                    className="w-full bg-[#0f0f0f] border border-[#333] rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#F5C518] transition-colors"
+                    className="w-full bg-[#0f0f0f] border border-[#333] rounded-xl px-4 py-3 text-white text-lg font-medium focus:outline-none focus:border-[#F5C518] transition-colors"
                   />
                 </div>
               </div>
@@ -499,22 +511,22 @@ const UpdateSellerProduct = () => {
 
                 <div className="space-y-3">
                   {newVariant.attributes.map((attr, index) => (
-                    <div key={index} className="flex gap-3 items-start">
+                    <div key={index} className="flex gap-2 items-start">
                       <div className="flex-1">
                         <input
                           type="text"
-                          placeholder="e.g. Size, Color, Storage"
+                          placeholder="Key (e.g. Size)"
                           value={attr.key}
                           onChange={(e) =>
                             handleAttributeChange(index, "key", e.target.value)
                           }
-                          className="w-full bg-[#0f0f0f] border border-[#333] rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#F5C518] transition-colors text-sm"
+                          className="w-full bg-[#0f0f0f] border border-[#333] rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#F5C518] transition-colors text-base"
                         />
                       </div>
                       <div className="flex-1">
                         <input
                           type="text"
-                          placeholder="e.g. XL, Navy, 256GB"
+                          placeholder="Value (e.g. XL)"
                           value={attr.value}
                           onChange={(e) =>
                             handleAttributeChange(
@@ -523,12 +535,12 @@ const UpdateSellerProduct = () => {
                               e.target.value,
                             )
                           }
-                          className="w-full bg-[#0f0f0f] border border-[#333] rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#F5C518] transition-colors text-sm"
+                          className="w-full bg-[#0f0f0f] border border-[#333] rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#F5C518] transition-colors text-base"
                         />
                       </div>
                       <button
                         onClick={() => handleRemoveAttribute(index)}
-                        className="p-3 text-gray-500 hover:text-red-400 bg-[#0f0f0f] border border-[#333] rounded-xl transition-colors"
+                        className="p-1.5 text-gray-500 hover:text-red-400 bg-[#0f0f0f] border border-[#333] rounded-lg transition-colors"
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -555,19 +567,29 @@ const UpdateSellerProduct = () => {
                 </div>
               </div>
 
-              {/* Placeholder for Image Upload */}
               <div className="space-y-2">
                 <label className="text-xs font-bold uppercase tracking-widest text-gray-500">
                   Variant Images
                 </label>
-                <div className="w-full h-32 bg-[#0f0f0f] border-2 border-dashed border-[#333] rounded-xl flex flex-col items-center justify-center text-gray-500 hover:border-[#F5C518] hover:text-[#F5C518] transition-colors cursor-pointer">
+                <div
+                  onClick={() => fileInputRef.current.click()}
+                  className="w-full h-20 bg-[#0f0f0f] border border-dashed border-[#333] rounded-lg flex flex-col items-center justify-center text-gray-500 hover:border-[#F5C518] hover:text-[#F5C518] transition-colors cursor-pointer"
+                >
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    onChange={handleImageChange}
+                    multiple
+                    accept="image/*"
+                    className="hidden"
+                  />
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
                     strokeWidth={1.5}
                     stroke="currentColor"
-                    className="w-8 h-8 mb-2"
+                    className="w-5 h-5 mb-1"
                   >
                     <path
                       strokeLinecap="round"
@@ -575,12 +597,51 @@ const UpdateSellerProduct = () => {
                       d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5"
                     />
                   </svg>
-                  <span className="text-sm font-semibold">Upload Images</span>
+                  <span className="text-xs font-semibold">Upload Images</span>
                 </div>
+
+                {/* Previews */}
+                {newVariant.images.length > 0 && (
+                  <div className="grid grid-cols-4 gap-4 mt-4">
+                    {newVariant.images.map((img, index) => (
+                      <div
+                        key={index}
+                        className="relative aspect-square rounded-xl overflow-hidden border border-[#333]"
+                      >
+                        <img
+                          src={img.preview}
+                          className="w-full h-full object-cover"
+                        />
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            removeImage(index);
+                          }}
+                          className="absolute top-1 right-1 bg-red-500 text-white p-1 rounded-lg hover:bg-red-600 transition-colors"
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={2}
+                            stroke="currentColor"
+                            className="w-3 h-3"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M6 18 18 6M6 6l12 12"
+                            />
+                          </svg>
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
 
-            <div className="sticky bottom-0 bg-[#1a1a1a] border-t border-[#333] px-6 py-4 flex justify-end gap-3 z-10 rounded-b-3xl">
+            <div className="sticky bottom-0 bg-[#1a1a1a] border-t border-[#333] px-4 py-3 flex justify-end gap-2 z-10 rounded-b-3xl">
               <button
                 onClick={() => setIsModalOpen(false)}
                 className="px-6 py-2.5 rounded-xl font-bold text-gray-300 hover:bg-[#333] transition-colors"

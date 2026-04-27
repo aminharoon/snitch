@@ -75,13 +75,11 @@ const SingleProductDet = () => {
   const handleAddToKart = () => {
     if (!user) {
       navigate("/login");
-    } else {
     }
   };
   const handleAddBuy = () => {
     if (!user) {
       navigate("/login");
-    } else {
     }
   };
 

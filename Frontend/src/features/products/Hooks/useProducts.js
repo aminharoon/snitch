@@ -78,13 +78,14 @@ export const useProduct = () => {
             if (response) {
                 toast.success("Details about the single product")
                 Dispatch(setSingleProduct(response.data))
-                Dispatch(setLoading(false))
                 return response.data
 
             }
         } catch (e) {
             console.log(`HOOK something went wrong ${e.message}`)
-
+            Dispatch(setError(`failed to get product details: ${e.message}`))
+        } finally {
+            Dispatch(setLoading(false))
         }
     }
 
