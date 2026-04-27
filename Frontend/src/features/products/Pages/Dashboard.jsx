@@ -2,11 +2,12 @@ import React, { useEffect } from 'react';
 import { useProduct } from '../Hooks/useProducts';
 import { useSelector } from 'react-redux';
 import { ProductCard } from '../Componts';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 
 
 
 const Dashboard = () => {
+  const navigate = useNavigate()
   const { handleGetSellerProducts } = useProduct();
   const { sellerProducts, loading } = useSelector((state) => state.product);
 
@@ -26,7 +27,7 @@ const Dashboard = () => {
   };
 
   const handleCardClick = (product) => {
-    console.log('View product details:', product);
+     navigate(`/product/${product._id}`)
   };
 
   return (

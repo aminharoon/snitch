@@ -14,7 +14,7 @@ const productRoute = Router()
  * @desc Create a new product
  * @access Private (only authenticated users can create products)
  */
-productRoute.post("/create", upload.array("images", 5), createProductValidation, verifyUser, productController.createProduct)
+productRoute.post("/create", upload.array("images", 4), createProductValidation, verifyUser, productController.createProduct)
 
 
 /**

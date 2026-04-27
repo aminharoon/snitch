@@ -119,12 +119,12 @@ const SingleProductDet = () => {
 
             {/* Thumbnails */}
             {images && images.length > 1 && (
-              <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
+              <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
                 {images.map((img, index) => (
                   <button
                     key={index}
                     onClick={() => setActiveImage(index)}
-                    className={`relative w-20 sm:w-24 aspect-square rounded-2xl overflow-hidden border-2 transition-all duration-300 flex-shrink-0 ${
+                    className={`relative w-16 sm:w-20 aspect-square rounded-2xl overflow-hidden border-2 transition-all duration-300 flex-shrink-0 ${
                       activeImage === index ? 'border-white' : 'border-transparent opacity-50 hover:opacity-100'
                     }`}
                   >
@@ -162,7 +162,7 @@ const SingleProductDet = () => {
             </div>
 
             {/* Actions */}
-            <div className="mt-auto space-y-4">
+            <div className={`mt-auto space-y-4 ${user?.role =="buyer"?"block":"hidden"}`}>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <button
                  onClick={handleAddToKart}
