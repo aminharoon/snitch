@@ -60,7 +60,7 @@ const deleteProduct = async (req, res) => {
     const product = await productModel.findOne({ _id: productID })
 
     if (product.seller != seller._id) {
-        throw new ApiError(401, `you are not authorized to delete this product`)
+        throw new ApiError(401, `you are not authorized to delete this product`, product)
     }
 
     await productModel.findByIdAndDelete({ _id: productID })

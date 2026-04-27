@@ -93,9 +93,12 @@ export const useProduct = () => {
             Dispatch(setLoading(true))
             const response = await deleteProduct(productID)
             if (response) {
-                Dispatch(setSellerProducts(data.data))
+
+                Dispatch(setSellerProducts(response.data))
+
                 Dispatch(setLoading(false))
                 toast.success(`product has been deleted successfully`)
+
             }
         } catch (e) {
             Dispatch(setLoading(false))

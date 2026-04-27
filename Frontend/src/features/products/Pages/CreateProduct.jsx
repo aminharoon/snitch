@@ -5,17 +5,16 @@ import { useNavigate } from "react-router";
 
 const CreateProduct = () => {
   const { handleCreateProduct } = useProduct();
-  const {loading} = useSelector((state)=>state.product)
+  const { loading } = useSelector((state) => state.product);
   const fileInputRef = useRef(null);
-  const navigate= useNavigate()
+  const navigate = useNavigate();
 
-
-  const initialSateOfFormData={
+  const initialSateOfFormData = {
     title: "",
     description: "",
     priceAmount: "",
     priceCurrency: "",
-  }
+  };
   const [formData, setFormData] = useState(initialSateOfFormData);
 
   const [images, setImages] = useState([]); // Array of { file, preview }
@@ -23,7 +22,7 @@ const CreateProduct = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    
+
     // Update form data
     setFormData((prev) => ({
       ...prev,
@@ -70,9 +69,12 @@ const CreateProduct = () => {
   const validate = () => {
     const newErrors = {};
     if (!formData.title.trim()) newErrors.title = "Title is required";
-    if (!formData.description.trim()) newErrors.description = "Description is required";
-    if (!formData.priceAmount || parseFloat(formData.priceAmount) <= 0) newErrors.priceAmount = "Valid price is required";
-    if (images.length === 0) newErrors.images = "At least one image is required";
+    if (!formData.description.trim())
+      newErrors.description = "Description is required";
+    if (!formData.priceAmount || parseFloat(formData.priceAmount) <= 0)
+      newErrors.priceAmount = "Valid price is required";
+    if (images.length === 0)
+      newErrors.images = "At least one image is required";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -88,26 +90,25 @@ const CreateProduct = () => {
       data.append("description", formData.description);
       data.append("priceAmount", formData.priceAmount);
       data.append("priceCurrency", formData.priceCurrency);
-      
+
       images.forEach((img) => {
         data.append("images", img.file);
       });
 
       await handleCreateProduct(data);
-      setFormData(initialSateOfFormData)
-      setImages([])
-      navigate("/seller/dashboard")
+      setFormData(initialSateOfFormData);
+      setImages([]);
+      navigate("/seller/dashboard");
     } catch (err) {
       console.error("Submission failed:", err);
     }
-    
   };
 
-  const isFormValid = 
-    formData.title.trim() && 
-    formData.description.trim() && 
-    formData.priceAmount && 
-    parseFloat(formData.priceAmount) > 0 && 
+  const isFormValid =
+    formData.title.trim() &&
+    formData.description.trim() &&
+    formData.priceAmount &&
+    parseFloat(formData.priceAmount) > 0 &&
     images.length > 0;
 
   return (
@@ -132,7 +133,7 @@ const CreateProduct = () => {
           <div>
             <label
               htmlFor="title"
-              className="block text-sm font-medium text-gray-400 mb-2 ml-1"
+              className="block text-sm font-medium text-gray-400 mb-2 ml-1 capitalize"
             >
               Product Title
             </label>
@@ -168,7 +169,9 @@ const CreateProduct = () => {
               className={`w-full px-5 py-4 rounded-xl bg-[#0f0f0f] text-white border ${errors.description ? "border-red-500" : "border-[#333]"} focus:border-[#F5C518] focus:outline-none transition-colors placeholder:text-gray-600 font-medium leading-relaxed resize-none [scrollbar-width:none]`}
             ></textarea>
             {errors.description && (
-              <p className="mt-2 text-sm text-red-500 ml-1">{errors.description}</p>
+              <p className="mt-2 text-sm text-red-500 ml-1">
+                {errors.description}
+              </p>
             )}
           </div>
 
@@ -193,7 +196,9 @@ const CreateProduct = () => {
                 className={`w-full px-5 py-4 rounded-xl bg-[#0f0f0f] text-white border ${errors.priceAmount ? "border-red-500" : "border-[#333]"} focus:border-[#F5C518] focus:outline-none transition-colors placeholder:text-gray-600 font-medium no-spinner`}
               />
               {errors.priceAmount && (
-                <p className="mt-2 text-sm text-red-500 ml-1">{errors.priceAmount}</p>
+                <p className="mt-2 text-sm text-red-500 ml-1">
+                  {errors.priceAmount}
+                </p>
               )}
             </div>
             <div>
@@ -211,13 +216,22 @@ const CreateProduct = () => {
                   onChange={handleChange}
                   className="w-full px-5 py-4 rounded-xl bg-[#0f0f0f] text-white border border-[#333] focus:border-[#F5C518] focus:outline-none transition-colors appearance-none cursor-pointer font-medium"
                 >
-                
                   <option value="INR">INR (₹)</option>
                   <option value="USD">USD ($)</option>
                 </select>
                 <div className="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none text-gray-500">
-                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 9l-7 7-7-7"
+                    />
                   </svg>
                 </div>
               </div>
@@ -243,9 +257,12 @@ const CreateProduct = () => {
                 className="hidden"
               />
               <div className="flex flex-col items-center h-1 justify-center">
-            
-                <span className="text-gray-300 font-bold">Add Product Images</span>
-                <span className="text-gray-500 text-sm">PNG, JPG or JPEG up to 10MB</span>
+                <span className="text-gray-300 font-bold">
+                  Add Product Images
+                </span>
+                <span className="text-gray-500 text-sm">
+                  PNG, JPG or JPEG up to 10MB
+                </span>
               </div>
             </div>
 
@@ -271,8 +288,18 @@ const CreateProduct = () => {
                         }}
                         className="bg-white/10 hover:bg-red-500/20 text-white p-2 rounded-lg backdrop-blur-sm border border-white/20 transition-all"
                       >
-                        <svg className="w-5 h-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        <svg
+                          className="w-5 h-5 text-red-500"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2.5}
+                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                          />
                         </svg>
                       </button>
                     </div>
@@ -284,7 +311,9 @@ const CreateProduct = () => {
               <p className="mt-3 text-sm text-red-500 ml-1">{errors.images}</p>
             )}
             <div className="mt-3 flex justify-between items-center px-1">
-              <p className="text-xs text-gray-500 font-medium">{images.length}/5 images selected</p>
+              <p className="text-xs text-gray-500 font-medium">
+                {images.length}/5 images selected
+              </p>
               {images.length > 0 && (
                 <button
                   type="button"
@@ -306,17 +335,43 @@ const CreateProduct = () => {
             >
               {loading ? (
                 <>
-                  <svg className="animate-spin h-6 w-6 text-black" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  <svg
+                    className="animate-spin h-6 w-6 text-black"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    ></path>
                   </svg>
                   <span>Creating Product...</span>
                 </>
               ) : (
                 <>
                   <span>List Product Now</span>
-                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2.5}
+                      d="M14 5l7 7m0 0l-7 7m7-7H3"
+                    />
                   </svg>
                 </>
               )}
@@ -325,7 +380,13 @@ const CreateProduct = () => {
         </form>
 
         <p className="mt-12 text-center text-gray-500 text-sm font-medium">
-          Need help? <a href="#" className="text-[#F5C518] hover:underline transition-colors">Contact Merchant Support</a>
+          Need help?{" "}
+          <a
+            href="#"
+            className="text-[#F5C518] hover:underline transition-colors"
+          >
+            Contact Merchant Support
+          </a>
         </p>
       </div>
     </div>

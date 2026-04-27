@@ -24,7 +24,7 @@ const Dashboard = () => {
   };
 
   const handleCardClick = (product) => {
-    // navigate(`/product/${product._id}`);
+    navigate(`/product/${product._id}`);
   };
 
   return (
