@@ -7,15 +7,11 @@ import { useNavigate } from 'react-router';
 
 
 
+
 const Login = () => {
 
-  
   const navigate = useNavigate()
-
-
-  const { handleLogin,handleGetMe } = useAuth();
-
-
+  const { handleLogin } = useAuth();
 
   const {loading} = useSelector((state) => state.auth);
   const [showPassword, setShowPassword] = useState(false);
@@ -40,12 +36,8 @@ const Login = () => {
                  email:"",
                  password:""
           })
-     if(user.role !== "seller"){
-           navigate("/")
-       }
-       else{
-             navigate("/seller/dashboard")
-        }
+          navigate("/")
+   
   };
 
 

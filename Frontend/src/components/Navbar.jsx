@@ -12,9 +12,14 @@ const Navbar = ({user, isLoggedIn = false, userName  }) => {
     setHidden((pre) => !pre)
   }
 
+  const handleNavigate =()=>{
+    if(user.role !=="seller")return 
+    navigate("/seller/dashboard")
+  }
+
  
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-[#050505]/80 backdrop-blur-md border-b border-white/5">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-[#050505]/80 backdrop-blur-md border-b border-white/5 ">
       <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between gap-8">
         
         {/* Left: Logo */}
@@ -28,7 +33,7 @@ const Navbar = ({user, isLoggedIn = false, userName  }) => {
         </div>
 
         {/* Center: Search Bar */}
-        <div className={`flex-1 max-w-2xl   ${!isLoggedIn ?"hidden":"block md:block"} }`}>
+        <div className={`flex-1 max-w-2xl    ${!isLoggedIn ?"hidden":" hidden"} }`}>
           <div className="relative group">
             <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none text-gray-500 group-focus-within:text-white transition-colors">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
@@ -69,6 +74,11 @@ const Navbar = ({user, isLoggedIn = false, userName  }) => {
                   </li>
                   <li className="px-4 py-2 hover:bg-white/10 cursor-pointer text-left">
                     Profile
+                  </li>
+                  <li
+                  onClick={()=>handleNavigate()}
+                    className={`px-4 py-2 hover:bg-white/10 cursor-pointer text-left ${user.role =="buyer"?"hidden":"block"}`}>
+                    Dashboard
                   </li>
                   <li
                   onClick={()=>handleLogout()}

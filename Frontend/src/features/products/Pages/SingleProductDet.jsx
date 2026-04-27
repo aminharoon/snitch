@@ -82,8 +82,8 @@ const SingleProductDet = () => {
  
 
   return (
-    <div className="min-h-screen bg-[#050505] text-white pt-24 pb-20">
-      <div className="max-w-7xl mx-auto px-6">
+    <div className="min-h-screen bg-[#050505] text-white pt-20 pb-12">
+      <div className="max-w-5xl mx-auto px-6">
         {/* Back Button */}
         <button 
           onClick={() => navigate(-1)}
@@ -97,10 +97,10 @@ const SingleProductDet = () => {
           <span className="text-xs font-bold uppercase tracking-widest">Back to Collection</span>
         </button>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
           
           {/* Left: Product Images */}
-          <div className="space-y-6">
+          <div className="space-y-6 lg:col-span-5 w-full max-w-sm mx-auto lg:max-w-full">
             <div className="relative aspect-square rounded-3xl overflow-hidden bg-[#111] border border-white/5 group">
               {images && images.length > 0 ? (
                 <img 
@@ -124,7 +124,7 @@ const SingleProductDet = () => {
                   <button
                     key={index}
                     onClick={() => setActiveImage(index)}
-                    className={`relative w-24 aspect-square rounded-2xl overflow-hidden border-2 transition-all duration-300 flex-shrink-0 ${
+                    className={`relative w-20 sm:w-24 aspect-square rounded-2xl overflow-hidden border-2 transition-all duration-300 flex-shrink-0 ${
                       activeImage === index ? 'border-white' : 'border-transparent opacity-50 hover:opacity-100'
                     }`}
                   >
@@ -136,16 +136,16 @@ const SingleProductDet = () => {
           </div>
 
           {/* Right: Product Details */}
-          <div className="flex flex-col h-full">
+          <div className="flex flex-col h-full lg:col-span-7">
             <div className="mb-8">
               <div className="inline-block px-3 py-1 bg-white/5 border border-white/10 rounded-full text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-6">
                 Premium Collection
               </div>
-              <h1 className="text-4xl md:text-5xl font-bold mb-4 leading-tight tracking-tight text-white">
+              <h1 className="text-3xl md:text-4xl font-bold mb-4 leading-tight tracking-tight text-white">
                 {title}
               </h1>
               <div className="flex items-center gap-4 mb-8">
-                <span className="text-3xl font-bold tracking-tighter text-white">
+                <span className="text-2xl font-bold tracking-tighter text-white">
                   {price?.currency === "USD" ? "$" : "₹"}{price?.amount?.toLocaleString()}
                 </span>
                 <span className="px-2 py-1 bg-green-500/10 text-green-400 text-[10px] font-bold rounded uppercase tracking-wider">
@@ -166,7 +166,7 @@ const SingleProductDet = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <button
                  onClick={handleAddToKart}
-                className="flex-grow py-5 bg-white text-black font-bold rounded-2xl hover:bg-gray-200 transition-all duration-300 flex items-center justify-center gap-2 group">
+                className="flex-grow py-4 bg-white text-black font-bold rounded-2xl hover:bg-gray-200 transition-all duration-300 flex items-center justify-center gap-2 group">
                   Add to Cart
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5 transition-transform group-hover:translate-x-1">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.119-1.243l1.263-12c.07-.665.656-1.119 1.243-1.119h12.5a1.125 1.125 0 0 1 1.243 1.119Z" />
@@ -174,7 +174,7 @@ const SingleProductDet = () => {
                 </button>
                 <button
                 onClick={handleAddBuy}
-                className="flex-grow py-5 bg-[#111] border border-white/10 text-white font-bold rounded-2xl hover:bg-white hover:text-black transition-all duration-300">
+                className="flex-grow py-4 bg-[#111] border border-white/10 text-white font-bold rounded-2xl hover:bg-white hover:text-black transition-all duration-300">
                   Buy Now
                 </button>
               </div>
