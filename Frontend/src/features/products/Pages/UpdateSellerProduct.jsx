@@ -7,7 +7,8 @@ const UpdateSellerProduct = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const { getSingleProductDet } = useProduct();
+  const { getSingleProductDet, handleAddVarients, handleDeleteVariant } =
+    useProduct();
 
   useEffect(() => {
     if (id) {
@@ -132,21 +133,7 @@ const UpdateSellerProduct = () => {
     variants: actualVariants,
   } = singleProduct;
 
-  // Temporary dummy variants to showcase the UI design
-  const dummyVariants = [
-    {
-      images: [
-        {
-          url: "http://res.cloudinary.com/dk1sbmxz9/image/upload/v1777284070/Snitch/products/byv226ddbjmqqupjoogh.jpg",
-        },
-      ],
-      stock: 12,
-      attributes: { Size: "L", Color: "Navy" },
-      price: { amount: 335, currency: "INR" },
-    },
-  ];
-
-  const variants = actualVariants?.length > 0 ? actualVariants : dummyVariants;
+  // const variants = actualVariants?.length > 0 ? actualVariants
 
   const handleAddAttribute = () => {
     setNewVariant({
@@ -168,16 +155,28 @@ const UpdateSellerProduct = () => {
     setNewVariant({ ...newVariant, attributes: updatedAttributes });
   };
 
-  const handleSaveVariant = () => {
-    // Here we'll dispatch the action to save the variant
-    console.log("Saving variant...", newVariant);
-    console.log(newVariant);
-    console.log(newVariant);
+  const handleSaveVariant = async () => {
+    // Transform attributes array into an object
+    const formattedAttributes = newVariant.attributes.reduce((acc, attr) => {
+      if (attr.key.trim()) {
+        acc[attr.key.trim()] = attr.value;
+      }
+      return acc;
+    }, {});
+
+    const payload = {
+      ...newVariant,
+      attributes: formattedAttributes,
+    };
+
+    await handleAddVarients(singleProduct._id, payload);
+    setIsModalOpen(false);
   };
+  console.log(singleProduct);
 
   return (
     <div className="h-screen bg-[#050505] text-white pt-4 pb-4 px-4 sm:px-10 overflow-hidden">
-      <div className="max-w-5xl mx-auto space-y-4 h-full flex flex-col">
+      <div className="max-w-4xl mx-auto space-y-4 h-full flex flex-col">
         {/* Product Info Card */}
         <div className="bg-[#1a1a1a] rounded-3xl p-5 border border-[#333] flex flex-col md:flex-row gap-8 relative flex-shrink-0">
           {!isEditingProduct ? (
@@ -203,7 +202,7 @@ const UpdateSellerProduct = () => {
             </button>
           ) : null}
 
-          <div className="w-full md:w-[220px] aspect-square rounded-2xl overflow-hidden bg-[#111] border border-[#333] flex-shrink-0">
+          <div className="w-full md:w-[100px] aspect-square rounded-2xl overflow-hidden bg-[#111] border border-[#333] flex-shrink-0">
             {images && images.length > 0 ? (
               <img
                 src={images[0].url}
@@ -317,13 +316,14 @@ const UpdateSellerProduct = () => {
             </button>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-2 overflow-y-auto pr-1 md:[scrollbar-width:none]">
-            {(!variants || variants.length === 0) && (
+            {(!singleProduct.variants ||
+              singleProduct.variants.length === 0) && (
               <div className="col-span-full bg-[#1a1a1a] rounded-2xl border border-dashed border-[#333] p-8 text-center text-gray-500">
                 No variants added yet. Click "Add New Variant" to get started.
               </div>
             )}
-            {variants &&
-              variants.map((variant, index) => (
+            {singleProduct.variants &&
+              singleProduct.variants.map((variant, index) => (
                 <div
                   key={index}
                   className="bg-[#1a1a1a] rounded-xl p-3.5 border border-[#333] flex flex-col gap-3 [scrollbar-width:none]"
@@ -342,6 +342,7 @@ const UpdateSellerProduct = () => {
                         </div>
                       )}
                     </div>
+
                     <div className="flex-1">
                       <div className="text-[#F5C518] font-bold text-lg mb-0.5">
                         {variant.price?.currency === "USD" ? "$" : "₹"}
@@ -349,6 +350,7 @@ const UpdateSellerProduct = () => {
                           variant.price?.amount || price?.amount
                         )?.toLocaleString()}
                       </div>
+
                       <div className="flex flex-wrap gap-2 mt-2">
                         {variant.attributes &&
                           Object.entries(variant.attributes).map(
@@ -363,6 +365,29 @@ const UpdateSellerProduct = () => {
                           )}
                       </div>
                     </div>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDeleteVariant(singleProduct._id, variant._id);
+                      }}
+                      className="px-2 bg-black/80 hover:bg-black/20 text-white rounded-xl transition-all duration-300 border border-white/10 shadow-2xl backdrop-blur-sm h-8 cursor-pointer"
+                      title="Delete Product"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="w-4 h-4"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
+                        />
+                      </svg>
+                    </button>
                   </div>
 
                   <div className="flex items-end justify-between mt-auto pt-4 border-t border-[#333]">
@@ -630,7 +655,7 @@ const UpdateSellerProduct = () => {
               </button>
               <button
                 onClick={handleSaveVariant}
-                className="bg-[#F5C518] hover:bg-[#e0b415] text-black font-bold px-8 py-2.5 rounded-xl transition-all duration-300 shadow-lg shadow-[#F5C518]/10 active:scale-95"
+                className={`bg-[#F5C518] hover:bg-[#e0b415] text-black font-bold px-8 py-2.5 rounded-xl transition-all duration-300 shadow-lg shadow-[#F5C518]/10 active:scale-95 ${loading ? "opacity-70 cursor-not-allowed" : ""}`}
               >
                 Save Variant
               </button>

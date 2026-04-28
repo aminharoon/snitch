@@ -48,10 +48,13 @@ productRoute.get("/", productController.getAllProductsForBuyers)
 productRoute.get("/:productID", productController.getSingleProductDetails)
 
 /**
- * @route POST /api/products/update/:productID
- * @desc Update a product by its ID
+ * @route POST /api/products/variants/:productID
+ * @desc add variants a product by its ID
  * @access Private (only the seller of the product can update it)
  */
-productRoute.post("/variants/:productID", upload.array("images", 4), createProductValidation, authenticateSeller, productController.updateProduct)
+productRoute.post("/variants/:productId", upload.array("images", 4), createProductValidation, authenticateSeller, productController.updateProduct)
+
+
+productRoute.delete("/variants/:productId/delete/:variantId", authenticateSeller, productController.deleteVariant)
 
 export default productRoute

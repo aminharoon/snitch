@@ -60,3 +60,34 @@ export const deleteProduct = async (productID) => {
 
     }
 }
+
+export const addProductVarients = async (productId, newProductVarients) => {
+    try {
+        const formData = new FormData()
+        newProductVarients.images.forEach((image, index) => {
+            formData.append("images", image.file)
+        })
+        formData.append("stock", newProductVarients.stock)
+        formData.append("priceAmount", newProductVarients.price.amount)
+        formData.append("attributes", JSON.stringify(newProductVarients.attributes))
+        const response = await api.post(`/variants/${productId}`, formData)
+        return response.data
+
+    } catch (e) {
+        console.log(`SERVICES something went wrong while calling the add varients ${e.message}`)
+
+    }
+}
+
+export const deleteVariant = async (productId, variantId) => {
+
+    try {
+
+        const response = await api.delete(`/variants/${productId}/delete/${variantId}`)
+        return response.data
+
+    } catch (e) {
+        console.log(`SERVICES somethinf went wrog ${e.message}`)
+
+    }
+}

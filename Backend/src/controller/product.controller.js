@@ -9,9 +9,7 @@ const createProduct = async (req, res) => {
     const seller = req.user
 
     const images = await Promise.all(req.files.map(async (file) => {
-
         return await uploadOnCloudnary(file.buffer)
-
     }))
 
 
@@ -93,7 +91,7 @@ const getSingleProductDetails = async (req, res) => {
 const updateProduct = async (req, res) => {
 
     const productId = req.params.productId
-    console.log(productId)
+
     const product = await productModel.findOne({
         _id: productId,
         seller: req.user._id
@@ -107,19 +105,53 @@ const updateProduct = async (req, res) => {
     const images = []
 
     if (files || files.length !== 0) {
-        await Promise.all(files.map(async (file) => {
+        const result = await Promise.all(files.map(async (file) => {
             const image = await uploadOnCloudnary(file.buffer)
             return image
-        })).map(image => images.push(image))
+        }))
+        result.map(image => images.push(image))
     }
 
     const price = req.body.priceAmount
     const stock = req.body.stock
     const attributes = JSON.parse(req.body.attributes || "{}")
 
-    // console.log(product, images, price, stock, attributes)
+    product.variants.push({
+        images,
+        price: {
+            amount: price,
+            currency: req.body.priceCurrency || product.price.currency
+        },
+        stock,
+        attributes
+    })
+    product.save({ validateBeforeSave: false })
+    console.log(product)
+    res.status(204)
+        .json(new ApiResponse(204, "Variants are updated successfully"))
 
+}
 
+const deleteVariant = async (req, res) => {
+
+    const variantId = req.params.variantId
+
+    const productId = req.params.productId
+    const product = await productModel.findOne({
+        _id: productId,
+        seller: req.user._id
+    })
+    if (!product) {
+        throw new ApiError(404, "Product not found are you are not authorized for this")
+    }
+
+    product.variants = await product.variants.filter((eachVariant) => {
+        const response = eachVariant._id.toString() !== variantId
+
+        return response
+    })
+    await product.save({ validateBeforeSave: false })
+    res.status(200).json(new ApiResponse(200, "variants are deleted successfully"))
 
 
 }
@@ -129,6 +161,7 @@ export const productController = {
     deleteProduct,
     getAllProductsForBuyers,
     getSingleProductDetails,
-    updateProduct
+    updateProduct,
+    deleteVariant
 }
 

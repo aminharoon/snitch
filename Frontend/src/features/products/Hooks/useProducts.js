@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { getSellerProducts, createProduct, getAllProducts, getSingleProductDetails, deleteProduct } from "../services/api.products.js"
+import { getSellerProducts, createProduct, getAllProducts, getSingleProductDetails, deleteProduct, addProductVarients, deleteVariant } from "../services/api.products.js"
 import { setSellerProducts, setLoading, setError, setAllProducts, setSingleProduct } from "../State/state.product.js"
 import toast from "react-hot-toast"
 import { useDispatch } from "react-redux"
@@ -96,7 +96,6 @@ export const useProduct = () => {
             if (response) {
 
                 Dispatch(setSellerProducts(response.data))
-
                 Dispatch(setLoading(false))
                 toast.success(`product has been deleted successfully`)
 
@@ -107,11 +106,50 @@ export const useProduct = () => {
 
         }
     }
+    const handleAddVarients = async (productId, newProductVarients) => {
+        try {
+
+            const response = await addProductVarients(productId, newProductVarients)
+            if (response) {
+                Dispatch(setSingleProduct(response.data))
+                Dispatch(setLoading(false))
+                return response
+            }
+        } catch (e) {
+            Dispatch(setLoading(false))
+            toast.error(`${e.message}`)
+            Dispatch(setError(`faild to add variants : ${e.message}`))
+
+        } finally {
+            Dispatch(setLoading(false))
+        }
+    }
+    const handleDeleteVariant = async (productId, variantId) => {
+
+        try {
+
+            const response = await deleteVariant(productId, variantId)
+            if (response) {
+                Dispatch(setSingleProduct(response.data))
+                Dispatch(setLoading(false))
+                return response
+            }
+
+        } catch (e) {
+            Dispatch(setLoading(false))
+            toast.error(`${e.message}`)
+            Dispatch(setError(`failed to delete variant: ${e.message}`))
+
+        } finally {
+            Dispatch(setLoading(false))
+        }
+    }
+
 
     return {
         handleCreateProduct,
         handleGetSellerProducts, getAllProducts, handleGetAllProducts, getSingleProductDet
-        , handleDeleteProduct
+        , handleDeleteProduct, handleAddVarients, handleDeleteVariant
     }
 }
 
