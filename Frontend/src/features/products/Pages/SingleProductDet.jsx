@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams, useNavigate } from "react-router";
 import { useProduct } from "../Hooks/useProducts";
-
+// NOTE: Implementing product detail page with variant selection per user request.
 const SingleProductDet = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -102,8 +102,8 @@ const SingleProductDet = () => {
   const displayPrice = matchingVariant?.price || price;
   const displayImages =
     matchingVariant?.images?.length > 0 ? matchingVariant.images : images;
-  const displayStock = matchingVariant?.stock;
-  const isOutOfStock = matchingVariant && matchingVariant.stock === 0;
+  const displayStock = matchingVariant?.stock ?? singleProduct.stock;
+  const isOutOfStock = matchingVariant ? matchingVariant.stock === 0 : singleProduct.stock === 0;
 
   // Group all possible attributes and their values
   const attributeGroups = {};
@@ -151,6 +151,31 @@ const SingleProductDet = () => {
 
       if (!matchesOthers) return false;
 
+      const vVal = v.attributes?.[key];
+      if (typeof vVal === "string") {
+        return vVal.split(",").map((s) => s.trim()).includes(value);
+      }
+      return vVal === value;
+    });
+  };
+
+  // New helper: check if option leads to an in‑stock variant
+  const isOptionEnabled = (key, value) => {
+    if (!variants) return true;
+    return variants.some((v) => {
+      // Ensure stock is greater than 0
+      if (v.stock <= 0) return false;
+      const matchesOthers = Object.entries(selectedAttributes).every(
+        ([sKey, sVal]) => {
+          if (sKey === key) return true;
+          const vVal = v.attributes?.[sKey];
+          if (typeof vVal === "string") {
+            return vVal.split(",").map((s) => s.trim()).includes(sVal);
+          }
+          return vVal === sVal;
+        },
+      );
+      if (!matchesOthers) return false;
       const vVal = v.attributes?.[key];
       if (typeof vVal === "string") {
         return vVal.split(",").map((s) => s.trim()).includes(value);
@@ -289,6 +314,7 @@ const SingleProductDet = () => {
               </div>
 
               {/* Variant Selectors */}
+              {/* Note: No variant auto-selected on load. UI updates price, image, stock on selection. Out‑of‑stock variants are disabled. */}
               {Object.keys(attributeGroups).length > 0 && (
                 <div className="space-y-6 mb-8 animate-in fade-in slide-in-from-bottom-2 duration-500">
                   {Object.entries(attributeGroups).map(([key, values]) => (
@@ -299,17 +325,18 @@ const SingleProductDet = () => {
                       <div className="flex flex-wrap gap-2">
                         {Array.from(values).map((value) => {
                           const isSelected = selectedAttributes[key] === value;
-                          const isAvailable = isOptionAvailable(key, value);
+                          const isEnabled = isOptionEnabled(key, value);
                           return (
                             <button
                               key={value}
                               onClick={() =>
-                                isAvailable && handleAttributeSelect(key, value)
+                                isEnabled && handleAttributeSelect(key, value)
                               }
+                              disabled={!isEnabled}
                               className={`px-5 py-2.5 rounded-xl text-xs font-bold transition-all duration-300 border ${
                                 isSelected
                                   ? "bg-white text-black border-white shadow-lg shadow-white/10"
-                                  : isAvailable
+                                  : isEnabled
                                     ? "bg-transparent text-gray-400 border-white/10 hover:border-white/30 hover:text-white"
                                     : "bg-transparent text-gray-800 border-white/5 cursor-not-allowed opacity-30"
                               }`}
@@ -415,3 +442,5 @@ const SingleProductDet = () => {
 };
 
 export default SingleProductDet;
+
+// This component implements product detail view with variant selection handling. It defaults to base product data and updates price, image, and stock when a variant is selected via state `selectedAttributes` and `matchingVariant`. No variant is auto‑selected on load.
