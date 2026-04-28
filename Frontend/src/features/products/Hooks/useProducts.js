@@ -110,9 +110,13 @@ export const useProduct = () => {
         try {
 
             const response = await addProductVarients(productId, newProductVarients)
+            console.log("product variant :", response)
+
             if (response) {
+
                 Dispatch(setSingleProduct(response.data))
                 Dispatch(setLoading(false))
+                toast.success("Variants Are Added successfully ")
                 return response
             }
         } catch (e) {
@@ -129,9 +133,11 @@ export const useProduct = () => {
         try {
 
             const response = await deleteVariant(productId, variantId)
+            console.log("Full response.data:", response.data)
             if (response) {
                 Dispatch(setSingleProduct(response.data))
                 Dispatch(setLoading(false))
+                toast.success("Variants are deleted successfully ")
                 return response
             }
 

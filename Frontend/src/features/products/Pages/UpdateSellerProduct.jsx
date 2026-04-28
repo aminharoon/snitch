@@ -133,8 +133,6 @@ const UpdateSellerProduct = () => {
     variants: actualVariants,
   } = singleProduct;
 
-  // const variants = actualVariants?.length > 0 ? actualVariants
-
   const handleAddAttribute = () => {
     setNewVariant({
       ...newVariant,
@@ -169,10 +167,9 @@ const UpdateSellerProduct = () => {
       attributes: formattedAttributes,
     };
 
-    await handleAddVarients(singleProduct._id, payload);
+    handleAddVarients(singleProduct._id, payload);
     setIsModalOpen(false);
   };
-  console.log(singleProduct);
 
   return (
     <div className="h-screen bg-[#050505] text-white pt-4 pb-4 px-4 sm:px-10 overflow-hidden">

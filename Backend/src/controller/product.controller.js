@@ -125,10 +125,9 @@ const updateProduct = async (req, res) => {
         stock,
         attributes
     })
-    product.save({ validateBeforeSave: false })
-    console.log(product)
-    res.status(204)
-        .json(new ApiResponse(204, "Variants are updated successfully"))
+    await product.save({ validateBeforeSave: false })
+
+    res.status(200).json(new ApiResponse(200, "Variants are updated successfully", product))
 
 }
 
@@ -151,7 +150,7 @@ const deleteVariant = async (req, res) => {
         return response
     })
     await product.save({ validateBeforeSave: false })
-    res.status(200).json(new ApiResponse(200, "variants are deleted successfully"))
+    res.status(200).json(new ApiResponse(200, "variants are deleted successfully", product))
 
 
 }
