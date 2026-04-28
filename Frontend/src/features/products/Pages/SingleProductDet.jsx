@@ -10,6 +10,8 @@ const SingleProductDet = () => {
   const { singleProduct, loading } = useSelector((state) => state.product);
   const { user } = useSelector((state) => state.auth);
   const [activeImage, setActiveImage] = useState(0);
+  const [selectedAttributes, setSelectedAttributes] = useState({});
+  const [matchingVariant, setMatchingVariant] = useState(null);
 
   useEffect(() => {
     if (id) {
@@ -22,6 +24,30 @@ const SingleProductDet = () => {
       setActiveImage(0);
     }
   }, [singleProduct]);
+
+  // Handle variant selection
+  useEffect(() => {
+    if (singleProduct?.variants && Object.keys(selectedAttributes).length > 0) {
+      const match = singleProduct.variants.find((v) => {
+        return Object.entries(selectedAttributes).every(([key, value]) => {
+          const vVal = v.attributes?.[key];
+          if (typeof vVal === "string") {
+            return vVal.split(",").map((s) => s.trim()).includes(value);
+          }
+          return vVal === value;
+        });
+      });
+
+      if (match && match._id !== matchingVariant?._id) {
+        if (match.images?.length > 0) {
+          setActiveImage(0);
+        }
+      }
+      setMatchingVariant(match || null);
+    } else {
+      setMatchingVariant(null);
+    }
+  }, [selectedAttributes, singleProduct, matchingVariant?._id]);
 
   if (loading) {
     return (
@@ -70,7 +96,71 @@ const SingleProductDet = () => {
     );
   }
 
-  const { title, description, price, images } = singleProduct;
+  const { title, description, price, images, variants } = singleProduct;
+
+  // Derive display data based on matching variant or fallback
+  const displayPrice = matchingVariant?.price || price;
+  const displayImages =
+    matchingVariant?.images?.length > 0 ? matchingVariant.images : images;
+  const displayStock = matchingVariant?.stock;
+  const isOutOfStock = matchingVariant && matchingVariant.stock === 0;
+
+  // Group all possible attributes and their values
+  const attributeGroups = {};
+  variants?.forEach((v) => {
+    Object.entries(v.attributes || {}).forEach(([key, value]) => {
+      if (!attributeGroups[key]) attributeGroups[key] = new Set();
+      if (typeof value === "string") {
+        value
+          .split(",")
+          .map((s) => s.trim())
+          .forEach((val) => attributeGroups[key].add(val));
+      } else {
+        attributeGroups[key].add(value);
+      }
+    });
+  });
+
+  const handleAttributeSelect = (key, value) => {
+    setSelectedAttributes((prev) => {
+      const newState = { ...prev };
+      if (newState[key] === value) {
+        delete newState[key];
+      } else {
+        newState[key] = value;
+      }
+      return newState;
+    });
+  };
+
+  // Check if a specific attribute option is available given current selections
+  const isOptionAvailable = (key, value) => {
+    if (!variants) return true;
+
+    return variants.some((v) => {
+      const matchesOthers = Object.entries(selectedAttributes).every(
+        ([sKey, sVal]) => {
+          if (sKey === key) return true;
+          const vVal = v.attributes?.[sKey];
+          if (typeof vVal === "string") {
+            return vVal.split(",").map((s) => s.trim()).includes(sVal);
+          }
+          return vVal === sVal;
+        },
+      );
+
+      if (!matchesOthers) return false;
+
+      const vVal = v.attributes?.[key];
+      if (typeof vVal === "string") {
+        return vVal.split(",").map((s) => s.trim()).includes(value);
+      }
+      return vVal === value;
+    });
+  };
+
+  const hasVariants = variants?.length > 0;
+  const isSelectionComplete = !hasVariants || !!matchingVariant;
 
   const handleAddToKart = () => {
     if (!user) {
@@ -119,11 +209,11 @@ const SingleProductDet = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
           {/* Left: Product Images */}
-          <div className="space-y-6 lg:col-span-5 w-full max-w-sm mx-auto lg:max-w-full">
+          <div className="space-y-6 lg:col-span-5 w-full max-sm:mx-auto lg:max-w-full">
             <div className="relative aspect-square rounded-3xl overflow-hidden bg-[#111] border border-white/5 group">
-              {images && images.length > 0 ? (
+              {displayImages && displayImages.length > 0 ? (
                 <img
-                  src={images[activeImage]?.url}
+                  src={displayImages[activeImage]?.url}
                   alt={title}
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
@@ -148,9 +238,9 @@ const SingleProductDet = () => {
             </div>
 
             {/* Thumbnails */}
-            {images && images.length > 1 && (
+            {displayImages && displayImages.length > 1 && (
               <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-                {images.map((img, index) => (
+                {displayImages.map((img, index) => (
                   <button
                     key={index}
                     onClick={() => setActiveImage(index)}
@@ -182,13 +272,58 @@ const SingleProductDet = () => {
               </h1>
               <div className="flex items-center gap-4 mb-8">
                 <span className="text-2xl font-bold tracking-tighter text-white">
-                  {price?.currency === "USD" ? "$" : "₹"}
-                  {price?.amount?.toLocaleString()}
+                  {displayPrice?.currency === "USD" ? "$" : "₹"}
+                  {displayPrice?.amount?.toLocaleString()}
                 </span>
-                <span className="px-2 py-1 bg-green-500/10 text-green-400 text-[10px] font-bold rounded uppercase tracking-wider">
-                  In Stock
-                </span>
+                {matchingVariant ? (
+                  <span
+                    className={`px-2 py-1 ${isOutOfStock ? "bg-red-500/10 text-red-400" : "bg-green-500/10 text-green-400"} text-[10px] font-bold rounded uppercase tracking-wider`}
+                  >
+                    {isOutOfStock ? "Out of Stock" : `In Stock (${displayStock})`}
+                  </span>
+                ) : (
+                  <span className="px-2 py-1 bg-white/5 text-gray-400 text-[10px] font-bold rounded uppercase tracking-wider border border-white/5">
+                    Select Options
+                  </span>
+                )}
               </div>
+
+              {/* Variant Selectors */}
+              {Object.keys(attributeGroups).length > 0 && (
+                <div className="space-y-6 mb-8 animate-in fade-in slide-in-from-bottom-2 duration-500">
+                  {Object.entries(attributeGroups).map(([key, values]) => (
+                    <div key={key} className="space-y-3">
+                      <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500">
+                        Select {key}
+                      </h3>
+                      <div className="flex flex-wrap gap-2">
+                        {Array.from(values).map((value) => {
+                          const isSelected = selectedAttributes[key] === value;
+                          const isAvailable = isOptionAvailable(key, value);
+                          return (
+                            <button
+                              key={value}
+                              onClick={() =>
+                                isAvailable && handleAttributeSelect(key, value)
+                              }
+                              className={`px-5 py-2.5 rounded-xl text-xs font-bold transition-all duration-300 border ${
+                                isSelected
+                                  ? "bg-white text-black border-white shadow-lg shadow-white/10"
+                                  : isAvailable
+                                    ? "bg-transparent text-gray-400 border-white/10 hover:border-white/30 hover:text-white"
+                                    : "bg-transparent text-gray-800 border-white/5 cursor-not-allowed opacity-30"
+                              }`}
+                            >
+                              {value}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
               <div className="h-[1px] w-full bg-white/5 mb-8" />
               <div className="prose prose-invert max-w-none">
                 <h3 className="text-sm font-bold uppercase tracking-widest text-gray-500 mb-4">
@@ -201,41 +336,48 @@ const SingleProductDet = () => {
             </div>
 
             {/* Actions */}
-
             <div className={`mt-auto space-y-4 `}>
               <div
                 className={`grid grid-cols-1 sm:grid-cols-2 gap-4 ${user?.role === "seller" ? "hidden" : "block"}`}
               >
                 <button
                   onClick={handleAddToKart}
-                  className="flex-grow py-4 bg-white text-black font-bold rounded-2xl hover:bg-gray-200 transition-all duration-300 flex items-center justify-center gap-2 group"
+                  disabled={isOutOfStock || (hasVariants && !matchingVariant)}
+                  className="flex-grow py-4 disabled:opacity-50 disabled:cursor-not-allowed bg-white text-black font-bold rounded-2xl hover:bg-gray-200 transition-all duration-300 flex items-center justify-center gap-2 group"
                 >
-                  Add to Cart
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={2}
-                    stroke="currentColor"
-                    className="w-5 h-5 transition-transform group-hover:translate-x-1"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.119-1.243l1.263-12c.07-.665.656-1.119 1.243-1.119h12.5a1.125 1.125 0 0 1 1.243 1.119Z"
-                    />
-                  </svg>
+                  {isOutOfStock
+                    ? "Out of Stock"
+                    : !isSelectionComplete
+                      ? "Select Options"
+                      : "Add to Cart"}
+                  {isSelectionComplete && !isOutOfStock && (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={2}
+                      stroke="currentColor"
+                      className="w-5 h-5 transition-transform group-hover:translate-x-1"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.119-1.243l1.263-12c.07-.665.656-1.119 1.243-1.119h12.5a1.125 1.125 0 0 1 1.243 1.119Z"
+                      />
+                    </svg>
+                  )}
                 </button>
                 <button
                   onClick={handleAddBuy}
-                  className="flex-grow py-4 bg-[#111] border border-white/10 text-white font-bold rounded-2xl hover:bg-white hover:text-black transition-all duration-300"
+                  disabled={isOutOfStock || (hasVariants && !matchingVariant)}
+                  className="flex-grow py-4 disabled:opacity-20 disabled:cursor-not-allowed bg-[#111] border border-white/10 text-white font-bold rounded-2xl hover:bg-white hover:text-black transition-all duration-300"
                 >
                   Buy Now
                 </button>
               </div>
 
-              {user && user.role == "seller" ? (
-                <div className={`mt-auto space-y-4`}>
+              {user && user.role === "seller" && (
+                <div className="mt-auto space-y-4">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <button
                       onClick={handleAddVariants}
@@ -259,7 +401,7 @@ const SingleProductDet = () => {
                     </button>
                   </div>
                 </div>
-              ) : null}
+              )}
 
               <p className="text-[11px] text-gray-600 text-center uppercase tracking-widest font-medium">
                 Free Shipping & 30-Day Easy Returns
