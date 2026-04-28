@@ -1,7 +1,7 @@
 
 import { productModel } from "../models/product.model.js"
 import { ApiError, ApiResponse } from "../utils/index.js"
-import { uploadOnCloudnary } from "../services/cloudnary.services.js"
+import { uploadOnCloudnary, deleteFromCloudinary } from "../services/cloudnary.services.js"
 
 const createProduct = async (req, res) => {
 
@@ -11,6 +11,8 @@ const createProduct = async (req, res) => {
     const images = await Promise.all(req.files.map(async (file) => {
         return await uploadOnCloudnary(file.buffer)
     }))
+
+
 
 
     try {
@@ -60,6 +62,15 @@ const deleteProduct = async (req, res) => {
     if (!product) {
         throw new ApiError(401, `you are not authorized to delete this product`)
     }
+    // const result = await Promise.all(
+    //     product.images.map(img => console.log(img))
+    // )
+    // console.log(result)
+    product.images.forEach((img) => {
+        console.log(img)
+
+    })
+
 
     await productModel.findByIdAndDelete({ _id: productID })
 
