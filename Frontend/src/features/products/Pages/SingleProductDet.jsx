@@ -32,7 +32,10 @@ const SingleProductDet = () => {
         return Object.entries(selectedAttributes).every(([key, value]) => {
           const vVal = v.attributes?.[key];
           if (typeof vVal === "string") {
-            return vVal.split(",").map((s) => s.trim()).includes(value);
+            return vVal
+              .split(",")
+              .map((s) => s.trim())
+              .includes(value);
           }
           return vVal === value;
         });
@@ -103,7 +106,9 @@ const SingleProductDet = () => {
   const displayImages =
     matchingVariant?.images?.length > 0 ? matchingVariant.images : images;
   const displayStock = matchingVariant?.stock ?? singleProduct.stock;
-  const isOutOfStock = matchingVariant ? matchingVariant.stock === 0 : singleProduct.stock === 0;
+  const isOutOfStock = matchingVariant
+    ? matchingVariant.stock === 0
+    : singleProduct.stock === 0;
 
   // Group all possible attributes and their values
   const attributeGroups = {};
@@ -143,7 +148,10 @@ const SingleProductDet = () => {
           if (sKey === key) return true;
           const vVal = v.attributes?.[sKey];
           if (typeof vVal === "string") {
-            return vVal.split(",").map((s) => s.trim()).includes(sVal);
+            return vVal
+              .split(",")
+              .map((s) => s.trim())
+              .includes(sVal);
           }
           return vVal === sVal;
         },
@@ -153,7 +161,10 @@ const SingleProductDet = () => {
 
       const vVal = v.attributes?.[key];
       if (typeof vVal === "string") {
-        return vVal.split(",").map((s) => s.trim()).includes(value);
+        return vVal
+          .split(",")
+          .map((s) => s.trim())
+          .includes(value);
       }
       return vVal === value;
     });
@@ -170,7 +181,10 @@ const SingleProductDet = () => {
           if (sKey === key) return true;
           const vVal = v.attributes?.[sKey];
           if (typeof vVal === "string") {
-            return vVal.split(",").map((s) => s.trim()).includes(sVal);
+            return vVal
+              .split(",")
+              .map((s) => s.trim())
+              .includes(sVal);
           }
           return vVal === sVal;
         },
@@ -178,7 +192,10 @@ const SingleProductDet = () => {
       if (!matchesOthers) return false;
       const vVal = v.attributes?.[key];
       if (typeof vVal === "string") {
-        return vVal.split(",").map((s) => s.trim()).includes(value);
+        return vVal
+          .split(",")
+          .map((s) => s.trim())
+          .includes(value);
       }
       return vVal === value;
     });
@@ -202,6 +219,7 @@ const SingleProductDet = () => {
     if (user?.role !== "seller") return;
     navigate(`/seller/product/${singleProduct._id}`);
   };
+  console.log(singleProduct);
 
   return (
     <div className="min-h-screen bg-[#050505] text-white pt-20 pb-12">
@@ -287,14 +305,15 @@ const SingleProductDet = () => {
           </div>
 
           {/* Right: Product Details */}
-          <div className="flex flex-col h-full lg:col-span-7">
-            <div className="mb-8">
+          <div className="flex  h-full lg:col-span-7  justify-between">
+            <div className="mb-8 ">
               <div className="inline-block px-3 py-1 bg-white/5 border border-white/10 rounded-full text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-6">
                 Premium Collection
               </div>
               <h1 className="text-3xl md:text-4xl font-bold mb-4 leading-tight tracking-tight text-white">
                 {title}
               </h1>
+
               <div className="flex items-center gap-4 mb-8">
                 <span className="text-2xl font-bold tracking-tighter text-white">
                   {displayPrice?.currency === "USD" ? "$" : "₹"}
@@ -304,7 +323,9 @@ const SingleProductDet = () => {
                   <span
                     className={`px-2 py-1 ${isOutOfStock ? "bg-red-500/10 text-red-400" : "bg-green-500/10 text-green-400"} text-[10px] font-bold rounded uppercase tracking-wider`}
                   >
-                    {isOutOfStock ? "Out of Stock" : `In Stock (${displayStock})`}
+                    {isOutOfStock
+                      ? "Out of Stock"
+                      : `In Stock (${displayStock})`}
                   </span>
                 ) : (
                   <span className="px-2 py-1 bg-white/5 text-gray-400 text-[10px] font-bold rounded uppercase tracking-wider border border-white/5">
@@ -312,6 +333,15 @@ const SingleProductDet = () => {
                   </span>
                 )}
               </div>
+              <div className="prose prose-invert max-w-none">
+                <h3 className="text-sm font-bold uppercase tracking-widest text-gray-500 mb-4">
+                  Description
+                </h3>
+                <p className="text-gray-400 text-lg leading-relaxed font-normal">
+                  {description}
+                </p>
+              </div>
+              <div className="h-[1px] w-full bg-white/5 mb-8" />
 
               {/* Variant Selectors */}
               {/* Note: No variant auto-selected on load. UI updates price, image, stock on selection. Out‑of‑stock variants are disabled. */}
@@ -350,32 +380,22 @@ const SingleProductDet = () => {
                   ))}
                 </div>
               )}
-
-              <div className="h-[1px] w-full bg-white/5 mb-8" />
-              <div className="prose prose-invert max-w-none">
-                <h3 className="text-sm font-bold uppercase tracking-widest text-gray-500 mb-4">
-                  Description
-                </h3>
-                <p className="text-gray-400 text-lg leading-relaxed font-normal">
-                  {description}
-                </p>
-              </div>
             </div>
 
             {/* Actions */}
-            <div className={`mt-auto space-y-4 `}>
+            <div className={` mt-auto space-y-4  h-full `}>
               <div
-                className={`grid grid-cols-1 sm:grid-cols-2 gap-4 ${user?.role === "seller" ? "hidden" : "block"}`}
+                className={`w-full flex flex-col gap-3 justify-between ${user?.role === "seller" ? "hidden" : "block"}`}
               >
                 <button
                   onClick={handleAddToKart}
                   disabled={isOutOfStock || (hasVariants && !matchingVariant)}
-                  className="flex-grow py-4 disabled:opacity-50 disabled:cursor-not-allowed bg-white text-black font-bold rounded-2xl hover:bg-gray-200 transition-all duration-300 flex items-center justify-center gap-2 group"
+                  className="flex-grow py-4 disabled:opacity-50 disabled:cursor-not-allowed bg-white text-black font-bold rounded-2xl hover:bg-gray-200 transition-all duration-300 flex items-center justify-center gap-2 group w-full"
                 >
                   {isOutOfStock
                     ? "Out of Stock"
                     : !isSelectionComplete
-                      ? "Select Options"
+                      ? "Out of Stock"
                       : "Add to Cart"}
                   {isSelectionComplete && !isOutOfStock && (
                     <svg
@@ -397,7 +417,7 @@ const SingleProductDet = () => {
                 <button
                   onClick={handleAddBuy}
                   disabled={isOutOfStock || (hasVariants && !matchingVariant)}
-                  className="flex-grow py-4 disabled:opacity-20 disabled:cursor-not-allowed bg-[#111] border border-white/10 text-white font-bold rounded-2xl hover:bg-white hover:text-black transition-all duration-300"
+                  className="flex-grow py-4 disabled:opacity-20 disabled:cursor-not-allowed bg-[#111] border border-white/10 text-white font-bold rounded-2xl hover:bg-white hover:text-black transition-all duration-300 w-full"
                 >
                   Buy Now
                 </button>
