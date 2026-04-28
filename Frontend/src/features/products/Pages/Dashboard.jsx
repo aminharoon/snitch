@@ -19,8 +19,8 @@ const Dashboard = () => {
     navigate(`/seller/product/${product._id}`);
   };
 
-  const handleDelete = (product) => {
-    handleDeleteProduct(product._id);
+  const handleDelete = async (product) => {
+    await handleDeleteProduct(product._id);
   };
 
   const handleCardClick = (product) => {

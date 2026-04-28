@@ -52,15 +52,15 @@ const getAllProducts = async (req, res) => {
 
 
 const deleteProduct = async (req, res) => {
-    const seller = req.user
+
 
     const { productID } = req.params
 
 
-    const product = await productModel.findOne({ _id: productID })
+    const product = await productModel.findOne({ _id: productID, seller: req.user._id })
 
-    if (product.seller != seller._id) {
-        throw new ApiError(401, `you are not authorized to delete this product`, product)
+    if (!product) {
+        throw new ApiError(401, `you are not authorized to delete this product`)
     }
 
     await productModel.findByIdAndDelete({ _id: productID })
@@ -91,6 +91,36 @@ const getSingleProductDetails = async (req, res) => {
 }
 
 const updateProduct = async (req, res) => {
+
+    const productId = req.params.productId
+    console.log(productId)
+    const product = await productModel.findOne({
+        _id: productId,
+        seller: req.user._id
+    })
+
+    if (!product) {
+        throw new ApiResponse(404, "Product not found or not exists ")
+    }
+
+    const files = req.files
+    const images = []
+
+    if (files || files.length !== 0) {
+        await Promise.all(files.map(async (file) => {
+            const image = await uploadOnCloudnary(file.buffer)
+            return image
+        })).map(image => images.push(image))
+    }
+
+    const price = req.body.priceAmount
+    const stock = req.body.stock
+    const attributes = JSON.parse(req.body.attributes || "{}")
+
+    // console.log(product, images, price, stock, attributes)
+
+
+
 
 }
 export const productController = {

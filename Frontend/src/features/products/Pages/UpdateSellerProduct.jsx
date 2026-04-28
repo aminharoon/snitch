@@ -12,7 +12,6 @@ const UpdateSellerProduct = () => {
   useEffect(() => {
     if (id) {
       getSingleProductDet(id);
-      console.log("this function has been called ");
     }
   }, [id]);
 
@@ -29,8 +28,8 @@ const UpdateSellerProduct = () => {
 
   const [newVariant, setNewVariant] = useState({
     price: {
-      amount: singleProduct?.price?.amount || 0,
-      currency: singleProduct?.price?.currency || "INR",
+      amount: singleProduct?.price?.amount,
+      currency: singleProduct?.price?.currency,
     },
     stock: 0,
     attributes: [{ key: "", value: "" }],
@@ -145,26 +144,6 @@ const UpdateSellerProduct = () => {
       attributes: { Size: "L", Color: "Navy" },
       price: { amount: 335, currency: "INR" },
     },
-    {
-      images: [
-        {
-          url: "http://res.cloudinary.com/dk1sbmxz9/image/upload/v1777284070/Snitch/products/byv226ddbjmqqupjoogh.jpg",
-        },
-      ],
-      stock: 5,
-      attributes: { Size: "M", Color: "Charcoal" },
-      price: { amount: 335, currency: "INR" },
-    },
-    {
-      images: [
-        {
-          url: "http://res.cloudinary.com/dk1sbmxz9/image/upload/v1777284070/Snitch/products/byv226ddbjmqqupjoogh.jpg",
-        },
-      ],
-      stock: 0,
-      attributes: { Size: "XL", Color: "Olive" },
-      price: { amount: 350, currency: "INR" },
-    },
   ];
 
   const variants = actualVariants?.length > 0 ? actualVariants : dummyVariants;
@@ -192,7 +171,8 @@ const UpdateSellerProduct = () => {
   const handleSaveVariant = () => {
     // Here we'll dispatch the action to save the variant
     console.log("Saving variant...", newVariant);
-    setIsModalOpen(false);
+    console.log(newVariant);
+    console.log(newVariant);
   };
 
   return (
@@ -336,7 +316,7 @@ const UpdateSellerProduct = () => {
               Add New Variant
             </button>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-2 overflow-y-auto pr-1 [scrollbar-width:none]">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-2 overflow-y-auto pr-1 md:[scrollbar-width:none]">
             {(!variants || variants.length === 0) && (
               <div className="col-span-full bg-[#1a1a1a] rounded-2xl border border-dashed border-[#333] p-8 text-center text-gray-500">
                 No variants added yet. Click "Add New Variant" to get started.
@@ -346,7 +326,7 @@ const UpdateSellerProduct = () => {
               variants.map((variant, index) => (
                 <div
                   key={index}
-                  className="bg-[#1a1a1a] rounded-xl p-3.5 border border-[#333] flex flex-col gap-3"
+                  className="bg-[#1a1a1a] rounded-xl p-3.5 border border-[#333] flex flex-col gap-3 [scrollbar-width:none]"
                 >
                   <div className="flex gap-4">
                     <div className="w-16 h-16 rounded-lg overflow-hidden bg-[#111] border border-[#333] flex-shrink-0">
@@ -395,7 +375,7 @@ const UpdateSellerProduct = () => {
                           -
                         </button>
                         <span className="text-white font-bold min-w-[2rem] text-center">
-                          {variant.stock || 0}
+                          {variant.stock}
                         </span>
                         <button className="text-gray-400 hover:text-white px-2">
                           +
@@ -460,7 +440,7 @@ const UpdateSellerProduct = () => {
                         },
                       })
                     }
-                    className="w-full bg-[#0f0f0f] border border-[#333] rounded-xl px-4 py-3 text-white text-lg font-medium focus:outline-none focus:border-[#F5C518] transition-colors"
+                    className="w-full bg-[#0f0f0f] border border-[#333] rounded-xl px-4 py-3 text-white text-lg font-medium focus:outline-none focus:border-[#F5C518] transition-colors no-spinner"
                   />
                 </div>
                 <div className="space-y-1">
@@ -476,7 +456,7 @@ const UpdateSellerProduct = () => {
                         stock: Number(e.target.value),
                       })
                     }
-                    className="w-full bg-[#0f0f0f] border border-[#333] rounded-xl px-4 py-3 text-white text-lg font-medium focus:outline-none focus:border-[#F5C518] transition-colors"
+                    className="w-full bg-[#0f0f0f] border border-[#333] rounded-xl px-4 py-3 text-white text-lg font-medium focus:outline-none focus:border-[#F5C518] transition-colors no-spinner"
                   />
                 </div>
               </div>

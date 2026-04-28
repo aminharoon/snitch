@@ -3,6 +3,7 @@ import { productController } from "../controller/product.controller.js"
 import { upload } from "../middleware/uploadFile.middleware.js"
 import { verifyUser } from "../middleware/auth.middleware.js"
 import { createProductValidation } from "../validation/product.validation.js"
+import { authenticateSeller } from '../middleware/auth.seller.middleware.js'
 
 
 
@@ -14,7 +15,7 @@ const productRoute = Router()
  * @desc Create a new product
  * @access Private (only authenticated users can create products)
  */
-productRoute.post("/create", upload.array("images", 4), createProductValidation, verifyUser, productController.createProduct)
+productRoute.post("/create", upload.array("images", 4), createProductValidation, authenticateSeller, productController.createProduct)
 
 
 /**
@@ -22,14 +23,14 @@ productRoute.post("/create", upload.array("images", 4), createProductValidation,
  * @desc Get all products of the authenticated user
  * @access Private (only authenticated users can view their products)
  */
-productRoute.get("/seller", verifyUser, productController.getAllProducts)
+productRoute.get("/seller", authenticateSeller, productController.getAllProducts)
 
 /**
  * @route DELETE /api/products/:productID
  * @desc Delete a product by its ID
  * @access Private (only the seller of the product can delete it)   
  */
-productRoute.delete("/delete/:productID", verifyUser, productController.deleteProduct)
+productRoute.delete("/delete/:productID", authenticateSeller, productController.deleteProduct)
 
 /**
  * @route GET /api/products
@@ -51,6 +52,6 @@ productRoute.get("/:productID", productController.getSingleProductDetails)
  * @desc Update a product by its ID
  * @access Private (only the seller of the product can update it)
  */
-productRoute.post("/update/:productID", upload.array("images", 4), createProductValidation, verifyUser, productController.updateProduct)
+productRoute.post("/variants/:productID", upload.array("images", 4), createProductValidation, authenticateSeller, productController.updateProduct)
 
 export default productRoute
