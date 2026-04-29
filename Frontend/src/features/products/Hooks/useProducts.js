@@ -2,10 +2,11 @@ import { useState } from "react"
 import { getSellerProducts, createProduct, getAllProducts, getSingleProductDetails, deleteProduct, addProductVarients, deleteVariant } from "../services/api.products.js"
 import { setSellerProducts, setLoading, setError, setAllProducts, setSingleProduct } from "../State/state.product.js"
 import toast from "react-hot-toast"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 
 export const useProduct = () => {
     const Dispatch = useDispatch()
+    const { sellerProducts } = useSelector((state) => state.product)
 
 
     const handleCreateProduct = async (formData) => {
@@ -94,16 +95,16 @@ export const useProduct = () => {
             Dispatch(setLoading(true))
             const response = await deleteProduct(productID)
             if (response) {
-
-                Dispatch(setSellerProducts(response.data))
+                // Filter out the deleted product from current state
+                const updatedProducts = sellerProducts?.filter(product => product._id !== productID) || []
+                Dispatch(setSellerProducts(updatedProducts))
                 Dispatch(setLoading(false))
                 toast.success(`product has been deleted successfully`)
-
             }
         } catch (e) {
             Dispatch(setLoading(false))
             console.log(`HOOK something went wrong while deleting product ${e.message}`)
-
+            toast.error(`${e.message}`)
         }
     }
     const handleAddVarients = async (productId, newProductVarients) => {
