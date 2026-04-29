@@ -441,7 +441,7 @@ const SingleProductDet = () => {
                   disabled={isOutOfStock}
                   className="flex-[2] py-5 bg-white text-black text-[10px] font-black uppercase tracking-[0.3em] rounded-2xl hover:bg-gray-200 disabled:opacity-20 disabled:cursor-not-allowed transition-all duration-500 shadow-2xl active:scale-[0.98] flex items-center justify-center gap-3"
                 >
-                  Acquire Now
+                  ADD TO CART
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -462,7 +462,7 @@ const SingleProductDet = () => {
                   disabled={isOutOfStock}
                   className="flex-1 py-5 bg-transparent border-2 border-white/10 text-white text-[10px] font-black uppercase tracking-[0.3em] rounded-2xl hover:bg-white hover:text-black hover:border-white disabled:opacity-20 transition-all duration-500 active:scale-[0.98]"
                 >
-                  Direct
+                  BUY NOW
                 </button>
               </div>
 
