@@ -5,7 +5,7 @@ import { uploadOnCloudnary, deleteFromCloudinary } from "../services/cloudnary.s
 
 const createProduct = async (req, res) => {
 
-    const { title, description, priceAmount, priceCurrency, size, stock } = req.body
+    const { title, description, priceAmount, priceCurrency } = req.body
     const seller = req.user
 
     const images = await Promise.all(req.files.map(async (file) => {
@@ -22,7 +22,7 @@ const createProduct = async (req, res) => {
                 currency: priceCurrency
 
             },
-            images, size, stock,
+            images,
             seller: seller._id
         })
         res.status(201)

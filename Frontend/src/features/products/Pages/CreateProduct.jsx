@@ -14,8 +14,6 @@ const CreateProduct = () => {
     description: "",
     priceAmount: "",
     priceCurrency: "INR",
-    stock: "",
-    size: "",
   };
   const [formData, setFormData] = useState(initialSateOfFormData);
 
@@ -75,9 +73,6 @@ const CreateProduct = () => {
       newErrors.description = "Description is required";
     if (!formData.priceAmount || parseFloat(formData.priceAmount) <= 0)
       newErrors.priceAmount = "Valid price is required";
-    if (!formData.stock || parseInt(formData.stock, 10) < 0)
-      newErrors.stock = "Stock must be a non‑negative number";
-    if (!formData.size.trim()) newErrors.size = "Size is required";
     if (images.length === 0)
       newErrors.images = "At least one image is required";
 
@@ -95,8 +90,6 @@ const CreateProduct = () => {
       data.append("description", formData.description);
       data.append("priceAmount", formData.priceAmount);
       data.append("priceCurrency", formData.priceCurrency);
-      data.append("stock", formData.stock);
-      data.append("size", formData.size);
 
       images.forEach((img) => {
         data.append("images", img.file);
@@ -116,8 +109,6 @@ const CreateProduct = () => {
     formData.description.trim() &&
     formData.priceAmount &&
     parseFloat(formData.priceAmount) > 0 &&
-    formData.stock !== undefined &&
-    formData.size.trim() &&
     images.length > 0;
 
   return (
@@ -247,51 +238,7 @@ const CreateProduct = () => {
             </div>
           </div>
 
-          {/* Stock & Size Section */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-            <div>
-              <label
-                htmlFor="stock"
-                className="block text-sm font-medium text-gray-400 mb-2 ml-1"
-              >
-                Stock Quantity
-              </label>
-              <input
-                type="number"
-                id="stock"
-                name="stock"
-                min="0"
-                step="1"
-                value={formData.stock}
-                onChange={handleChange}
-                placeholder="0"
-                className={`w-full px-5 py-4 rounded-xl bg-[#0f0f0f] text-white border ${errors.stock ? "border-red-500" : "border-[#333]"} focus:border-[#F5C518] focus:outline-none transition-colors placeholder:text-gray-600 font-medium no-spinner`}
-              />
-              {errors.stock && (
-                <p className="mt-2 text-sm text-red-500 ml-1">{errors.stock}</p>
-              )}
-            </div>
-            <div>
-              <label
-                htmlFor="size"
-                className="block text-sm font-medium text-gray-400 mb-2 ml-1"
-              >
-                Size (comma separated)
-              </label>
-              <input
-                type="text"
-                id="size"
-                name="size"
-                value={formData.size}
-                onChange={handleChange}
-                placeholder="S, M, L"
-                className={`w-full px-5 py-4 rounded-xl bg-[#0f0f0f] text-white border ${errors.size ? "border-red-500" : "border-[#333]"} focus:border-[#F5C518] focus:outline-none transition-colors placeholder:text-gray-600 font-medium`}
-              />
-              {errors.size && (
-                <p className="mt-2 text-sm text-red-500 ml-1">{errors.size}</p>
-              )}
-            </div>
-          </div>
+
           <div>
             <label className="block text-sm font-medium text-gray-400 mb-3 ml-1">
               Product Images (Max 4)

@@ -13,7 +13,6 @@ const SingleProductDet = () => {
   const [activeImage, setActiveImage] = useState(0);
   const [selectedAttributes, setSelectedAttributes] = useState({});
   const [matchingVariant, setMatchingVariant] = useState(null);
-  const [selectedSize, setSelectedSize] = useState("");
 
   useEffect(() => {
     if (id) {
@@ -86,16 +85,14 @@ const SingleProductDet = () => {
     );
   }
 
-  const { title, description, price, images, variants, size } = singleProduct;
+  const { title, description, price, images, variants } = singleProduct;
 
   // Derived display data
   const displayPrice = matchingVariant?.price || price;
   const displayImages =
     matchingVariant?.images?.length > 0 ? matchingVariant.images : images;
-  const displayStock = matchingVariant?.stock ?? singleProduct.stock;
-  const isOutOfStock = matchingVariant
-    ? matchingVariant.stock === 0
-    : singleProduct.stock === 0;
+  const displayStock = matchingVariant ? matchingVariant.stock : (variants?.length > 0 ? variants.reduce((acc, v) => acc + (v.stock || 0), 0) : 0);
+  const isOutOfStock = displayStock === 0;
 
   // Group variant attributes
   const attributeGroups = {};
@@ -156,19 +153,11 @@ const SingleProductDet = () => {
 
   const handleAddToKart = () => {
     if (!user) return navigate("/login");
-    if (size?.length > 0 && !selectedSize) {
-      alert("Please select a size");
-      return;
-    }
     // Logic for adding to cart goes here
   };
 
   const handleAddBuy = () => {
     if (!user) return navigate("/login");
-    if (size?.length > 0 && !selectedSize) {
-      alert("Please select a size");
-      return;
-    }
     // Logic for buy now goes here
   };
   const handleAddVariants = () =>
@@ -314,47 +303,7 @@ const SingleProductDet = () => {
                 </p>
               </div>
 
-              {/* Standard Attributes (Sizes) */}
-              {size && (
-                <div className="space-y-4">
-                  <div className="flex justify-between items-end">
-                    <h3 className="text-[9px] font-black uppercase tracking-[0.4em] text-gray-500">
-                      Scale Selector
-                    </h3>
-                    <button className="text-[8px] font-bold text-gray-600 hover:text-white uppercase tracking-widest border-b border-white/5 pb-1 transition-all">
-                      Dimension Guide
-                    </button>
-                  </div>
-                  <div className="flex flex-wrap gap-3">
-                    {(Array.isArray(size)
-                      ? size.flatMap((s) =>
-                          typeof s === "string" ? s.split(/[,\s]+/) : s,
-                        )
-                      : typeof size === "string"
-                        ? size.split(/[,\s]+/)
-                        : []
-                    )
-                      .map((s) => (typeof s === "string" ? s.trim() : s))
-                      .filter(Boolean)
-                      .map((val, i) => {
-                        const isActive = selectedSize === val;
-                        return (
-                          <button
-                            key={i}
-                            onClick={() => setSelectedSize(isActive ? "" : val)}
-                            className={`min-w-[4rem] h-14 flex items-center justify-center rounded-2xl transition-all duration-500 border-2 font-black text-xs ${
-                              isActive
-                                ? "bg-white text-black border-white shadow-[0_0_30px_rgba(255,255,255,0.1)] scale-105"
-                                : "bg-[#0a0a0a] border-white/5 text-gray-500 hover:border-white/40 hover:text-white"
-                            }`}
-                          >
-                            {val}
-                          </button>
-                        );
-                      })}
-                  </div>
-                </div>
-              )}
+
 
               {/* Dynamic Variants */}
               {Object.keys(attributeGroups).length > 0 && (
