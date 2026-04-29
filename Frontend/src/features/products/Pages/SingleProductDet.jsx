@@ -99,7 +99,7 @@ const SingleProductDet = () => {
     );
   }
 
-  const { title, description, price, images, variants } = singleProduct;
+  const { title, description, price, images, variants, size } = singleProduct;
 
   // Derive display data based on matching variant or fallback
   const displayPrice = matchingVariant?.price || price;
@@ -339,6 +339,19 @@ const SingleProductDet = () => {
                 </h3>
                 <p className="text-gray-400 text-lg leading-relaxed font-normal">
                   {description}
+                </p>
+              </div>
+              <div className="prose prose-invert max-w-none">
+                <h3 className="text-sm font-bold uppercase tracking-widest text-gray-500 mb-4">
+                  Size
+                </h3>
+                <p className="text-gray-400 text-lg leading-relaxed font-normal">
+                  {size &&
+                    size((value) => (
+                      <span className="px-2 py-1 bg-[#0f0f0f] border border-[#333] text-xs font-semibold uppercase tracking-wider text-gray-400 rounded-md">
+                        {value}
+                      </span>
+                    ))}
                 </p>
               </div>
               <div className="h-[1px] w-full bg-white/5 mb-8" />
