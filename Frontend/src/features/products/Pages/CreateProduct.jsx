@@ -238,7 +238,6 @@ const CreateProduct = () => {
             </div>
           </div>
 
-
           <div>
             <label className="block text-sm font-medium text-gray-400 mb-3 ml-1">
               Product Images (Max 4)

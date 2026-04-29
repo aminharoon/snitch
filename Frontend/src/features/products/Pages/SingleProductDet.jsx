@@ -91,7 +91,11 @@ const SingleProductDet = () => {
   const displayPrice = matchingVariant?.price || price;
   const displayImages =
     matchingVariant?.images?.length > 0 ? matchingVariant.images : images;
-  const displayStock = matchingVariant ? matchingVariant.stock : (variants?.length > 0 ? variants.reduce((acc, v) => acc + (v.stock || 0), 0) : 0);
+  const displayStock = matchingVariant
+    ? matchingVariant.stock
+    : variants?.length > 0
+      ? variants.reduce((acc, v) => acc + (v.stock || 0), 0)
+      : 0;
   const isOutOfStock = displayStock === 0;
 
   // Group variant attributes
@@ -164,6 +168,7 @@ const SingleProductDet = () => {
     navigate(`/seller/product/${singleProduct._id}`);
 
   const hasVariants = variants?.length > 0;
+  console.log(singleProduct);
 
   return (
     <div className="min-h-screen bg-[#050505] text-white pt-2 pb-16 selection:bg-white selection:text-black">
@@ -284,8 +289,11 @@ const SingleProductDet = () => {
 
                 <div className="flex items-baseline gap-4">
                   <span className="text-3xl font-light tracking-tighter text-white">
-                    {displayPrice?.currency === "USD" ? "$" : "₹"}
-                    {displayPrice?.amount?.toLocaleString()}
+                    {(displayPrice?.currency || "INR") === "USD" ? "$" : "₹"}
+                    {(
+                      displayPrice?.amount ?? displayPrice
+                    )?.toLocaleString?.() ||
+                      (displayPrice?.amount ?? displayPrice)}
                   </span>
                   <span className="text-[9px] font-bold text-gray-700 uppercase tracking-widest">
                     Global Shipping Ready
@@ -302,8 +310,6 @@ const SingleProductDet = () => {
                   "{description}"
                 </p>
               </div>
-
-
 
               {/* Dynamic Variants */}
               {Object.keys(attributeGroups).length > 0 && (

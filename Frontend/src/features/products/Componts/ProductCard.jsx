@@ -121,8 +121,14 @@ const ProductCard = ({
           </h3>
           <div className="flex flex-col items-end">
             <span className="text-white font-bold text-xl tracking-tight">
-              {(price?.currency || "INR") === "USD" ? "$" : "₹"}
-              {(price?.amount ?? price)?.toLocaleString?.() || (price?.amount ?? price)}
+              {(price?.currency || price?.price?.currency || "INR") === "USD"
+                ? "$"
+                : "₹"}
+              {(
+                price?.amount ??
+                price?.price?.amount ??
+                (typeof price === "number" ? price : 0)
+              )?.toLocaleString?.()}
             </span>
           </div>
         </div>
