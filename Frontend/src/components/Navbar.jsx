@@ -16,6 +16,12 @@ const Navbar = ({ user, isLoggedIn = false, userName }) => {
     await handleGetMe();
     navigate("/seller/dashboard");
   };
+  const handleProfile = () => {
+    if (!user) {
+      return;
+    }
+    navigate("/profile");
+  };
 
   return (
     <nav className="sticky top-0 z-50 bg-black backdrop-blur-md border-b border-white/5 py-2">
@@ -90,7 +96,10 @@ const Navbar = ({ user, isLoggedIn = false, userName }) => {
                     Home
                   </li>
                   <li
-                    onClick={() => setHidden(true)}
+                    onClick={() => {
+                      handleProfile();
+                      setHidden(true);
+                    }}
                     className="px-4 py-2 hover:bg-white/10 cursor-pointer text-left"
                   >
                     Profile
@@ -132,24 +141,6 @@ const Navbar = ({ user, isLoggedIn = false, userName }) => {
               </button>
             </div>
           )}
-
-          {/* Mobile Search Icon (visible only on small screens) */}
-          <button className="md:hidden p-2 text-gray-400 hover:text-white">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={2}
-              stroke="currentColor"
-              className="w-5 h-5"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
-              />
-            </svg>
-          </button>
         </div>
       </div>
     </nav>

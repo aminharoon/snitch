@@ -9,11 +9,8 @@ const createProduct = async (req, res) => {
     const seller = req.user
 
     const images = await Promise.all(req.files.map(async (file) => {
-        return await uploadOnCloudnary(file.buffer)
+        return await uploadOnCloudnary(file.buffer, "products")
     }))
-
-
-
 
     try {
 

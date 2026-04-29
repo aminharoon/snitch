@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router";
-import { Register, Login } from "../features/auth/pages/index";
+import { Register, Login, Profile } from "../features/auth/pages/index";
 import {
   CreateProduct,
   Dashboard,
@@ -30,6 +30,14 @@ export const router = createBrowserRouter([
       {
         path: "/product/:id",
         element: <SingleProductDet />,
+      },
+      {
+        path: "/profile",
+        element: (
+          <ProtectedComponent>
+            <Profile />
+          </ProtectedComponent>
+        ),
       },
       {
         path: "/seller",

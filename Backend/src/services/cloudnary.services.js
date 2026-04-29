@@ -12,13 +12,13 @@ cloudinary.config({
 
 
 
-export const uploadOnCloudnary = (buffer) => {
+export const uploadOnCloudnary = (buffer, folderName) => {
     return new Promise((resolve, reject) => {
 
         const stream = cloudinary.uploader.upload_stream(
             {
                 resource_type: "auto",
-                folder: "Snitch/products"
+                folder: `Snitch/${folderName}`
             },
             (error, result) => {
                 if (error) return reject(error)

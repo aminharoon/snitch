@@ -177,7 +177,7 @@ const SingleProductDet = () => {
   const hasVariants = variants?.length > 0;
 
   return (
-    <div className="min-h-screen bg-[#050505] text-white pt-20 pb-16 selection:bg-white selection:text-black">
+    <div className="min-h-screen bg-[#050505] text-white pt-2 pb-16 selection:bg-white selection:text-black">
       <div className="max-w-6xl mx-auto px-6">
         {/* Navigation */}
         <nav className="mb-10 animate-in fade-in slide-in-from-top-4 duration-1000">
