@@ -392,8 +392,12 @@ const SingleProductDet = () => {
                             >
                               {key.toLowerCase() === "color" && (
                                 <span
-                                  className={`w-3 h-3 rounded-full border ${active ? 'border-black/20' : 'border-white/20'}`}
-                                  style={{ backgroundColor: val.toLowerCase().replace(/\s+/g, "") }}
+                                  className={`w-3 h-3 rounded-full border ${active ? "border-black/20" : "border-white/20"}`}
+                                  style={{
+                                    backgroundColor: val
+                                      .toLowerCase()
+                                      .replace(/\s+/g, ""),
+                                  }}
                                 />
                               )}
                               {val}
