@@ -31,7 +31,7 @@ const googleAuthCallback = async (req, res) => {
         res.status(201)
             .cookie("AccessToken", accessToken, options)
             .cookie("RefreshToken", refreshToken, options)
-            .redirect("http://localhost:5173/dashboard");
+            .redirect("http://localhost:5173/");
 
     } catch (e) {
         console.log(`something went wrong while calling the sign with google ${e.message}`)
