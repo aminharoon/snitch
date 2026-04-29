@@ -63,7 +63,7 @@ const UpdateSellerProduct = () => {
       setNewVariant((prev) => ({
         ...prev,
         price: {
-          amount: singleProduct.price?.amount || 0,
+          amount: singleProduct.price?.amount,
           currency: singleProduct.price?.currency || "INR",
         },
       }));

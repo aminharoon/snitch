@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams, useNavigate } from "react-router";
 import { useProduct } from "../Hooks/useProducts";
-// NOTE: Implementing product detail page with variant selection per user request.
+
+// NOTE: Premium Product Detail Page with advanced variant selection and modern e-commerce UI.
 const SingleProductDet = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -12,6 +13,7 @@ const SingleProductDet = () => {
   const [activeImage, setActiveImage] = useState(0);
   const [selectedAttributes, setSelectedAttributes] = useState({});
   const [matchingVariant, setMatchingVariant] = useState(null);
+  const [selectedSize, setSelectedSize] = useState("");
 
   useEffect(() => {
     if (id) {
@@ -25,7 +27,7 @@ const SingleProductDet = () => {
     }
   }, [singleProduct]);
 
-  // Handle variant selection
+  // Handle variant selection logic
   useEffect(() => {
     if (singleProduct?.variants && Object.keys(selectedAttributes).length > 0) {
       const match = singleProduct.variants.find((v) => {
@@ -56,9 +58,9 @@ const SingleProductDet = () => {
     return (
       <div className="min-h-screen bg-[#050505] text-white flex items-center justify-center">
         <div className="animate-pulse flex flex-col items-center">
-          <div className="w-12 h-12 border-4 border-white/10 border-t-white rounded-full animate-spin mb-4" />
-          <p className="text-gray-500 font-medium tracking-widest uppercase text-xs">
-            Loading Product...
+          <div className="w-16 h-16 border-t-2 border-white rounded-full animate-spin mb-6" />
+          <p className="text-gray-500 font-black tracking-[0.3em] uppercase text-[10px]">
+            Synchronizing...
           </p>
         </div>
       </div>
@@ -68,32 +70,17 @@ const SingleProductDet = () => {
   if (!singleProduct) {
     return (
       <div className="min-h-screen bg-[#050505] text-white flex flex-col items-center justify-center px-6 text-center">
-        <div className="w-20 h-20 bg-white/5 rounded-full flex items-center justify-center mb-6">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="w-10 h-10 text-gray-600"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
-            />
-          </svg>
-        </div>
-        <h2 className="text-2xl font-bold mb-2">Product Not Found</h2>
-        <p className="text-gray-500 max-w-md">
-          The product you're looking for might have been removed or is
-          temporarily unavailable.
+        <h2 className="text-4xl font-black mb-4 tracking-tighter">
+          Lost in Space
+        </h2>
+        <p className="text-gray-500 max-w-sm font-medium leading-relaxed mb-10">
+          The product you seek has vanished from our collection.
         </p>
         <button
           onClick={() => navigate(-1)}
-          className="mt-8 px-8 py-3 bg-white text-black font-bold rounded-xl hover:bg-gray-200 transition-colors"
+          className="px-10 py-4 bg-white text-black font-black uppercase tracking-widest rounded-full hover:scale-105 transition-transform"
         >
-          Go Back
+          Return Home
         </button>
       </div>
     );
@@ -101,7 +88,7 @@ const SingleProductDet = () => {
 
   const { title, description, price, images, variants, size } = singleProduct;
 
-  // Derive display data based on matching variant or fallback
+  // Derived display data
   const displayPrice = matchingVariant?.price || price;
   const displayImages =
     matchingVariant?.images?.length > 0 ? matchingVariant.images : images;
@@ -110,7 +97,7 @@ const SingleProductDet = () => {
     ? matchingVariant.stock === 0
     : singleProduct.stock === 0;
 
-  // Group all possible attributes and their values
+  // Group variant attributes
   const attributeGroups = {};
   variants?.forEach((v) => {
     Object.entries(v.attributes || {}).forEach(([key, value]) => {
@@ -138,43 +125,9 @@ const SingleProductDet = () => {
     });
   };
 
-  // Check if a specific attribute option is available given current selections
-  const isOptionAvailable = (key, value) => {
-    if (!variants) return true;
-
-    return variants.some((v) => {
-      const matchesOthers = Object.entries(selectedAttributes).every(
-        ([sKey, sVal]) => {
-          if (sKey === key) return true;
-          const vVal = v.attributes?.[sKey];
-          if (typeof vVal === "string") {
-            return vVal
-              .split(",")
-              .map((s) => s.trim())
-              .includes(sVal);
-          }
-          return vVal === sVal;
-        },
-      );
-
-      if (!matchesOthers) return false;
-
-      const vVal = v.attributes?.[key];
-      if (typeof vVal === "string") {
-        return vVal
-          .split(",")
-          .map((s) => s.trim())
-          .includes(value);
-      }
-      return vVal === value;
-    });
-  };
-
-  // New helper: check if option leads to an in‑stock variant
   const isOptionEnabled = (key, value) => {
     if (!variants) return true;
     return variants.some((v) => {
-      // Ensure stock is greater than 0
       if (v.stock <= 0) return false;
       const matchesOthers = Object.entries(selectedAttributes).every(
         ([sKey, sVal]) => {
@@ -201,74 +154,83 @@ const SingleProductDet = () => {
     });
   };
 
-  const hasVariants = variants?.length > 0;
-  const isSelectionComplete = !hasVariants || !!matchingVariant;
-
   const handleAddToKart = () => {
-    if (!user) {
-      navigate("/login");
+    if (!user) return navigate("/login");
+    if (size?.length > 0 && !selectedSize) {
+      alert("Please select a size");
+      return;
     }
-  };
-  const handleAddBuy = () => {
-    if (!user) {
-      navigate("/login");
-    }
+    // Logic for adding to cart goes here
   };
 
-  const handleAddVariants = () => {
-    if (user?.role !== "seller") return;
-    navigate(`/seller/product/${singleProduct._id}`);
+  const handleAddBuy = () => {
+    if (!user) return navigate("/login");
+    if (size?.length > 0 && !selectedSize) {
+      alert("Please select a size");
+      return;
+    }
+    // Logic for buy now goes here
   };
-  console.log(singleProduct);
+  const handleAddVariants = () =>
+    navigate(`/seller/product/${singleProduct._id}`);
+
+  const hasVariants = variants?.length > 0;
 
   return (
-    <div className="min-h-screen bg-[#050505] text-white pt-20 pb-12">
-      <div className="max-w-5xl mx-auto px-6">
-        {/* Back Button */}
-        <button
-          onClick={() => navigate(-1)}
-          className="group flex items-center gap-2 text-gray-500 hover:text-white transition-colors mb-12"
-        >
-          <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-white/10 transition-colors">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={2}
-              stroke="currentColor"
-              className="w-4 h-4 transition-transform group-hover:-translate-x-0.5"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h16.5"
-              />
-            </svg>
-          </div>
-          <span className="text-xs font-bold uppercase tracking-widest">
-            Back to Collection
-          </span>
-        </button>
+    <div className="min-h-screen bg-[#050505] text-white pt-20 pb-16 selection:bg-white selection:text-black">
+      <div className="max-w-6xl mx-auto px-6">
+        {/* Navigation */}
+        <nav className="mb-10 animate-in fade-in slide-in-from-top-4 duration-1000">
+          <button
+            onClick={() => navigate(-1)}
+            className="group flex items-center gap-3 text-gray-500 hover:text-white transition-all"
+          >
+            <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-white/10 border border-white/5 transition-colors">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={2}
+                stroke="currentColor"
+                className="w-4 h-4 transition-transform group-hover:-translate-x-1"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h16.5"
+                />
+              </svg>
+            </div>
+            <div className="flex flex-col items-start">
+              <span className="text-[9px] font-black uppercase tracking-[0.4em] mb-0.5">
+                Back to collection
+              </span>
+              <span className="text-[9px] font-bold text-gray-700 uppercase tracking-[0.2em]">
+                {title}
+              </span>
+            </div>
+          </button>
+        </nav>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-          {/* Left: Product Images */}
-          <div className="space-y-6 lg:col-span-5 w-full max-sm:mx-auto lg:max-w-full">
-            <div className="relative aspect-square rounded-3xl overflow-hidden bg-[#111] border border-white/5 group">
-              {displayImages && displayImages.length > 0 ? (
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 xl:gap-16 items-start">
+          {/* Left Column: Media Gallery (Balanced) */}
+          <div className="lg:col-span-6 space-y-6 lg:sticky lg:top-20">
+            <div className="relative aspect-[4/5] rounded-[2rem] overflow-hidden bg-[#0a0a0a] border border-white/5 group shadow-2xl">
+              {displayImages?.length > 0 ? (
                 <img
                   src={displayImages[activeImage]?.url}
                   alt={title}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
                 />
               ) : (
-                <div className="w-full h-full flex items-center justify-center text-gray-800">
+                <div className="w-full h-full flex flex-col items-center justify-center opacity-20">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
-                    strokeWidth={1}
+                    strokeWidth={0.5}
                     stroke="currentColor"
-                    className="w-24 h-24 opacity-20"
+                    className="w-32 h-32 mb-4"
                   >
                     <path
                       strokeLinecap="round"
@@ -276,21 +238,26 @@ const SingleProductDet = () => {
                       d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
                     />
                   </svg>
+                  <p className="text-[10px] uppercase tracking-[0.3em] font-black">
+                    Archive Empty
+                  </p>
                 </div>
               )}
+              {/* Overlay for depth */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-40 pointer-events-none" />
             </div>
 
             {/* Thumbnails */}
-            {displayImages && displayImages.length > 1 && (
-              <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+            {displayImages?.length > 1 && (
+              <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide snap-x px-2">
                 {displayImages.map((img, index) => (
                   <button
                     key={index}
                     onClick={() => setActiveImage(index)}
-                    className={`relative w-16 sm:w-20 aspect-square rounded-2xl overflow-hidden border-2 transition-all duration-300 flex-shrink-0 ${
+                    className={`relative w-24 aspect-[4/5] rounded-2xl overflow-hidden border-2 transition-all duration-700 flex-shrink-0 snap-start ${
                       activeImage === index
-                        ? "border-white"
-                        : "border-transparent opacity-50 hover:opacity-100"
+                        ? "border-white scale-95 shadow-xl shadow-white/5"
+                        : "border-white/5 opacity-40 hover:opacity-100 hover:border-white/20"
                     }`}
                   >
                     <img
@@ -304,87 +271,135 @@ const SingleProductDet = () => {
             )}
           </div>
 
-          {/* Right: Product Details */}
-          <div className="flex  h-full lg:col-span-7  justify-between">
-            <div className="mb-8 ">
-              <div className="inline-block px-3 py-1 bg-white/5 border border-white/10 rounded-full text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-6">
-                Premium Collection
-              </div>
-              <h1 className="text-3xl md:text-4xl font-bold mb-4 leading-tight tracking-tight text-white">
-                {title}
-              </h1>
+          {/* Right Column: Information & Selection (Balanced) */}
+          <div className="lg:col-span-6 flex flex-col py-4">
+            <div className="flex-grow space-y-6 animate-in fade-in slide-in-from-right-8 duration-1000">
+              {/* Core Info */}
+              <div className="space-y-6">
+                <div className="flex items-center gap-3">
+                  <span className="px-4 py-1.5 bg-white text-black text-[9px] font-black uppercase tracking-[0.3em] rounded-full">
+                    Limited Edition
+                  </span>
+                  {(matchingVariant || !hasVariants) && (
+                    <span
+                      className={`px-4 py-1.5 ${isOutOfStock ? "bg-red-500/10 text-red-500 border-red-500/20" : "bg-green-500/10 text-green-500 border-green-500/20"} text-[9px] font-black border rounded-full uppercase tracking-[0.3em]`}
+                    >
+                      {isOutOfStock ? "Unavailable" : "In Stock"}
+                    </span>
+                  )}
+                </div>
 
-              <div className="flex items-center gap-4 mb-8">
-                <span className="text-2xl font-bold tracking-tighter text-white">
-                  {displayPrice?.currency === "USD" ? "$" : "₹"}
-                  {displayPrice?.amount?.toLocaleString()}
-                </span>
-                {matchingVariant ? (
-                  <span
-                    className={`px-2 py-1 ${isOutOfStock ? "bg-red-500/10 text-red-400" : "bg-green-500/10 text-green-400"} text-[10px] font-bold rounded uppercase tracking-wider`}
-                  >
-                    {isOutOfStock
-                      ? "Out of Stock"
-                      : `In Stock (${displayStock})`}
+                <h1 className="text-4xl xl:text-5xl font-black tracking-tighter leading-[0.95] text-white uppercase italic">
+                  {title}
+                </h1>
+
+                <div className="flex items-baseline gap-4">
+                  <span className="text-3xl font-light tracking-tighter text-white">
+                    {displayPrice?.currency === "USD" ? "$" : "₹"}
+                    {displayPrice?.amount?.toLocaleString()}
                   </span>
-                ) : (
-                  <span className="px-2 py-1 bg-white/5 text-gray-400 text-[10px] font-bold rounded uppercase tracking-wider border border-white/5">
-                    Select Options
+                  <span className="text-[9px] font-bold text-gray-700 uppercase tracking-widest">
+                    Global Shipping Ready
                   </span>
-                )}
+                </div>
               </div>
-              <div className="prose prose-invert max-w-none">
-                <h3 className="text-sm font-bold uppercase tracking-widest text-gray-500 mb-4">
-                  Description
+
+              {/* Description Block */}
+              <div className="space-y-3">
+                <h3 className="text-[9px] font-black uppercase tracking-[0.4em] text-gray-500">
+                  The Narrative
                 </h3>
-                <p className="text-gray-400 text-lg leading-relaxed font-normal">
-                  {description}
+                <p className="text-gray-400 text-lg leading-relaxed font-light italic">
+                  "{description}"
                 </p>
               </div>
-              <div className="prose prose-invert max-w-none">
-                <h3 className="text-sm font-bold uppercase tracking-widest text-gray-500 mb-4">
-                  Size
-                </h3>
-                <p className="text-gray-400 text-lg leading-relaxed font-normal">
-                  {size &&
-                    size((value) => (
-                      <span className="px-2 py-1 bg-[#0f0f0f] border border-[#333] text-xs font-semibold uppercase tracking-wider text-gray-400 rounded-md">
-                        {value}
-                      </span>
-                    ))}
-                </p>
-              </div>
-              <div className="h-[1px] w-full bg-white/5 mb-8" />
 
-              {/* Variant Selectors */}
-              {/* Note: No variant auto-selected on load. UI updates price, image, stock on selection. Out‑of‑stock variants are disabled. */}
+              {/* Standard Attributes (Sizes) */}
+              {size && (
+                <div className="space-y-4">
+                  <div className="flex justify-between items-end">
+                    <h3 className="text-[9px] font-black uppercase tracking-[0.4em] text-gray-500">
+                      Scale Selector
+                    </h3>
+                    <button className="text-[8px] font-bold text-gray-600 hover:text-white uppercase tracking-widest border-b border-white/5 pb-1 transition-all">
+                      Dimension Guide
+                    </button>
+                  </div>
+                  <div className="flex flex-wrap gap-3">
+                    {(Array.isArray(size)
+                      ? size.flatMap((s) =>
+                          typeof s === "string" ? s.split(/[,\s]+/) : s,
+                        )
+                      : typeof size === "string"
+                        ? size.split(/[,\s]+/)
+                        : []
+                    )
+                      .map((s) => (typeof s === "string" ? s.trim() : s))
+                      .filter(Boolean)
+                      .map((val, i) => {
+                        const isActive = selectedSize === val;
+                        return (
+                          <button
+                            key={i}
+                            onClick={() => setSelectedSize(isActive ? "" : val)}
+                            className={`min-w-[4rem] h-14 flex items-center justify-center rounded-2xl transition-all duration-500 border-2 font-black text-xs ${
+                              isActive
+                                ? "bg-white text-black border-white shadow-[0_0_30px_rgba(255,255,255,0.1)] scale-105"
+                                : "bg-[#0a0a0a] border-white/5 text-gray-500 hover:border-white/40 hover:text-white"
+                            }`}
+                          >
+                            {val}
+                          </button>
+                        );
+                      })}
+                  </div>
+                </div>
+              )}
+
+              {/* Dynamic Variants */}
               {Object.keys(attributeGroups).length > 0 && (
-                <div className="space-y-6 mb-8 animate-in fade-in slide-in-from-bottom-2 duration-500">
+                <div className="space-y-8 py-6 border-y border-white/5">
                   {Object.entries(attributeGroups).map(([key, values]) => (
-                    <div key={key} className="space-y-3">
-                      <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500">
-                        Select {key}
-                      </h3>
-                      <div className="flex flex-wrap gap-2">
-                        {Array.from(values).map((value) => {
-                          const isSelected = selectedAttributes[key] === value;
-                          const isEnabled = isOptionEnabled(key, value);
+                    <div key={key} className="space-y-4">
+                      <div className="flex justify-between items-center">
+                        <h3 className="text-[9px] font-black uppercase tracking-[0.4em] text-gray-500">
+                          Select {key}
+                        </h3>
+                        {selectedAttributes[key] && (
+                          <span className="text-[9px] font-black text-white/40 uppercase tracking-[0.2em]">
+                            {selectedAttributes[key]}
+                          </span>
+                        )}
+                      </div>
+                      <div className="flex flex-wrap gap-2.5">
+                        {Array.from(values).map((val) => {
+                          const active = selectedAttributes[key] === val;
+                          const enabled = isOptionEnabled(key, val);
                           return (
                             <button
-                              key={value}
+                              key={val}
                               onClick={() =>
-                                isEnabled && handleAttributeSelect(key, value)
+                                enabled && handleAttributeSelect(key, val)
                               }
-                              disabled={!isEnabled}
-                              className={`px-5 py-2.5 rounded-xl text-xs font-bold transition-all duration-300 border ${
-                                isSelected
-                                  ? "bg-white text-black border-white shadow-lg shadow-white/10"
-                                  : isEnabled
-                                    ? "bg-transparent text-gray-400 border-white/10 hover:border-white/30 hover:text-white"
-                                    : "bg-transparent text-gray-800 border-white/5 cursor-not-allowed opacity-30"
+                              disabled={!enabled}
+                              className={`relative flex items-center gap-2 px-6 py-3 rounded-xl text-[10px] font-black transition-all duration-500 border-2 ${
+                                active
+                                  ? "bg-white text-black border-white shadow-[0_0_30px_rgba(255,255,255,0.1)] scale-105"
+                                  : enabled
+                                    ? "bg-transparent text-gray-600 border-white/10 hover:border-white/40 hover:text-white"
+                                    : "bg-transparent text-gray-800 border-white/5 cursor-not-allowed opacity-10"
                               }`}
                             >
-                              {value}
+                              {key.toLowerCase() === "color" && (
+                                <span
+                                  className={`w-3 h-3 rounded-full border ${active ? 'border-black/20' : 'border-white/20'}`}
+                                  style={{ backgroundColor: val.toLowerCase().replace(/\s+/g, "") }}
+                                />
+                              )}
+                              {val}
+                              {active && (
+                                <div className="absolute -top-1 -right-1 w-3 h-3 bg-white rounded-full border-4 border-[#050505]" />
+                              )}
                             </button>
                           );
                         })}
@@ -393,71 +408,103 @@ const SingleProductDet = () => {
                   ))}
                 </div>
               )}
+
+              {/* Status & Availability */}
+              <div className="flex items-center justify-between py-2 border-b border-white/5">
+                <div className="flex items-center gap-3">
+                  <div
+                    className={`w-2.5 h-2.5 rounded-full ${isOutOfStock ? "bg-red-600" : "bg-green-600"} animate-pulse shadow-[0_0_10px_rgba(0,255,0,0.2)]`}
+                  />
+                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500">
+                    {isOutOfStock
+                      ? "Stock Depleted"
+                      : `${displayStock} Units In Vault`}
+                  </span>
+                </div>
+                <span className="text-[10px] font-black text-gray-800 uppercase tracking-[0.3em]">
+                  REF: {singleProduct._id.slice(-12).toUpperCase()}
+                </span>
+              </div>
             </div>
 
-            {/* Actions */}
-            <div className={` mt-auto space-y-4  h-full `}>
+            {/* Action Matrix */}
+            <div className="mt-2 space-y-5 pt-10  ">
               <div
-                className={`w-full flex flex-col gap-3 justify-between ${user?.role === "seller" ? "hidden" : "block"}`}
+                className={`flex flex-col sm:flex-row gap-4 ${user?.role === "seller" ? "hidden" : "flex"}`}
               >
                 <button
                   onClick={handleAddToKart}
-                  className="flex-grow py-4 disabled:opacity-50 disabled:cursor-not-allowed bg-white text-black font-bold rounded-2xl hover:bg-gray-200 transition-all duration-300 flex items-center justify-center gap-2 group w-full"
+                  disabled={isOutOfStock}
+                  className="flex-[2] py-5 bg-white text-black text-[10px] font-black uppercase tracking-[0.3em] rounded-2xl hover:bg-gray-200 disabled:opacity-20 disabled:cursor-not-allowed transition-all duration-500 shadow-2xl active:scale-[0.98] flex items-center justify-center gap-3"
                 >
-                  Add to Cart
+                  Acquire Now
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
-                    strokeWidth={2}
+                    strokeWidth={3}
                     stroke="currentColor"
-                    className="w-5 h-5 transition-transform group-hover:translate-x-1"
+                    className="w-3.5 h-3.5"
                   >
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
-                      d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.119-1.243l1.263-12c.07-.665.656-1.119 1.243-1.119h12.5a1.125 1.125 0 0 1 1.243 1.119Z"
+                      d="M12 4.5v15m7.5-7.5h-15"
                     />
                   </svg>
                 </button>
                 <button
                   onClick={handleAddBuy}
-                  className="flex-grow py-4 disabled:opacity-20 disabled:cursor-not-allowed bg-[#111] border border-white/10 text-white font-bold rounded-2xl hover:bg-white hover:text-black transition-all duration-300 w-full"
+                  disabled={isOutOfStock}
+                  className="flex-1 py-5 bg-transparent border-2 border-white/10 text-white text-[10px] font-black uppercase tracking-[0.3em] rounded-2xl hover:bg-white hover:text-black hover:border-white disabled:opacity-20 transition-all duration-500 active:scale-[0.98]"
                 >
-                  Buy Now
+                  Direct
                 </button>
               </div>
 
-              {user && user.role === "seller" && (
-                <div className="mt-auto space-y-4 w-full">
-                  <div className="">
-                    <button
-                      onClick={handleAddVariants}
-                      className="flex-grow py-4 bg-white text-black font-bold rounded-2xl hover:bg-gray-200 transition-all duration-300 flex items-center justify-center gap-2 group w-full cursor-pointer"
-                    >
-                      Add Variants
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={2}
-                        stroke="currentColor"
-                        className="w-5 h-5 transition-transform group-hover:translate-x-1"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.119-1.243l1.263-12c.07-.665.656-1.119 1.243-1.119h12.5a1.125 1.125 0 0 1 1.243 1.119Z"
-                        />
-                      </svg>
-                    </button>
-                  </div>
-                </div>
+              {user?.role === "seller" && (
+                <button
+                  onClick={handleAddVariants}
+                  className="w-full py-5 bg-[#111] border-2 border-white/5 text-white text-[10px] font-black uppercase tracking-[0.3em] rounded-2xl hover:bg-white hover:text-black transition-all duration-500 flex items-center justify-center gap-3 shadow-xl shadow-black"
+                >
+                  Engineer Variants
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={2.5}
+                    stroke="currentColor"
+                    className="w-3.5 h-3.5"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"
+                    />
+                  </svg>
+                </button>
               )}
 
-              <p className="text-[11px] text-gray-600 text-center uppercase tracking-widest font-medium">
-                Free Shipping & 30-Day Easy Returns
-              </p>
+              {/* Trust Badges */}
+              <div className="grid grid-cols-3 gap-8 pt-10 border-t border-white/5">
+                {[
+                  { label: "Complimentary Delivery", sub: "Global Logistics" },
+                  { label: "Verified Heritage", sub: "100% Authentic" },
+                  { label: "Curated Return", sub: "30-Day Window" },
+                ].map((badge, i) => (
+                  <div
+                    key={i}
+                    className="text-center space-y-2 group cursor-default"
+                  >
+                    <p className="text-[8px] font-black text-white uppercase tracking-[0.3em] group-hover:text-white transition-colors">
+                      {badge.label}
+                    </p>
+                    <p className="text-[7px] font-bold text-gray-700 uppercase tracking-[0.2em] leading-tight">
+                      {badge.sub}
+                    </p>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -467,5 +514,3 @@ const SingleProductDet = () => {
 };
 
 export default SingleProductDet;
-
-// This component implements product detail view with variant selection handling. It defaults to base product data and updates price, image, and stock when a variant is selected via state `selectedAttributes` and `matchingVariant`. No variant is auto‑selected on load.
