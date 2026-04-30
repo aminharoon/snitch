@@ -24,8 +24,10 @@ const Navbar = ({ user, isLoggedIn = false, userName }) => {
   };
 
   return (
-    <nav className="sticky top-0 z-50 bg-black backdrop-blur-md border-b border-white/5 py-2">
-      <div className="max-w-7xl mx-auto px-6 h-10 flex items-center justify-between gap-8">
+    <nav
+      className={`sticky top-0  z-50 bg-black backdrop-blur-md border-b border-white/5 py-5`}
+    >
+      <div className="max-w-7xl mx-auto px-6 h-10 flex items-center justify-between gap-8 ">
         {/* Left: Logo */}
         <div
           className="flex-shrink-0 cursor-pointer group"
@@ -37,9 +39,7 @@ const Navbar = ({ user, isLoggedIn = false, userName }) => {
         </div>
 
         {/* Center: Search Bar */}
-        <div
-          className={`flex-1 max-w-2xl    ${!isLoggedIn ? "hidden" : " hidden"} }`}
-        >
+        <div className={`flex-1 max-w-2xl    }`}>
           <div className="relative group">
             <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none text-gray-500 group-focus-within:text-white transition-colors">
               <svg
@@ -66,7 +66,7 @@ const Navbar = ({ user, isLoggedIn = false, userName }) => {
         </div>
 
         {/* Right: Auth Section */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-7">
           {isLoggedIn ? (
             <div className="relative">
               <div
@@ -141,6 +141,10 @@ const Navbar = ({ user, isLoggedIn = false, userName }) => {
               </button>
             </div>
           )}
+          <div className="relative">
+            <span className="text-white absolute -top-3    right-1">2</span>
+            <i className="cursor-pointer ri-shopping-cart-line text-white text-2xl"></i>
+          </div>
         </div>
       </div>
     </nav>

@@ -2,13 +2,12 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { Navigate } from "react-router";
 
-const ProtectedComponent = ({
-  children,
-  role,
-  redirectIfAuht = false,
-}) => {
+const ProtectedComponent = ({ children, role, redirectIfAuth = false }) => {
   const { user, loading } = useSelector((state) => state.auth);
 
+  if (redirectIfAuth && user) {
+    return <Navigate to="/" replace />;
+  }
   if (loading && !user) {
     return (
       <div className="min-h-screen bg-[#050505] text-white flex items-center justify-center">
@@ -16,11 +15,11 @@ const ProtectedComponent = ({
       </div>
     );
   }
-  if (redirectIfAuht && user) {
+  if (redirectIfAuth && user) {
     return <Navigate to="/profile" replace />;
   }
 
-  if (!user) {
+  if (!redirectIfAuth && !user) {
     return <Navigate to="/login" replace />;
   }
 

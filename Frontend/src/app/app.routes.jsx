@@ -9,6 +9,7 @@ import {
 } from "../features/products/Pages/index";
 import { ProtectedComponent } from "../features/auth/components/index";
 import Layout from "./Layout";
+import Cart from "../features/cart/pages/Cart.jsx";
 
 export const router = createBrowserRouter([
   {
@@ -21,7 +22,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "/login",
-        element: <Login />,
+        element: (
+          <ProtectedComponent redirectIfAuth={true}>
+            <Login />
+          </ProtectedComponent>
+        ),
       },
       {
         path: "/register",
@@ -36,6 +41,14 @@ export const router = createBrowserRouter([
         element: (
           <ProtectedComponent>
             <Profile />
+          </ProtectedComponent>
+        ),
+      },
+      {
+        path: "/cart",
+        element: (
+          <ProtectedComponent>
+            <Cart />
           </ProtectedComponent>
         ),
       },

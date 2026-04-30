@@ -2,17 +2,20 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams, useNavigate } from "react-router";
 import { useProduct } from "../Hooks/useProducts";
+import { useCart } from "../../cart/hook/useCart";
 
 // NOTE: Premium Product Detail Page with advanced variant selection and modern e-commerce UI.
 const SingleProductDet = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { getSingleProductDet } = useProduct();
+
   const { singleProduct, loading } = useSelector((state) => state.product);
   const { user } = useSelector((state) => state.auth);
   const [activeImage, setActiveImage] = useState(0);
   const [selectedAttributes, setSelectedAttributes] = useState({});
   const [matchingVariant, setMatchingVariant] = useState(null);
+  const { handleAddToCart } = useCart();
 
   useEffect(() => {
     if (id) {
@@ -122,6 +125,7 @@ const SingleProductDet = () => {
       } else {
         newState[key] = value;
       }
+
       return newState;
     });
   };
@@ -155,13 +159,32 @@ const SingleProductDet = () => {
     });
   };
 
-  const handleAddToKart = () => {
+  const handleAddToKart = async () => {
     if (!user) return navigate("/login");
-    // Logic for adding to cart goes here
+
+    if (hasVariants && !matchingVariant) {
+      alert("Please select the size ");
+      return;
+    }
+
+    const payload = {
+      productId: singleProduct._id,
+      quantity: 1,
+      variantId: matchingVariant?._id || null,
+      attributes: selectedAttributes,
+    };
+
+    console.log("Payload attributes:", selectedAttributes);
+
+    await handleAddToCart({
+      productId: singleProduct._id,
+      variantId: matchingVariant?._id || null,
+      attributes: selectedAttributes,
+    });
   };
 
   const handleAddBuy = () => {
-    if (!user) return navigate("/login");
+    // if (!user) return navigate("/login");
     // Logic for buy now goes here
   };
   const handleAddVariants = () =>

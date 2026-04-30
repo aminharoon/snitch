@@ -1,35 +1,27 @@
-import React, { useEffect } from 'react';
-import { useProduct } from '../Hooks/useProducts';
-import { useSelector } from 'react-redux';
-import { Navbar } from '../../../components';
-import ProductCard from '../Componts/ProductCard';
-import { useNavigate } from 'react-router';
-
+import React, { useEffect } from "react";
+import { useProduct } from "../Hooks/useProducts";
+import { useSelector } from "react-redux";
+import { Navbar } from "../../../components";
+import ProductCard from "../Componts/ProductCard";
+import { useNavigate } from "react-router";
 
 const Home = () => {
-
-
   const { handleGetAllProducts } = useProduct();
   const { allProducts, loading } = useSelector((state) => state.product);
   const { user } = useSelector((state) => state.auth); // Check auth state
- 
 
-  const navigate = useNavigate()
-
-
+  const navigate = useNavigate();
 
   useEffect(() => {
     handleGetAllProducts();
   }, []);
 
-  const handleGetSingleProductDetail=(product)=>{
-     
-      navigate(`/product/${product._id}`)
+  const handleGetSingleProductDetail = (product) => {
+    navigate(`/product/${product._id}`);
+  };
 
-  }
   return (
     <div className="min-h-screen bg-[#050505] text-white pt-20">
- 
       {/* Hero / Header Section */}
       <header className="relative  px-6 overflow-hidden border-b border-white/5 ">
         <div className="max-w-7xl mx-auto relative z-1">
@@ -37,16 +29,14 @@ const Home = () => {
             Discover Excellence.
           </h1>
           <p className="text-gray-400 text-lg md:text-xl max-w-2xl leading-relaxed">
-            Curated collection of premium products designed for the modern lifestyle. 
-            Experience quality and minimalism in every detail.
+            Curated collection of premium products designed for the modern
+            lifestyle. Experience quality and minimalism in every detail.
           </p>
         </div>
       </header>
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-6 py-16">
-       
-
         {loading ? (
           /* Loading State Skeleton */
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
@@ -62,8 +52,8 @@ const Home = () => {
           /* Product Grid */
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
             {allProducts.map((product) => (
-              <ProductCard 
-                key={product._id} 
+              <ProductCard
+                key={product._id}
                 product={product}
                 onClick={() => handleGetSingleProductDetail(product)}
               />
@@ -73,13 +63,27 @@ const Home = () => {
           /* Empty State */
           <div className="flex flex-col items-center justify-center py-32 text-center">
             <div className="w-20 h-20 mb-6 rounded-full bg-white/5 flex items-center justify-center">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor" className="w-10 h-10 text-gray-600">
-                <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1}
+                stroke="currentColor"
+                className="w-10 h-10 text-gray-600"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+                />
               </svg>
             </div>
-            <h3 className="text-xl font-medium text-gray-300 mb-2">No products found</h3>
+            <h3 className="text-xl font-medium text-gray-300 mb-2">
+              No products found
+            </h3>
             <p className="text-gray-500 max-w-xs">
-              We couldn't find any products in our collection right now. Check back soon!
+              We couldn't find any products in our collection right now. Check
+              back soon!
             </p>
           </div>
         )}

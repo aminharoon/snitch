@@ -59,10 +59,7 @@ const deleteProduct = async (req, res) => {
     if (!product) {
         throw new ApiError(401, `you are not authorized to delete this product`)
     }
-    // const result = await Promise.all(
-    //     product.images.map(img => console.log(img))
-    // )
-    // console.log(result)
+
     product.images.forEach((img) => {
         console.log(img)
 
