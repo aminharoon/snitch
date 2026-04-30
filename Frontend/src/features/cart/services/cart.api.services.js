@@ -9,9 +9,11 @@ export const addToCart = async ({ productId, variantId, quantity, attributes }) 
     try {
 
         const response = await api.post(`/add/${productId}/${variantId}`, { quantity: quantity || 1, attributes })
+
         return response.data
 
     } catch (e) {
+        throw new Error(e.response?.data?.message || "API FAILED")
         console.log(`SERVICES something went wrong while calling the add to cart api ${e.message}`)
 
     }

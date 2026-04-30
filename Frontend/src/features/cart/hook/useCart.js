@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux"
 import { addToCart, getCart } from "../services/cart.api.services.js"
-import { setItems, addItem, setLoading, setError } from "../state/cart.slice.js"
+import { setItems, setLoading, setError } from "../state/cart.slice.js"
 import toast from "react-hot-toast"
 
 
@@ -12,6 +12,10 @@ export const useCart = () => {
             dispatch(setLoading(true))
             const response = await addToCart({ productId, variantId, attributes })
             if (response) {
+                const cartResponse = await getCart()
+                if (cartResponse?.data?.items) {
+                    dispatch(setItems(cartResponse.data.items))
+                }
                 dispatch(setLoading(false))
                 toast.success("item added ")
                 return response
@@ -29,7 +33,7 @@ export const useCart = () => {
             const response = await getCart()
             if (response) {
                 console.log(response)
-                dispatch(addItem(response.data.items))
+                dispatch(setItems(response.data.items || []))
                 dispatch(setLoading(false))
                 toast.success("successfully get cart items ")
 

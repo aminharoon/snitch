@@ -9,7 +9,7 @@ const Cart = () => {
   useEffect(() => {
     handleGetCartItems();
   }, []);
-
+  console.log(items);
   console.log(items[0]?.length);
 
   return <div>Cart</div>;

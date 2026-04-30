@@ -23,21 +23,27 @@ const addToCart = async (req, res) => {
         (await cartModel.create({ user: req.user._id }));
 
     // ✅ find existing item (NOT some)
-    const existingItem = cart.items.find(
+    const existingItem = cart.items.some(
         (item) =>
             item.product.toString() === productId &&
-            item.variant?.toString() === variantId
+            item.variants?.toString() === variantId
     );
 
     const stock = await stockOfVariant(productId, variantId);
 
     // ✅ if already in cart
     if (existingItem) {
-        if (existingItem.quantity + quantity > stock) {
+        const quantityInCart = cart.items.find(item => item.product.toString() === productId && item.variants?.toString() === variantId).quantity
+
+        if (quantityInCart + quantity > stock) {
             throw new ApiError(409, "Stock exceeded");
         }
 
-        existingItem.quantity += quantity;
+        await cartModel.findOneAndUpdate(
+            { user: req.user._id, "items.product": productId, "items.variants": variantId },
+            { $inc: { "items.$.quantity": quantity } },
+            { new: true }
+        )
         await cart.save();
 
         return res
@@ -46,15 +52,13 @@ const addToCart = async (req, res) => {
     }
 
     // ✅ new item
-    if (quantity > stock) {
-        throw new ApiError(409, "Stock exceeded");
-    }
+
 
 
     const variant = product.variants.find(
         (variant) => variant._id.toString() === variantId
     );
-    console.log(variant)
+
 
     cart.items.push({
         product: productId,
@@ -70,6 +74,8 @@ const addToCart = async (req, res) => {
         .status(200)
         .json(new ApiResponse(200, "Item added"));
 };
+
+
 const getCartProducts = async (req, res) => {
     const user = req.user
 

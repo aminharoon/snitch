@@ -147,7 +147,7 @@ const Navbar = ({ user, isLoggedIn = false, userName, pathname }) => {
           )}
           <div className="relative">
             <span className="text-white absolute -top-3    right-1">
-              {items[0]?.length}
+              {items?.length || 0}
             </span>
             <button onClick={() => navigate("/cart")}>
               <i className="cursor-pointer ri-shopping-cart-line text-white text-2xl"></i>
