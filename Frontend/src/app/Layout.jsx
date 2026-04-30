@@ -9,7 +9,7 @@ const Layout = () => {
 
   const hideNavbar =
     location.pathname === "/login" || location.pathname === "/register";
-  console.log(hideNavbar);
+
   return (
     <>
       {!hideNavbar && (
@@ -17,6 +17,7 @@ const Layout = () => {
           user={user}
           isLoggedIn={!!user}
           userName={user?.fullName || user?.name || "User"}
+          pathname={location.pathname}
         />
       )}
       <Outlet />

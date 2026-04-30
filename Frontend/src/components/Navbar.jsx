@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import { useAuth } from "../features/auth/hooks/useAuth";
+import { useSelector } from "react-redux";
 
-const Navbar = ({ user, isLoggedIn = false, userName }) => {
+const Navbar = ({ user, isLoggedIn = false, userName, pathname }) => {
+  const { items } = useSelector((state) => state.cart);
   const navigate = useNavigate();
 
   const [hidden, setHidden] = useState(true);
@@ -39,7 +41,9 @@ const Navbar = ({ user, isLoggedIn = false, userName }) => {
         </div>
 
         {/* Center: Search Bar */}
-        <div className={`flex-1 max-w-2xl    }`}>
+        <div
+          className={`flex-1 max-w-2xl ${pathname == "/cart" ? "hidden" : "block"}`}
+        >
           <div className="relative group">
             <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none text-gray-500 group-focus-within:text-white transition-colors">
               <svg
@@ -142,8 +146,12 @@ const Navbar = ({ user, isLoggedIn = false, userName }) => {
             </div>
           )}
           <div className="relative">
-            <span className="text-white absolute -top-3    right-1">2</span>
-            <i className="cursor-pointer ri-shopping-cart-line text-white text-2xl"></i>
+            <span className="text-white absolute -top-3    right-1">
+              {items[0]?.length}
+            </span>
+            <button onClick={() => navigate("/cart")}>
+              <i className="cursor-pointer ri-shopping-cart-line text-white text-2xl"></i>
+            </button>
           </div>
         </div>
       </div>
