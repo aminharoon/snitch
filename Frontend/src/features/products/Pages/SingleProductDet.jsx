@@ -168,7 +168,6 @@ const SingleProductDet = () => {
     navigate(`/seller/product/${singleProduct._id}`);
 
   const hasVariants = variants?.length > 0;
-  console.log(singleProduct);
 
   return (
     <div className="min-h-screen bg-[#050505] text-white pt-2 pb-16 selection:bg-white selection:text-black">

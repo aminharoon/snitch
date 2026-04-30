@@ -13,6 +13,4 @@ export const createProductValidation = [
     body("description").notEmpty().withMessage("description is required"),
     body("priceAmount").notEmpty().withMessage("price amount is required").isNumeric().withMessage("price amount must be a number"),
 
-
-
 ]

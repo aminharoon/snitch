@@ -110,8 +110,9 @@ export const useProduct = () => {
     const handleAddVarients = async (productId, newProductVarients) => {
         try {
 
+
+            Dispatch(setLoading(true))
             const response = await addProductVarients(productId, newProductVarients)
-            console.log("product variant :", response)
 
             if (response) {
 
@@ -134,7 +135,7 @@ export const useProduct = () => {
         try {
 
             const response = await deleteVariant(productId, variantId)
-            console.log("Full response.data:", response.data)
+
             if (response) {
                 Dispatch(setSingleProduct(response.data))
                 Dispatch(setLoading(false))
