@@ -1,8 +1,9 @@
 import React from "react";
 
 const CartProduct = ({ item, handleUpdateQuantity, handleRemoveItem }) => {
-  const variant = item.variants;
   const product = item.product;
+  const variantId = item.variants; // From your data, item.variants is the ID string
+  const variant = product?.variants?.find(v => v._id === variantId);
   const attributes = item.attributes || {};
 
   const getImageUrl = (img) => {
@@ -109,9 +110,13 @@ const CartProduct = ({ item, handleUpdateQuantity, handleRemoveItem }) => {
                 {(item?.price?.amount ?? 0).toLocaleString()}
               </span>
               <div className="flex items-center gap-1.5">
-                <div className={`w-1.5 h-1.5 rounded-full ${(variant?.stock || product?.stock) > 0 ? 'bg-green-500' : 'bg-red-500'} animate-pulse`} />
+                <div
+                  className={`w-1.5 h-1.5 rounded-full ${(variant?.stock || product?.stock) > 0 ? "bg-green-500" : "bg-red-500"} animate-pulse`}
+                />
                 <span className="text-[8px] font-black uppercase tracking-[0.1em] text-gray-500">
-                  {(variant?.stock || product?.stock) > 0 ? `${variant?.stock || product?.stock} IN STOCK` : 'OUT OF STOCK'}
+                  {(variant?.stock || product?.stock) > 0
+                    ? `${variant?.stock || product?.stock} IN STOCK`
+                    : "OUT OF STOCK"}
                 </span>
               </div>
             </div>
