@@ -5,6 +5,7 @@ import { stockOfVariant } from '../dao/product.dao.js'
 
 
 
+
 const addToCart = async (req, res) => {
     const { productId, variantId } = req.params;
     const { quantity, attributes } = req.body;
@@ -44,6 +45,14 @@ const addToCart = async (req, res) => {
             { $inc: { "items.$.quantity": quantity } },
             { new: true }
         )
+
+        await productModel.findOneAndUpdate(
+            { _id: productId, "variants._id": variantId },
+            { $inc: { "variants.$.stock": -quantity } },
+            { new: true }
+        );
+
+        await product.save();
         await cart.save();
 
         return res
@@ -52,9 +61,6 @@ const addToCart = async (req, res) => {
     }
 
     // ✅ new item
-
-
-
     const variant = product.variants.find(
         (variant) => variant._id.toString() === variantId
     );
@@ -67,6 +73,12 @@ const addToCart = async (req, res) => {
         attributes,
         quantity,
     });
+    await productModel.findOneAndUpdate(
+        { _id: productId, "variants._id": variantId },
+        { $inc: { "variants.$.stock": -quantity } },
+        { new: true }
+    );
+    await product.save();
 
     await cart.save();
 
@@ -91,6 +103,8 @@ const getCartProducts = async (req, res) => {
 
 }
 
+
+
 const deleteCartItem = async (req, res) => {
     const { itemId } = req.params
     if (!itemId) {
@@ -98,17 +112,62 @@ const deleteCartItem = async (req, res) => {
     }
     const cart = await cartModel.findOne({ user: req.user._id })
     cart.items = cart.items.filter((item) => item._id.toString() !== itemId)
-    cart.items.filter((item) => {
-        console.log(item._id.toString() == itemId)
-    })
+
     await cart.save({ validateBeforeSave: false })
 
     res.status(200).json(new ApiResponse(200, "Item deleted successfully "))
 
 }
+const increaseQuantity = async (req, res) => {
 
+    const { productId, variantId } = req.params
+
+
+    if (!productId && !variantId) {
+        throw new ApiError(404, "product id and item id  is required ")
+    }
+    const product = await productModel.findOne({
+        _id: productId,
+        "variants._id": variantId,
+    });
+
+    if (!product) {
+        throw new ApiError(404, "Product not found");
+    }
+
+    const stock = await stockOfVariant(productId, variantId);
+
+    const cart = await cartModel.findOne({ user: req.user._id })
+
+    const itemQuantityInCart = cart.items.find(item => item.product.toString() === productId && item.variants?.toString() === variantId)?.quantity || 0
+
+    if (itemQuantityInCart + 1 > stock) {
+        throw new ApiError(409, "Stock exceeded");
+    }
+
+    await cartModel.findOneAndUpdate(
+        { user: req.user._id, "items.product": productId, "items.variants": variantId },
+        { $inc: { "items.$.quantity": 1 } },
+        { new: true }
+    );
+
+    await productModel.findOneAndUpdate(
+        { _id: productId, "variants._id": variantId },
+        { $inc: { "variants.$.stock": -1 } },
+        { new: true }
+    );
+
+    await cart.save();
+
+    res.status(200).json(new ApiResponse(200, "Quantity increased successfully"));
+
+
+
+
+}
 export const cartController = {
     addToCart,
     getCartProducts,
-    deleteCartItem
+    deleteCartItem,
+    increaseQuantity
 }
