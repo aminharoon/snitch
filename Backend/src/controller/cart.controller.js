@@ -93,9 +93,14 @@ const getCartProducts = async (req, res) => {
 
 const deleteCartItem = async (req, res) => {
     const { itemId } = req.params
-
+    if (!itemId) {
+        throw new ApiError(404, "Item is is needed ")
+    }
     const cart = await cartModel.findOne({ user: req.user._id })
-    await cart.items.filter((item) => item._id !== itemId)
+    cart.items = cart.items.filter((item) => item._id.toString() !== itemId)
+    cart.items.filter((item) => {
+        console.log(item._id.toString() == itemId)
+    })
     await cart.save({ validateBeforeSave: false })
 
     res.status(200).json(new ApiResponse(200, "Item deleted successfully "))
