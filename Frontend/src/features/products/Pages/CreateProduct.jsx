@@ -94,7 +94,7 @@ const CreateProduct = () => {
       images.forEach((img) => {
         data.append("images", img.file);
       });
-
+      alert("Do't Forget To Add An Variant like Stock ");
       await handleCreateProduct(data);
       setFormData(initialSateOfFormData);
       setImages([]);

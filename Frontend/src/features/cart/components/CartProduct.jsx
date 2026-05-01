@@ -5,11 +5,16 @@ const CartProduct = ({ item, handleUpdateQuantity, handleRemoveItem }) => {
   const product = item.product;
   const attributes = item.attributes || {};
 
+  const getImageUrl = (img) => {
+    if (!img) return "";
+    return typeof img === "string" ? img : img.url || "";
+  };
+
   let imageUrl = "";
   if (variant?.images?.length > 0) {
-    imageUrl = variant.images[0].url;
+    imageUrl = getImageUrl(variant.images[0]);
   } else if (product?.images?.length > 0) {
-    imageUrl = product.images[0].url;
+    imageUrl = getImageUrl(product.images[0]);
   }
 
   const currency = item?.price?.currency || "INR";
@@ -98,10 +103,18 @@ const CartProduct = ({ item, handleUpdateQuantity, handleRemoveItem }) => {
             <span className="text-[9px] font-black text-gray-500 uppercase tracking-[0.3em] block mb-1.5">
               Price
             </span>
-            <span className="text-2xl font-light tracking-tighter text-white">
-              {currencySymbol}
-              {(item?.price?.amount ?? 0).toLocaleString()}
-            </span>
+            <div className="flex flex-col gap-1">
+              <span className="text-2xl font-light tracking-tighter text-white">
+                {currencySymbol}
+                {(item?.price?.amount ?? 0).toLocaleString()}
+              </span>
+              <div className="flex items-center gap-1.5">
+                <div className={`w-1.5 h-1.5 rounded-full ${(variant?.stock || product?.stock) > 0 ? 'bg-green-500' : 'bg-red-500'} animate-pulse`} />
+                <span className="text-[8px] font-black uppercase tracking-[0.1em] text-gray-500">
+                  {(variant?.stock || product?.stock) > 0 ? `${variant?.stock || product?.stock} IN STOCK` : 'OUT OF STOCK'}
+                </span>
+              </div>
+            </div>
           </div>
           <div>
             <span className="text-[5px] font-black text-gray-500 uppercase tracking-[0.3em] block mb-1.5">
