@@ -53,6 +53,7 @@ export const useCart = () => {
             const response = await delateCartItem(itemId)
             if (response) {
                 const updatedProducts = items?.filter(item => item._id !== itemId) || []
+                console.log(updatedProducts)
                 dispatch(setItems(updatedProducts))
                 dispatch(setLoading(false))
                 toast.success("Item Deleted")
