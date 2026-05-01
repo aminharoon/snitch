@@ -194,7 +194,7 @@ const SingleProductDet = () => {
   const hasVariants = variants?.length > 0;
 
   return (
-    <div className="h-screen bg-[#050505] text-white pt-2 selection:bg-white selection:text-black flex flex-col overflow-hidden">
+    <div className="h-[calc(100vh-81px)] bg-[#050505] text-white pt-2 selection:bg-white selection:text-black flex flex-col overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 w-full flex-1 flex flex-col min-h-0">
         {/* Navigation */}
         <div className="flex-shrink-0">
