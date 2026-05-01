@@ -98,7 +98,7 @@ const SingleProductDet = () => {
     matchingVariant?.images?.length > 0 ? matchingVariant.images : images;
   const displayStock = matchingVariant
     ? matchingVariant.stock
-    : variants?.length > 0
+    : variants?.length >= 0
       ? variants.reduce((acc, v) => acc + (v.stock || 0), 0)
       : 0;
   const isOutOfStock = displayStock === 0;

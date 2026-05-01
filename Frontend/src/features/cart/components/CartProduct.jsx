@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 const CartProduct = ({ item, handleUpdateQuantity, handleRemoveItem }) => {
   const product = item.product;
   const variantId = item.variants; // From your data, item.variants is the ID string
-  const variant = product?.variants?.find(v => v._id === variantId);
+  const variant = product?.variants?.find((v) => v._id === variantId);
   const attributes = item.attributes || {};
 
   const getImageUrl = (img) => {
@@ -25,7 +25,7 @@ const CartProduct = ({ item, handleUpdateQuantity, handleRemoveItem }) => {
     <div className="flex flex-col sm:flex-row gap-6 p-6 border border-white/5 rounded-4xl bg-[#0a0a0a] shadow-2xl group transition-all hover:border-white/10 relative h-35">
       {/* Delete Icon */}
       <button
-        onClick={() => handleRemoveItem(item._id, product._id)}
+        onClick={() => handleRemoveItem(item.product._id, item.variants)}
         className="absolute top-6 right-6 text-white/20 hover:text-red-500 transition-colors"
         title="Remove from cart"
       >
@@ -127,13 +127,8 @@ const CartProduct = ({ item, handleUpdateQuantity, handleRemoveItem }) => {
             </span>
             <div className="flex items-center gap-4 bg-[#111] rounded-full px-4 py-1.5 border border-white/5">
               <button
-                onClick={() =>
-                  handleUpdateQuantity(
-                    item._id,
-                    Math.max(1, (item?.quantity || 1) - 1),
-                  )
-                }
-                disabled={item?.quantity <= 1}
+                // onClick={() => handleUpdateQuantity()}
+                // disabled={item?.quantity <= 1}
                 className="text-white/40 hover:text-white transition-colors disabled:opacity-20 disabled:hover:text-white/40"
               >
                 <svg
@@ -156,7 +151,7 @@ const CartProduct = ({ item, handleUpdateQuantity, handleRemoveItem }) => {
               </span>
               <button
                 onClick={() =>
-                  handleUpdateQuantity(item._id, (item?.quantity || 1) + 1)
+                  handleUpdateQuantity(item.product._id, item.variants)
                 }
                 className="text-white/40 hover:text-white transition-colors"
               >

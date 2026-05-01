@@ -5,9 +5,10 @@ import CartProduct from "../components/CartProduct";
 import BackButton from "../../components/BackButton";
 
 const Cart = () => {
-  const { handleGetCartItems, handleDeleteCartIem } = useCart();
+  const { handleGetCartItems, handleDeleteCartIem, handleIncrementCartItem } =
+    useCart();
   const items = useSelector((state) => state.cart.items);
-
+  console.log(items);
   useEffect(() => {
     handleGetCartItems();
   }, []);
@@ -27,13 +28,12 @@ const Cart = () => {
     cartItems.length > 0 ? cartItems[0]?.price?.currency || "INR" : "INR";
   const globalCurrencySymbol = globalCurrency === "USD" ? "$" : "₹";
 
-  const handleUpdateQuantity = (itemId, newQuantity) => {
-    // TODO: Connect to backend API to update quantity
-    console.log(`Update quantity for ${itemId} to ${newQuantity}`);
+  const handleUpdateQuantity = async (productId, variantId) => {
+    await handleIncrementCartItem({ productId, variantId });
   };
 
-  const handleRemoveItem = async (itemId) => {
-    await handleDeleteCartIem(itemId);
+  const handleRemoveItem = async (productId, variantId) => {
+    await handleDeleteCartIem({ productId, variantId });
   };
 
   return (

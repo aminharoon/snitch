@@ -1,16 +1,16 @@
 import { productModel } from "../models/product.model.js";
 
+
 export const stockOfVariant = async (productId, variantId) => {
+
     const product = await productModel.findOne({
         _id: productId,
-        "variants._id": variantId,
-    });
+        "variants._id": variantId
+    })
 
-    if (!product) return 0;
 
-    const variant = product.variants.find(
-        (v) => v._id.toString() === variantId
-    );
+    const stock = product.variants.find(variant => variant._id.toString() === variantId).stock
 
-    return variant?.stock || 0;
-};
+
+    return stock
+}

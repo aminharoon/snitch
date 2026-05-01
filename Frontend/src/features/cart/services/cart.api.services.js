@@ -28,9 +28,9 @@ export const getCart = async () => {
     }
 }
 
-export const delateCartItem = async (itemId) => {
+export const delateCartItem = async ({ productId, variantId }) => {
     try {
-        const response = await api.patch(`/delete/${itemId}`)
+        const response = await api.patch(`/delete/${productId}/${variantId}`)
         return response.data
 
     } catch (e) {
@@ -39,8 +39,13 @@ export const delateCartItem = async (itemId) => {
     }
 }
 
-export const incrementcartItem = async (productId, variantId) => {
+export const incrementcartItem = async ({ productId, variantId }) => {
+
+    // /quantity/: productId /: variantId
     try {
+
+        const response = await api.patch(`/quantity/${productId}/${variantId}`)
+        return response.data
 
     } catch (e) {
         throw new Error(e.response?.data?.message || "API FAILED")

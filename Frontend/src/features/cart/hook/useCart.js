@@ -1,12 +1,12 @@
 import { useDispatch, useSelector } from "react-redux"
-import { addToCart, getCart, delateCartItem } from "../services/cart.api.services.js"
-import { setItems, setLoading, setError } from "../state/cart.slice.js"
+import { addToCart, getCart, delateCartItem, incrementcartItem } from "../services/cart.api.services.js"
+import { setItems, setLoading, setError, deleteItemFromCart, incrementCartItemQuantity } from "../state/cart.slice.js"
 import toast from "react-hot-toast"
 
 
 export const useCart = () => {
     const dispatch = useDispatch()
-    const { items } = useSelector((state) => state.cart)
+
 
     const handleAddToCart = async ({ productId, variantId, attributes }) => {
         try {
@@ -47,19 +47,34 @@ export const useCart = () => {
         }
     }
 
-    const handleDeleteCartIem = async (itemId) => {
+    const handleDeleteCartIem = async ({ productId, variantId }) => {
+        console.log("This is called hesar ", productId, variantId)
         try {
             dispatch(setLoading(true))
-            const response = await delateCartItem(itemId)
+            const response = await delateCartItem({ productId, variantId })
             if (response) {
-                const updatedProducts = items?.filter(item => item._id !== itemId) || []
-                console.log(updatedProducts)
-                dispatch(setItems(updatedProducts))
+                dispatch(deleteItemFromCart({ productId, variantId }))
                 dispatch(setLoading(false))
                 toast.success("Item Deleted")
             }
+        } catch (e) {
+            dispatch(setLoading(false))
+            setError(`Failde to delete items cart : ${e.message}`)
+            toast.error(`Failde to delete items cart : ${e.message}`)
+        }
+    }
 
+    const handleIncrementCartItem = async ({ productId, variantId }) => {
+        try {
+            dispatch(setLoading(true))
 
+            const response = await incrementcartItem({ productId, variantId })
+            if (response) {
+                dispatch(incrementCartItemQuantity({ productId, variantId }))
+                dispatch(setLoading(false))
+                toast.success("quantity increaed ")
+
+            }
 
         } catch (e) {
             dispatch(setLoading(false))
@@ -70,6 +85,6 @@ export const useCart = () => {
 
 
     return {
-        handleAddToCart, handleGetCartItems, handleDeleteCartIem
+        handleAddToCart, handleGetCartItems, handleDeleteCartIem, handleIncrementCartItem
     }
 }

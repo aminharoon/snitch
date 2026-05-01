@@ -1,7 +1,7 @@
 import express from "express"
 import { verifyUser } from '../middleware/auth.middleware.js'
 import { cartController } from "../controller/cart.controller.js"
-import { validateCart, validateCartQuantity } from "../validation/cart.validation.js"
+import { validateCart, validateCartQuantity, validateDeleteCartItem } from "../validation/cart.validation.js"
 
 const cartRoutes = express.Router()
 
@@ -29,7 +29,7 @@ cartRoutes.post("/add/:productId/:variantId", validateCart, verifyUser, cartCont
  * @access Private
  * @arguments itemId - ID of the cart item to delete
  */
-cartRoutes.patch("/delete/:itemId", verifyUser, cartController.deleteCartItem)
+cartRoutes.patch("/delete/:productId/:variantId", validateDeleteCartItem, verifyUser, cartController.deleteCartItem)
 
 /**
  * @route PATCH /api/cart/quantity/:productId/:itemId
@@ -39,5 +39,5 @@ cartRoutes.patch("/delete/:itemId", verifyUser, cartController.deleteCartItem)
  * @arguments variantId - ID of the product variant whose quantity to increase
  * @argument quantity - Quantity to increase the product by
  */
-cartRoutes.patch("/quantity/:productId/:variantId", validateCartQuantity, verifyUser, cartController.increaseQuantity)
+cartRoutes.patch("/quantity/:productId/:variantId", verifyUser, cartController.increaseQuantity)
 export default cartRoutes
