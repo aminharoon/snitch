@@ -38,3 +38,13 @@ export const delateCartItem = async (itemId) => {
 
     }
 }
+
+export const incrementcartItem = async (productId, variantId) => {
+    try {
+
+    } catch (e) {
+        throw new Error(e.response?.data?.message || "API FAILED")
+
+    }
+
+}

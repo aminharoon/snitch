@@ -116,6 +116,7 @@ const deleteCartItem = async (req, res) => {
     await cart.save({ validateBeforeSave: false })
 
     res.status(200).json(new ApiResponse(200, "Item deleted successfully "))
+    // after delete we can increase the stock of the product variant in the product collection if needed
 
 }
 const increaseQuantity = async (req, res) => {
