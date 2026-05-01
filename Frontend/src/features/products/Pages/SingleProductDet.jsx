@@ -202,7 +202,7 @@ const SingleProductDet = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 xl:gap-16 items-start">
           {/* Left Column: Media Gallery (Balanced) */}
           <div className="lg:col-span-6 space-y-6 lg:sticky lg:top-20">
-            <div className="relative aspect-[4/5] rounded-[2rem] overflow-hidden bg-[#0a0a0a] border border-white/5 group shadow-2xl">
+            <div className="relative aspect-[4/5] rounded-4xl overflow-hidden bg-[#0a0a0a] border border-white/5 group shadow-2xl">
               {displayImages?.length > 0 ? (
                 <img
                   src={displayImages[activeImage]?.url}

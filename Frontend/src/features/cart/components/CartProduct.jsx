@@ -16,7 +16,7 @@ const CartProduct = ({ item, handleUpdateQuantity, handleRemoveItem }) => {
   const currencySymbol = currency === "USD" ? "$" : "₹";
 
   return (
-    <div className="flex flex-col sm:flex-row gap-6 p-6 border border-white/5 rounded-[2rem] bg-[#0a0a0a] shadow-2xl group transition-all hover:border-white/10 relative h-35">
+    <div className="flex flex-col sm:flex-row gap-6 p-6 border border-white/5 rounded-4xl bg-[#0a0a0a] shadow-2xl group transition-all hover:border-white/10 relative h-35">
       {/* Delete Icon */}
       <button
         onClick={() => handleRemoveItem(item._id, product._id)}

@@ -45,7 +45,7 @@ const Cart = () => {
         <BackButton />
 
         {cartItems.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-20 px-6 text-center border border-white/5 rounded-[2rem] bg-[#0a0a0a]">
+          <div className="flex flex-col items-center justify-center py-20 px-6 text-center border border-white/5 rounded-4xl bg-[#0a0a0a]">
             <h2 className="text-3xl font-black mb-4 tracking-tighter text-white">
               Vault Empty
             </h2>
@@ -70,7 +70,7 @@ const Cart = () => {
 
             {/* Right Side: Cart Summary */}
             <div className="lg:col-span-5 xl:col-span-4 sticky top-22">
-              <div className="bg-[#0a0a0a] p-8 rounded-[2rem] border border-white/5 sticky top-24 shadow-2xl">
+              <div className="bg-[#0a0a0a] p-8 rounded-4xl border border-white/5 sticky top-24 shadow-2xl">
                 <h2 className="text-[10px] font-black uppercase tracking-[0.4em] text-gray-500 mb-8 border-b border-white/5 pb-4">
                   Order Summary
                 </h2>
