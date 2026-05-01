@@ -194,15 +194,41 @@ const SingleProductDet = () => {
   const hasVariants = variants?.length > 0;
 
   return (
-    <div className="min-h-screen bg-[#050505] text-white pt-2 pb-16 selection:bg-white selection:text-black">
-      <div className="max-w-6xl mx-auto px-6">
+    <div className="h-screen bg-[#050505] text-white pt-2 selection:bg-white selection:text-black flex flex-col overflow-hidden">
+      <div className="max-w-7xl mx-auto px-6 w-full flex-1 flex flex-col min-h-0">
         {/* Navigation */}
-        <BackButton />
+        <div className="flex-shrink-0">
+          <BackButton />
+        </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 xl:gap-16 items-start">
-          {/* Left Column: Media Gallery (Balanced) */}
-          <div className="lg:col-span-6 space-y-6 lg:sticky lg:top-20">
-            <div className="relative aspect-[4/5] rounded-4xl overflow-hidden bg-[#0a0a0a] border border-white/5 group shadow-2xl">
+        <div className="flex-1 flex gap-8 xl:gap-12 min-h-0 overflow-hidden pb-8">
+          {/* Left Column: Media Gallery (Thumbnails + Main Image) */}
+          <div className="flex-1 flex gap-6 h-full min-h-0">
+            {/* Thumbnails */}
+            {displayImages?.length > 1 && (
+              <div className="w-20 xl:w-24 flex-shrink-0 flex flex-col gap-4 overflow-y-auto scrollbar-hide snap-y pb-10">
+                {displayImages.map((img, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setActiveImage(index)}
+                    className={`relative w-full aspect-[4/5] rounded-2xl overflow-hidden border-2 transition-all duration-700 flex-shrink-0 snap-start ${
+                      activeImage === index
+                        ? "border-white scale-95 shadow-xl shadow-white/5"
+                        : "border-white/5 opacity-40 hover:opacity-100 hover:border-white/20"
+                    }`}
+                  >
+                    <img
+                      src={img.url}
+                      alt={`${title} ${index}`}
+                      className="w-full h-full object-cover"
+                    />
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {/* Main Image */}
+            <div className="flex-1 rounded-4xl overflow-hidden bg-[#0a0a0a] border border-white/5 group shadow-2xl relative h-full">
               {displayImages?.length > 0 ? (
                 <img
                   src={displayImages[activeImage]?.url}
@@ -233,33 +259,10 @@ const SingleProductDet = () => {
               {/* Overlay for depth */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-40 pointer-events-none" />
             </div>
-
-            {/* Thumbnails */}
-            {displayImages?.length > 1 && (
-              <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide snap-x px-2">
-                {displayImages.map((img, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setActiveImage(index)}
-                    className={`relative w-24 aspect-[4/5] rounded-2xl overflow-hidden border-2 transition-all duration-700 flex-shrink-0 snap-start ${
-                      activeImage === index
-                        ? "border-white scale-95 shadow-xl shadow-white/5"
-                        : "border-white/5 opacity-40 hover:opacity-100 hover:border-white/20"
-                    }`}
-                  >
-                    <img
-                      src={img.url}
-                      alt={`${title} ${index}`}
-                      className="w-full h-full object-cover"
-                    />
-                  </button>
-                ))}
-              </div>
-            )}
           </div>
 
-          {/* Right Column: Information & Selection (Balanced) */}
-          <div className="lg:col-span-6 flex flex-col py-4">
+          {/* Right Column: Information & Selection */}
+          <div className="w-full lg:w-[450px] xl:w-[500px] flex-shrink-0 h-full overflow-y-auto scrollbar-hide flex flex-col py-2 pr-4">
             <div className="flex-grow space-y-6 animate-in fade-in slide-in-from-right-8 duration-1000">
               {/* Core Info */}
               <div className="space-y-6">
@@ -380,7 +383,7 @@ const SingleProductDet = () => {
             </div>
 
             {/* Action Matrix */}
-            <div className="mt-2 space-y-5 pt-10  ">
+            <div className="mt-2 space-y-5 pt-10">
               <div
                 className={`flex flex-col sm:flex-row gap-4 ${user?.role === "seller" ? "hidden" : "flex"}`}
               >
