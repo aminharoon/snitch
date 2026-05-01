@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { useParams, useNavigate } from "react-router";
 import { useProduct } from "../Hooks/useProducts";
 import { useCart } from "../../cart/hook/useCart";
+import BackButton from "../../components/BackButton";
 
 // NOTE: Premium Product Detail Page with advanced variant selection and modern e-commerce UI.
 const SingleProductDet = () => {
@@ -175,8 +176,6 @@ const SingleProductDet = () => {
       attributes: selectedAttributes,
     };
 
-    console.log("Payload attributes:", selectedAttributes);
-
     const respnse = await handleAddToCart({
       productId: singleProduct._id,
       variantId: matchingVariant?._id || null,
@@ -198,37 +197,7 @@ const SingleProductDet = () => {
     <div className="min-h-screen bg-[#050505] text-white pt-2 pb-16 selection:bg-white selection:text-black">
       <div className="max-w-6xl mx-auto px-6">
         {/* Navigation */}
-        <nav className="mb-10 animate-in fade-in slide-in-from-top-4 duration-1000">
-          <button
-            onClick={() => navigate(-1)}
-            className="group flex items-center gap-3 text-gray-500 hover:text-white transition-all"
-          >
-            <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-white/10 border border-white/5 transition-colors">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={2}
-                stroke="currentColor"
-                className="w-4 h-4 transition-transform group-hover:-translate-x-1"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h16.5"
-                />
-              </svg>
-            </div>
-            <div className="flex flex-col items-start">
-              <span className="text-[9px] font-black uppercase tracking-[0.4em] mb-0.5">
-                Back to collection
-              </span>
-              <span className="text-[9px] font-bold text-gray-700 uppercase tracking-[0.2em]">
-                {title}
-              </span>
-            </div>
-          </button>
-        </nav>
+        <BackButton />
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 xl:gap-16 items-start">
           {/* Left Column: Media Gallery (Balanced) */}
