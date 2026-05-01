@@ -70,7 +70,7 @@ const Cart = () => {
             </div>
 
             {/* Right Side: Cart Summary */}
-            <div className="lg:col-span-5 xl:col-span-4 sticky top-3">
+            <div className="lg:col-span-5 xl:col-span-4 sticky top-22">
               <div className="bg-[#0a0a0a] p-8 rounded-[2rem] border border-white/5 sticky top-24 shadow-2xl">
                 <h2 className="text-[10px] font-black uppercase tracking-[0.4em] text-gray-500 mb-8 border-b border-white/5 pb-4">
                   Order Summary
