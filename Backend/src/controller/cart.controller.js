@@ -91,7 +91,19 @@ const getCartProducts = async (req, res) => {
 
 }
 
+const deleteCartItem = async (req, res) => {
+    const { itemId } = req.params
+
+    const cart = await cartModel.findOne({ user: req.user._id })
+    await cart.items.filter((item) => item._id !== itemId)
+    await cart.save({ validateBeforeSave: false })
+
+    res.status(200).json(new ApiResponse(200, "Item deleted successfully "))
+
+}
+
 export const cartController = {
     addToCart,
-    getCartProducts
+    getCartProducts,
+    deleteCartItem
 }

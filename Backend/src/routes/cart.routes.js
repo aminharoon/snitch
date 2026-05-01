@@ -23,4 +23,7 @@ cartRoutes.get("/", verifyUser, cartController.getCartProducts)
  */
 cartRoutes.post("/add/:productId/:variantId", validateCart, verifyUser, cartController.addToCart)
 
+
+cartRoutes.patch("/delete/:itemId", verifyUser, cartController.deleteCartItem)
+
 export default cartRoutes

@@ -14,7 +14,7 @@ export const addToCart = async ({ productId, variantId, quantity, attributes }) 
 
     } catch (e) {
         throw new Error(e.response?.data?.message || "API FAILED")
-        console.log(`SERVICES something went wrong while calling the add to cart api ${e.message}`)
+
 
     }
 }
@@ -24,7 +24,17 @@ export const getCart = async () => {
         return response.data
 
     } catch (e) {
-        console.log(`SERVICES somehting went wrong while getting the cart ${e.message}`)
+        throw new Error(e.response?.data?.message || "API FAILED")
+    }
+}
+
+export const delateCartItem = async (itemId) => {
+    try {
+        const response = await api.patch(`/delete/${itemId}`)
+        return response.data
+
+    } catch (e) {
+        throw new Error(e.response?.data?.message || "API FAILED")
 
     }
 }

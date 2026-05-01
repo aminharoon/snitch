@@ -5,7 +5,7 @@ import CartProduct from "../components/CartProduct";
 import BackButton from "../../components/BackButton";
 
 const Cart = () => {
-  const { handleGetCartItems } = useCart();
+  const { handleGetCartItems, handleDeleteCartIem } = useCart();
   const items = useSelector((state) => state.cart.items);
 
   useEffect(() => {
@@ -32,9 +32,8 @@ const Cart = () => {
     console.log(`Update quantity for ${itemId} to ${newQuantity}`);
   };
 
-  const handleRemoveItem = (itemId) => {
-    // TODO: Connect to backend API to remove item
-    console.log(`Remove item ${itemId}`);
+  const handleRemoveItem = async (itemId) => {
+    await handleDeleteCartIem(itemId);
   };
 
   return (
