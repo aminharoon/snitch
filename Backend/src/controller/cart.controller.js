@@ -133,6 +133,7 @@ const deleteCartItem = async (req, res) => {
 
 
 }
+
 const increaseQuantity = async (req, res) => {
 
     const { productId, variantId } = req.params
@@ -166,6 +167,54 @@ const increaseQuantity = async (req, res) => {
         throw new ApiError(409, "Stock exceeded");
     }
 
+
+
+    await cartModel.findOneAndUpdate(
+        { user: req.user._id, "items.product": productId, "items.variants": variantId },
+        { $inc: { "items.$.quantity": 1 } },
+        { new: true }
+    );
+
+
+
+    await cart.save();
+
+    res.status(200).json(new ApiResponse(200, "Quantity increased successfully"));
+}
+
+const decreaseQuantity = async (req, res) => {
+
+    const { productId, variantId } = req.params
+
+
+    if (!productId && !variantId) {
+        throw new ApiError(404, "product id and item id  is required ")
+    }
+    const product = await productModel.findOne({
+        _id: productId,
+        "variants._id": variantId,
+    });
+
+    if (!product) {
+        throw new ApiError(404, "Product not found");
+    }
+
+    const stock = await stockOfVariant(productId, variantId);
+
+    const cart = await cartModel.findOne({ user: req.user._id })
+
+    const itemQuantityInCart = cart.items.find(item =>
+        item.product.toString() === productId.toString() &&
+        item.variants.toString() === variantId.toString()
+    )?.quantity || 0
+
+    console.log("item in the cart : ", itemQuantityInCart)
+    console.log("available stock : ", stock)
+
+    if (itemQuantityInCart - 1 < 0) {
+        throw new ApiError(409, "Quantity cannot be negative");
+    }
+
     // decrease the stock of the product variant
     // await productModel.findOneAndUpdate(
     //     {
@@ -180,7 +229,7 @@ const increaseQuantity = async (req, res) => {
 
     await cartModel.findOneAndUpdate(
         { user: req.user._id, "items.product": productId, "items.variants": variantId },
-        { $inc: { "items.$.quantity": 1 } },
+        { $inc: { "items.$.quantity": -1 } },
         { new: true }
     );
 
@@ -188,11 +237,12 @@ const increaseQuantity = async (req, res) => {
 
     await cart.save();
 
-    res.status(200).json(new ApiResponse(200, "Quantity increased successfully"));
+    res.status(200).json(new ApiResponse(200, "Quantity decreased successfully"));
 }
 export const cartController = {
     addToCart,
     getCartProducts,
     deleteCartItem,
-    increaseQuantity
+    increaseQuantity,
+    decreaseQuantity
 }

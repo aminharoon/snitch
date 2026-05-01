@@ -1,6 +1,11 @@
 import React, { useEffect } from "react";
 
-const CartProduct = ({ item, handleUpdateQuantity, handleRemoveItem }) => {
+const CartProduct = ({
+  item,
+  handleIncrementQuantity,
+  handleDecrementQuantity,
+  handleRemoveItem,
+}) => {
   const product = item.product;
   const variantId = item.variants; // From your data, item.variants is the ID string
   const variant = product?.variants?.find((v) => v._id === variantId);
@@ -127,8 +132,10 @@ const CartProduct = ({ item, handleUpdateQuantity, handleRemoveItem }) => {
             </span>
             <div className="flex items-center gap-4 bg-[#111] rounded-full px-4 py-1.5 border border-white/5">
               <button
-                // onClick={() => handleUpdateQuantity()}
-                // disabled={item?.quantity <= 1}
+                onClick={() =>
+                  handleDecrementQuantity(item.product._id, item.variants)
+                }
+                disabled={item?.quantity <= 1}
                 className="text-white/40 hover:text-white transition-colors disabled:opacity-20 disabled:hover:text-white/40"
               >
                 <svg
@@ -151,7 +158,7 @@ const CartProduct = ({ item, handleUpdateQuantity, handleRemoveItem }) => {
               </span>
               <button
                 onClick={() =>
-                  handleUpdateQuantity(item.product._id, item.variants)
+                  handleIncrementQuantity(item.product._id, item.variants)
                 }
                 className="text-white/40 hover:text-white transition-colors"
               >

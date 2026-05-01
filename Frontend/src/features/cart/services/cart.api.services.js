@@ -44,7 +44,21 @@ export const incrementcartItem = async ({ productId, variantId }) => {
     // /quantity/: productId /: variantId
     try {
 
-        const response = await api.patch(`/quantity/${productId}/${variantId}`)
+        const response = await api.patch(`/quantity/increase/${productId}/${variantId}`)
+        return response.data
+
+    } catch (e) {
+        throw new Error(e.response?.data?.message || "API FAILED")
+
+    }
+
+}
+export const decrementcartItem = async ({ productId, variantId }) => {
+
+    // /quantity/: productId /: variantId
+    try {
+
+        const response = await api.patch(`/quantity/decrease/${productId}/${variantId}`)
         return response.data
 
     } catch (e) {

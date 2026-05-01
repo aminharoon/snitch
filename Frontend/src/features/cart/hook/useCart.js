@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux"
-import { addToCart, getCart, delateCartItem, incrementcartItem } from "../services/cart.api.services.js"
-import { setItems, setLoading, setError, deleteItemFromCart, incrementCartItemQuantity } from "../state/cart.slice.js"
+import { addToCart, getCart, delateCartItem, incrementcartItem, decrementcartItem } from "../services/cart.api.services.js"
+import { setItems, setLoading, setError, deleteItemFromCart, incrementCartItemQuantity, decrementCartItemQuantity } from "../state/cart.slice.js"
 import toast from "react-hot-toast"
 
 
@@ -82,9 +82,27 @@ export const useCart = () => {
             toast.error(`Failde to delete items cart : ${e.message}`)
         }
     }
+    const handleDecrementCartItem = async ({ productId, variantId }) => {
+        try {
+            dispatch(setLoading(true))
+
+            const response = await decrementcartItem({ productId, variantId })
+            if (response) {
+                dispatch(decrementCartItemQuantity({ productId, variantId }))
+                dispatch(setLoading(false))
+                toast.success("quantity decrease ")
+
+            }
+
+        } catch (e) {
+            dispatch(setLoading(false))
+            setError(`Failde to delete items cart : ${e.message}`)
+            toast.error(`Failde to delete items cart : ${e.message}`)
+        }
+    }
 
 
     return {
-        handleAddToCart, handleGetCartItems, handleDeleteCartIem, handleIncrementCartItem
+        handleAddToCart, handleGetCartItems, handleDeleteCartIem, handleIncrementCartItem, handleDecrementCartItem
     }
 }
