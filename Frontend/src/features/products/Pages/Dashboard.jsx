@@ -3,6 +3,7 @@ import { useProduct } from "../Hooks/useProducts";
 import { useSelector } from "react-redux";
 import { ProductCard } from "../Componts";
 import { Link, useLocation, useNavigate } from "react-router";
+import BackButton from "../../components/BackButton";
 
 const Dashboard = () => {
   const location = useLocation();
@@ -30,6 +31,9 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen bg-[#FAF9F6] text-black pt-10 pb-20 px-4 md:px-10 selection:bg-black selection:text-white">
       <div className="max-w-7xl mx-auto">
+        <div className="mt-1">
+          <BackButton />
+        </div>
         {/* Header Section */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-8">
           <div>

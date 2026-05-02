@@ -1,5 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
+import BackButton from "../../components/BackButton";
 
 const Profile = () => {
   const { user } = useSelector((state) => state.auth);
@@ -31,6 +32,7 @@ const Profile = () => {
     <div className="min-h-[calc(100vh-4rem)] bg-[#FAF9F6] flex items-center justify-center pt-10 pb-20 px-4 selection:bg-black selection:text-white">
       <div className="w-full max-w-4xl mx-auto">
         {/* Header Section */}
+        <BackButton />
         <div className="mb-10 text-center">
           <h1 className="text-4xl font-black tracking-tighter text-black mb-2 uppercase italic">
             Profile

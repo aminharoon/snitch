@@ -265,7 +265,7 @@ const SingleProductDet = () => {
               {/* Core Info */}
               <div className="space-y-6">
                 <div className="flex items-center gap-3">
-                  <span className="px-4 py-1.5 bg-black text-white text-[9px] font-black uppercase tracking-[0.3em] rounded-full">
+                  <span className="px-4 py-1.5 bg-black text-gray-300 text-[9px] font-black uppercase tracking-[0.3em] rounded-full">
                     Limited Edition
                   </span>
                   {(matchingVariant || !hasVariants) && (
@@ -297,10 +297,10 @@ const SingleProductDet = () => {
 
               {/* Description Block */}
               <div className="space-y-3">
-                <h3 className="text-[9px] font-black uppercase tracking-[0.4em] text-gray-400">
+                <h3 className="text-[9px] font-black uppercase tracking-[0.4em] text-gray-800">
                   The Narrative
                 </h3>
-                <p className="text-gray-600 text-lg leading-relaxed font-light italic">
+                <p className="text-gray-900 text-lg leading-relaxed font-light italic ">
                   "{description}"
                 </p>
               </div>
@@ -311,7 +311,7 @@ const SingleProductDet = () => {
                   {Object.entries(attributeGroups).map(([key, values]) => (
                     <div key={key} className="space-y-4">
                       <div className="flex justify-between items-center">
-                        <h3 className="text-[9px] font-black uppercase tracking-[0.4em] text-gray-400">
+                        <h3 className="text-[9px] font-black uppercase tracking-[0.4em] text-gray-900">
                           Select {key}
                         </h3>
                         {selectedAttributes[key] && (
@@ -335,7 +335,7 @@ const SingleProductDet = () => {
                                 active
                                   ? "bg-black text-white border-black shadow-xl scale-105"
                                   : enabled
-                                    ? "bg-white text-gray-400 border-black/5 hover:border-black/20 hover:text-black"
+                                    ? "bg-white text-gray-800 border-black/5 hover:border-black/20 hover:text-black"
                                     : "bg-transparent text-gray-200 border-black/5 cursor-not-allowed opacity-30"
                               }`}
                             >
@@ -365,13 +365,13 @@ const SingleProductDet = () => {
                   <div
                     className={`w-2 h-2 rounded-full ${isOutOfStock ? "bg-red-500" : "bg-green-500"} animate-pulse`}
                   />
-                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400">
+                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-800">
                     {isOutOfStock
                       ? "Stock Depleted"
                       : `${displayStock} Units In Vault`}
                   </span>
                 </div>
-                <span className="text-[10px] font-black text-gray-200 uppercase tracking-[0.3em]">
+                <span className="text-[10px] font-black text-gray-800 uppercase tracking-[0.3em]">
                   REF: {singleProduct._id.slice(-12).toUpperCase()}
                 </span>
               </div>

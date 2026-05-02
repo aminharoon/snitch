@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router";
 import { useProduct } from "../Hooks/useProducts";
 import { useSelector } from "react-redux";
+import BackButton from "../../components/BackButton";
 
 const UpdateSellerProduct = () => {
   const { id } = useParams();
@@ -174,6 +175,7 @@ const UpdateSellerProduct = () => {
   return (
     <div className="h-screen bg-[#FAF9F6] text-black pt-6 pb-6 px-4 sm:px-10 overflow-hidden selection:bg-black selection:text-white">
       <div className="max-w-4xl mx-auto space-y-6 h-full flex flex-col">
+        <BackButton />
         {/* Product Info Card */}
         <div className="bg-white rounded-4xl p-8 border border-black/5 shadow-sm flex flex-col md:flex-row gap-10 relative flex-shrink-0">
           {!isEditingProduct ? (
@@ -306,8 +308,12 @@ const UpdateSellerProduct = () => {
         <div className="space-y-4 flex-1 overflow-hidden flex flex-col">
           <div className="flex items-center justify-between px-2">
             <div>
-              <h2 className="text-lg font-black text-black uppercase tracking-tighter italic">Variants</h2>
-              <p className="text-[10px] font-black text-gray-600 uppercase tracking-[0.3em]">Style Configurations</p>
+              <h2 className="text-lg font-black text-black uppercase tracking-tighter italic">
+                Variants
+              </h2>
+              <p className="text-[10px] font-black text-gray-600 uppercase tracking-[0.3em]">
+                Style Configurations
+              </p>
             </div>
             <button
               onClick={() => setIsModalOpen(true)}
@@ -320,7 +326,9 @@ const UpdateSellerProduct = () => {
             {(!singleProduct.variants ||
               singleProduct.variants.length === 0) && (
               <div className="col-span-full bg-white rounded-4xl border border-dashed border-black/10 p-16 text-center">
-                <p className="text-gray-600 text-[10px] font-black uppercase tracking-[0.3em]">No variants detected</p>
+                <p className="text-gray-600 text-[10px] font-black uppercase tracking-[0.3em]">
+                  No variants detected
+                </p>
               </div>
             )}
             {singleProduct.variants &&
@@ -397,11 +405,15 @@ const UpdateSellerProduct = () => {
                         Stock
                       </label>
                       <div className="flex items-center gap-3 bg-[#FAF9F6] border border-black/10 rounded-2xl px-3 py-1.5">
-                        <button className="text-gray-600 hover:text-black px-2 transition-colors font-black">-</button>
+                        <button className="text-gray-600 hover:text-black px-2 transition-colors font-black">
+                          -
+                        </button>
                         <span className="text-black font-black text-sm min-w-[2.5rem] text-center">
                           {variant.stock}
                         </span>
-                        <button className="text-gray-600 hover:text-black px-2 transition-colors font-black">+</button>
+                        <button className="text-gray-600 hover:text-black px-2 transition-colors font-black">
+                          +
+                        </button>
                       </div>
                     </div>
                     <button className="px-6 py-3 bg-black text-white text-[9px] font-black uppercase tracking-[0.2em] rounded-xl hover:bg-gray-800 transition-all shadow-lg">
@@ -423,7 +435,9 @@ const UpdateSellerProduct = () => {
                 <h3 className="text-2xl font-black text-black uppercase tracking-tighter italic">
                   New Variant
                 </h3>
-                <p className="text-[10px] font-black text-gray-600 uppercase tracking-[0.3em]">Configure Specifications</p>
+                <p className="text-[10px] font-black text-gray-600 uppercase tracking-[0.3em]">
+                  Configure Specifications
+                </p>
               </div>
               <button
                 onClick={() => setIsModalOpen(false)}
@@ -602,7 +616,9 @@ const UpdateSellerProduct = () => {
                       d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5"
                     />
                   </svg>
-                  <span className="text-[10px] font-black uppercase tracking-[0.3em]">Upload Variants</span>
+                  <span className="text-[10px] font-black uppercase tracking-[0.3em]">
+                    Upload Variants
+                  </span>
                 </div>
 
                 {/* Previews */}
@@ -655,9 +671,7 @@ const UpdateSellerProduct = () => {
               </button>
 
               {loading ? (
-                <button
-                  className="bg-black text-white text-[10px] font-black uppercase tracking-[0.3em] px-10 py-4 rounded-2xl transition-all duration-500 opacity-70 cursor-not-allowed flex items-center gap-3"
-                >
+                <button className="bg-black text-white text-[10px] font-black uppercase tracking-[0.3em] px-10 py-4 rounded-2xl transition-all duration-500 opacity-70 cursor-not-allowed flex items-center gap-3">
                   <svg
                     className="animate-spin h-5 w-5 text-white"
                     xmlns="http://www.w3.org/2000/svg"
