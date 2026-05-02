@@ -48,7 +48,7 @@ export const useCart = () => {
     }
 
     const handleDeleteCartIem = async ({ productId, variantId }) => {
-        console.log("This is called hesar ", productId, variantId)
+
         try {
             dispatch(setLoading(true))
             const response = await delateCartItem({ productId, variantId })

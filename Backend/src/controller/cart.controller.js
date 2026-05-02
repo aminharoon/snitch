@@ -215,7 +215,7 @@ const decreaseQuantity = async (req, res) => {
         throw new ApiError(409, "Quantity cannot be negative");
     }
 
-    // decrease the stock of the product variant
+    // decrease the stock of the product variant this can be done only when p order is placed
     // await productModel.findOneAndUpdate(
     //     {
     //         _id: productId,
