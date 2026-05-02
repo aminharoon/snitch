@@ -91,3 +91,13 @@ export const deleteVariant = async (productId, variantId) => {
 
     }
 }
+export const increaseStock = async ({ productId, variantId }) => {
+    try {
+        const response = await api.patch(`/variants/incrementStock/${productId}/${variantId}`)
+        return response.data
+
+    } catch (e) {
+        throw new Error(e.response?.data?.message || "API FAILED")
+
+    }
+}

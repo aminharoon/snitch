@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux"
 import { addToCart, getCart, delateCartItem, incrementcartItem, decrementcartItem } from "../services/cart.api.services.js"
-import { setItems, setLoading, setError, deleteItemFromCart, incrementCartItemQuantity, decrementCartItemQuantity } from "../state/cart.slice.js"
+import { setItems, setLoading, setError, deleteItemFromCart, incrementCartItemQuantity, decrementCartItemQuantity, incrementProsuctStock } from "../state/cart.slice.js"
 import toast from "react-hot-toast"
 
 
@@ -100,6 +100,8 @@ export const useCart = () => {
             toast.error(`Failde to delete items cart : ${e.message}`)
         }
     }
+
+
 
 
     return {

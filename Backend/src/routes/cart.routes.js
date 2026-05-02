@@ -9,7 +9,6 @@ const cartRoutes = express.Router()
 /**
  * @route GET /api/cart
  * @desc Get the authenticated user's cart
- * @access Private
  */
 cartRoutes.get("/", verifyUser, cartController.getCartProducts)
 
@@ -39,7 +38,7 @@ cartRoutes.patch("/delete/:productId/:variantId", validateDeleteCartItem, verify
  * @arguments variantId - ID of the product variant whose quantity to increase
  * @argument quantity - Quantity to increase the product by
  */
-cartRoutes.patch("/quantity/increase/:productId/:variantId", verifyUser, cartController.increaseQuantity)
+cartRoutes.patch("/quantity/increase/:productId/:variantId", validateCartQuantity, verifyUser, cartController.increaseQuantity)
 
 /**
  * @route PATCH /api/cart/quantity/decrease/:productId/:variantId
@@ -50,5 +49,8 @@ cartRoutes.patch("/quantity/increase/:productId/:variantId", verifyUser, cartCon
  * @argument quantity - Quantity to decrease the product by
  */
 
-cartRoutes.patch("/quantity/decrease/:productId/:variantId", verifyUser, cartController.decreaseQuantity)
+cartRoutes.patch("/quantity/decrease/:productId/:variantId", validateCartQuantity, verifyUser, cartController.decreaseQuantity)
+
+
+
 export default cartRoutes

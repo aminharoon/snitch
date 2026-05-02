@@ -136,6 +136,8 @@ const deleteCartItem = async (req, res) => {
 
 const increaseQuantity = async (req, res) => {
 
+
+
     const { productId, variantId } = req.params
 
 
@@ -215,17 +217,6 @@ const decreaseQuantity = async (req, res) => {
         throw new ApiError(409, "Quantity cannot be negative");
     }
 
-    // decrease the stock of the product variant this can be done only when p order is placed
-    // await productModel.findOneAndUpdate(
-    //     {
-    //         _id: productId,
-    //         "variants._id": variantId,
-    //         "variants.stock": { $gte: 1 }
-    //     },
-    //     { $inc: { "variants.$.stock": -1 } },
-    //     { new: true }
-    // );
-    // await product.save({ validateBeforeSave: false });
 
     await cartModel.findOneAndUpdate(
         { user: req.user._id, "items.product": productId, "items.variants": variantId },
@@ -239,6 +230,8 @@ const decreaseQuantity = async (req, res) => {
 
     res.status(200).json(new ApiResponse(200, "Quantity decreased successfully"));
 }
+
+
 export const cartController = {
     addToCart,
     getCartProducts,

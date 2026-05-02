@@ -13,7 +13,7 @@ export const validateCart = [
 
     param("productId").notEmpty().withMessage("Product ID is required").isMongoId().withMessage("Invalid Product ID"),
     param("variantId").notEmpty().withMessage("Variant ID is required").isMongoId().withMessage("Invalid Variant ID"),
-    body("quantity").optional().isInt({ min: 1 }).withMessage("Quantity must be a positive integer"),
+
 
     handleValidationErrors
 ]
@@ -21,7 +21,7 @@ export const validateCart = [
 export const validateCartQuantity = [
     param("productId").notEmpty().withMessage("Product ID is required").isMongoId().withMessage("Invalid Product ID"),
     param("variantId").notEmpty().withMessage("item ID is required").isMongoId().withMessage("Invalid item  ID"),
-    body("quantity").notEmpty().isInt({ min: 1 }).withMessage("Quantity must be a positive integer"),
+
     handleValidationErrors
 ]
 export const validateDeleteCartItem = [

@@ -1,4 +1,6 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, current } from "@reduxjs/toolkit";
+
+
 
 export const cartSlice = createSlice({
     name: "cart",
@@ -49,6 +51,7 @@ export const cartSlice = createSlice({
         },
         decrementCartItemQuantity: (state, action) => {
             const { productId, variantId } = action.payload
+
             const existingItem = state.items.find(
                 item =>
                     item.product._id === productId &&
@@ -64,6 +67,6 @@ export const cartSlice = createSlice({
 
 })
 
-export const { setItems, addItem, setLoading, setError, incrementCartItemQuantity, deleteItemFromCart, decrementCartItemQuantity } = cartSlice.actions
+export const { setItems, addItem, setLoading, setError, incrementCartItemQuantity, deleteItemFromCart, decrementCartItemQuantity, incrementProsuctStock } = cartSlice.actions
 
 export default cartSlice.reducer

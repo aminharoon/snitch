@@ -42,7 +42,7 @@ const Cart = () => {
   const handleRemoveItem = async (productId, variantId) => {
     await handleDeleteCartIem({ productId, variantId });
   };
-  console.log("Items in the cart : ", items);
+
   return (
     <div className="min-h-screen bg-[#FAF9F6] text-black pt-10 pb-16 selection:bg-black selection:text-white">
       <div className="max-w-6xl mx-auto px-6 relative">

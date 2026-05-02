@@ -3,13 +3,18 @@ import { useParams, useNavigate } from "react-router";
 import { useProduct } from "../Hooks/useProducts";
 import { useSelector } from "react-redux";
 import BackButton from "../../components/BackButton";
+import { useCart } from "../../cart/hook/useCart";
 
 const UpdateSellerProduct = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const { getSingleProductDet, handleAddVarients, handleDeleteVariant } =
-    useProduct();
+  const {
+    getSingleProductDet,
+    handleAddVarients,
+    handleDeleteVariant,
+    handleIncStock,
+  } = useProduct();
 
   useEffect(() => {
     if (id) {
@@ -167,9 +172,12 @@ const UpdateSellerProduct = () => {
       ...newVariant,
       attributes: formattedAttributes,
     };
-
     await handleAddVarients(singleProduct._id, payload);
     setIsModalOpen(false);
+  };
+
+  const handleIncProductStock = async (productId, variantId) => {
+    await handleIncStock({ productId, variantId });
   };
 
   return (
@@ -411,7 +419,15 @@ const UpdateSellerProduct = () => {
                         <span className="text-black font-black text-sm min-w-[2.5rem] text-center">
                           {variant.stock}
                         </span>
-                        <button className="text-gray-600 hover:text-black px-2 transition-colors font-black">
+                        <button
+                          onClick={(e) =>
+                            handleIncProductStock(
+                              singleProduct._id,
+                              variant._id,
+                            )
+                          }
+                          className="text-gray-600 hover:text-black px-2 transition-colors font-black"
+                        >
                           +
                         </button>
                       </div>

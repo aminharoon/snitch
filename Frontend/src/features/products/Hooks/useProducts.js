@@ -1,6 +1,6 @@
 import { useState } from "react"
-import { getSellerProducts, createProduct, getAllProducts, getSingleProductDetails, deleteProduct, addProductVarients, deleteVariant } from "../services/api.products.js"
-import { setSellerProducts, setLoading, setError, setAllProducts, setSingleProduct } from "../State/state.product.js"
+import { getSellerProducts, createProduct, getAllProducts, getSingleProductDetails, deleteProduct, addProductVarients, deleteVariant, increaseStock } from "../services/api.products.js"
+import { setSellerProducts, setLoading, setError, setAllProducts, setSingleProduct, incProductStock } from "../State/state.product.js"
 import toast from "react-hot-toast"
 import { useDispatch, useSelector } from "react-redux"
 
@@ -112,10 +112,10 @@ export const useProduct = () => {
 
 
             Dispatch(setLoading(true))
+
             const response = await addProductVarients(productId, newProductVarients)
 
             if (response) {
-
                 Dispatch(setSingleProduct(response.data))
                 Dispatch(setLoading(false))
                 toast.success("Variants Are Added successfully ")
@@ -153,11 +153,28 @@ export const useProduct = () => {
         }
     }
 
+    const handleIncStock = async ({ productId, variantId }) => {
+        try {
+            Dispatch(setLoading(false))
+            const response = await increaseStock({ productId, variantId })
+            if (response) {
+                Dispatch(incProductStock({ productId, variantId }))
+                Dispatch(setLoading(false))
+            }
+
+        } catch (e) {
+            Dispatch(setLoading(false))
+            setError(`Failde to delete items cart : ${e.message}`)
+            toast.error(`Failde to add stock items cart : ${e.message}`)
+
+        }
+    }
+
 
     return {
         handleCreateProduct,
         handleGetSellerProducts, getAllProducts, handleGetAllProducts, getSingleProductDet
-        , handleDeleteProduct, handleAddVarients, handleDeleteVariant
+        , handleDeleteProduct, handleAddVarients, handleDeleteVariant, handleIncStock
     }
 }
 

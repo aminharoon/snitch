@@ -136,6 +136,8 @@ const updateProduct = async (req, res) => {
 
 }
 
+
+
 const deleteVariant = async (req, res) => {
 
     const variantId = req.params.variantId
@@ -159,6 +161,22 @@ const deleteVariant = async (req, res) => {
 
 
 }
+const increaseStock = async (req, res) => {
+    const { productId, variantId } = req.params
+
+    const product = await productModel.findOneAndUpdate(
+        {
+            _id: productId,
+            "variants._id": variantId
+        },
+        {
+            $inc: { "variants.$.stock": +1 }
+        },
+        { new: true }
+    )
+    res.status(200).json(new ApiResponse(400, "Stock Increased "))
+
+}
 export const productController = {
     createProduct,
     getAllProducts,
@@ -166,6 +184,7 @@ export const productController = {
     getAllProductsForBuyers,
     getSingleProductDetails,
     updateProduct,
-    deleteVariant
+    deleteVariant,
+    increaseStock
 }
 
