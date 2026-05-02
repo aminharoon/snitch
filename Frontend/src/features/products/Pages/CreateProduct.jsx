@@ -94,7 +94,7 @@ const CreateProduct = () => {
       images.forEach((img) => {
         data.append("images", img.file);
       });
-      alert("Do't Forget To Add An Variant like Stock ");
+      alert("Do't Forget To Add An Variant like Stock and size  ");
       await handleCreateProduct(data);
       setFormData(initialSateOfFormData);
       setImages([]);
@@ -147,7 +147,9 @@ const CreateProduct = () => {
               className={`w-full px-6 py-5 rounded-2xl bg-[#FAF9F6] text-black border ${errors.title ? "border-red-500" : "border-black/5"} focus:border-black/20 focus:outline-none transition-all placeholder:text-gray-400 font-medium`}
             />
             {errors.title && (
-              <p className="mt-2 text-[10px] font-bold text-red-500 ml-1 uppercase tracking-wider">{errors.title}</p>
+              <p className="mt-2 text-[10px] font-bold text-red-500 ml-1 uppercase tracking-wider">
+                {errors.title}
+              </p>
             )}
           </div>
 
@@ -321,7 +323,9 @@ const CreateProduct = () => {
               </div>
             )}
             {errors.images && (
-              <p className="mt-3 text-[10px] font-bold text-red-500 ml-1 uppercase tracking-wider">{errors.images}</p>
+              <p className="mt-3 text-[10px] font-bold text-red-500 ml-1 uppercase tracking-wider">
+                {errors.images}
+              </p>
             )}
             <div className="mt-4 flex justify-between items-center px-1">
               <p className="text-[9px] text-gray-600 font-black uppercase tracking-[0.2em]">
