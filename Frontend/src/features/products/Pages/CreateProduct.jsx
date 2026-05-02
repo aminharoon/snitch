@@ -2,6 +2,7 @@ import React, { useState, useRef } from "react";
 import { useProduct } from "../Hooks/useProducts.js";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
+import BackButton from "../../components/BackButton.jsx";
 
 const CreateProduct = () => {
   const { handleCreateProduct } = useProduct();
@@ -97,7 +98,7 @@ const CreateProduct = () => {
       alert("Do't Forget To Add An Variant like Stock and size  ");
       const response = await handleCreateProduct(data);
       console.log(response._id);
-      // setFormData(initialSateOfFormData);
+      setFormData(initialSateOfFormData);
       setImages([]);
       navigate(`/seller/product/${response._id}`);
     } catch (err) {
@@ -116,6 +117,7 @@ const CreateProduct = () => {
     <div className="min-h-screen bg-[#FAF9F6] py-20 px-4 sm:px-6 lg:px-8 selection:bg-black selection:text-white">
       <div className="w-full max-w-2xl mx-auto">
         {/* Header Section */}
+        <BackButton />
         <div className="text-center mb-16">
           <h1 className="text-5xl font-black text-black tracking-tighter mb-3 uppercase italic">
             Create Item
