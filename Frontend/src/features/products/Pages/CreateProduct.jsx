@@ -95,10 +95,11 @@ const CreateProduct = () => {
         data.append("images", img.file);
       });
       alert("Do't Forget To Add An Variant like Stock and size  ");
-      await handleCreateProduct(data);
-      setFormData(initialSateOfFormData);
+      const response = await handleCreateProduct(data);
+      console.log(response._id);
+      // setFormData(initialSateOfFormData);
       setImages([]);
-      navigate("/seller/dashboard");
+      navigate(`/seller/product/${response._id}`);
     } catch (err) {
       console.error("Submission failed:", err);
     }

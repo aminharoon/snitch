@@ -17,7 +17,7 @@ export const useProduct = () => {
             if (data) {
                 toast.success("Product created successfully")
                 Dispatch(setLoading(false))
-                return data.products
+                return data
             }
         } catch (e) {
             console.log(`HOOK : something went wrong while calling the create product ${e.message}`)
