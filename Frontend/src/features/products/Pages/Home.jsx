@@ -152,7 +152,7 @@ const Home = () => {
       </section>
 
       {/* Promotional Banner */}
-      <section className="px-6 py-24 bg-[#FAF9F6]">
+      {/* <section className="px-6 py-24 bg-[#FAF9F6]">
         <div className="max-w-7xl mx-auto">
           <div className="relative bg-black rounded-[3rem] overflow-hidden py-24 px-12 text-center">
             <div className="absolute inset-0 opacity-30">
@@ -176,7 +176,7 @@ const Home = () => {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Footer */}
       <footer className="bg-white border-t border-black/5 py-24 px-6">

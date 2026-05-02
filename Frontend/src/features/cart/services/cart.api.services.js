@@ -1,14 +1,11 @@
 import axios from "axios";
 
-const api = axios.create({
-    baseURL: "/api/product/cart",
-    withCredentials: true
-})
+import { api } from "../../utils/api.utils.js"
 
 export const addToCart = async ({ productId, variantId, quantity, attributes }) => {
     try {
 
-        const response = await api.post(`/add/${productId}/${variantId}`, { quantity: quantity || 1, attributes })
+        const response = await api.post(`/product/cart/add/${productId}/${variantId}`, { quantity: quantity || 1, attributes })
 
         return response.data
 
@@ -20,7 +17,7 @@ export const addToCart = async ({ productId, variantId, quantity, attributes }) 
 }
 export const getCart = async () => {
     try {
-        const response = await api.get("/")
+        const response = await api.get("/product/cart/")
         return response.data
 
     } catch (e) {
@@ -30,7 +27,7 @@ export const getCart = async () => {
 
 export const delateCartItem = async ({ productId, variantId }) => {
     try {
-        const response = await api.patch(`/delete/${productId}/${variantId}`)
+        const response = await api.patch(`/product/cart/delete/${productId}/${variantId}`)
         return response.data
 
     } catch (e) {
@@ -44,7 +41,7 @@ export const incrementcartItem = async ({ productId, variantId }) => {
     // /quantity/: productId /: variantId
     try {
 
-        const response = await api.patch(`/quantity/increase/${productId}/${variantId}`)
+        const response = await api.patch(`/product/cart/quantity/increase/${productId}/${variantId}`)
         return response.data
 
     } catch (e) {
@@ -58,7 +55,7 @@ export const decrementcartItem = async ({ productId, variantId }) => {
     // /quantity/: productId /: variantId
     try {
 
-        const response = await api.patch(`/quantity/decrease/${productId}/${variantId}`)
+        const response = await api.patch(`/product/cart/quantity/decrease/${productId}/${variantId}`)
         return response.data
 
     } catch (e) {

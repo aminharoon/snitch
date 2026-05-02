@@ -1,15 +1,12 @@
 import axios from "axios";
 
-const api = axios.create({
-    baseURL: "/api/products",
-    withCredentials: true
-})
+import { api } from "../../utils/api.utils.js"
 
 
 export const createProduct = async (formData) => {
     console.log("FormData contents:", Object.fromEntries(formData.entries()));
     try {
-        const response = await api.post("/create", formData)
+        const response = await api.post("/products/create", formData)
         return response.data
     } catch (e) {
         console.log(`SERVICES : something went wrong while calling the create  products Api ${e.message}`)
@@ -19,7 +16,7 @@ export const createProduct = async (formData) => {
 
 export const getSellerProducts = async () => {
     try {
-        const response = await api.get("/seller")
+        const response = await api.get("/products/seller")
         return response.data
 
     } catch (e) {
@@ -30,7 +27,7 @@ export const getSellerProducts = async () => {
 
 export const getAllProducts = async () => {
     try {
-        const response = await api.get("/")
+        const response = await api.get("/products/")
         return response.data
 
     } catch (e) {
@@ -41,7 +38,7 @@ export const getAllProducts = async () => {
 
 export const getSingleProductDetails = async (productID) => {
     try {
-        const response = await api.get(`/${productID}`)
+        const response = await api.get(`/products/${productID}`)
         return response.data
     } catch (e) {
         console.log(`SERVICES something went wrong while getting the single product details ${e.message}`)
@@ -51,7 +48,7 @@ export const getSingleProductDetails = async (productID) => {
 
 export const deleteProduct = async (productID) => {
     try {
-        const response = await api.delete(`/delete/${productID}`)
+        const response = await api.delete(`/products/delete/${productID}`)
         return response.data
 
 
@@ -70,7 +67,7 @@ export const addProductVarients = async (productId, newProductVarients) => {
         formData.append("stock", newProductVarients.stock)
         formData.append("priceAmount", newProductVarients.price.amount)
         formData.append("attributes", JSON.stringify(newProductVarients.attributes))
-        const response = await api.post(`/variants/${productId}`, formData)
+        const response = await api.post(`/products/variants/${productId}`, formData)
         return response.data
 
     } catch (e) {
@@ -83,7 +80,7 @@ export const deleteVariant = async (productId, variantId) => {
 
     try {
 
-        const response = await api.delete(`/variants/${productId}/delete/${variantId}`)
+        const response = await api.delete(`/products/variants/${productId}/delete/${variantId}`)
         return response.data
 
     } catch (e) {
@@ -93,7 +90,7 @@ export const deleteVariant = async (productId, variantId) => {
 }
 export const increaseStock = async ({ productId, variantId }) => {
     try {
-        const response = await api.patch(`/variants/incrementStock/${productId}/${variantId}`)
+        const response = await api.patch(`/products/variants/incrementStock/${productId}/${variantId}`)
         return response.data
 
     } catch (e) {

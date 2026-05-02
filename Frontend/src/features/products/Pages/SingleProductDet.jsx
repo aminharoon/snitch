@@ -95,7 +95,9 @@ const SingleProductDet = () => {
   // Derived display data
   const displayPrice = matchingVariant?.price || price;
   const displayImages =
-    matchingVariant?.images?.length > 0 ? matchingVariant.images : images;
+    selectedAttributes["COLOR"] && matchingVariant?.images?.length > 0
+      ? matchingVariant.images
+      : images;
   const displayStock = matchingVariant
     ? matchingVariant.stock
     : variants?.length >= 0
@@ -164,17 +166,16 @@ const SingleProductDet = () => {
   const handleAddToKart = async () => {
     if (!user) return navigate("/login");
 
-    if (hasVariants && !matchingVariant) {
-      alert("Please select the size ");
+    // Only 'Size' is mandatory, 'Color' is optional
+    if (hasVariants && !selectedAttributes["SIZE"]) {
+      alert("Please select the Size");
       return;
     }
 
-    const payload = {
-      productId: singleProduct._id,
-      quantity: 1,
-      variantId: matchingVariant?._id || null,
-      attributes: selectedAttributes,
-    };
+    if (hasVariants && !matchingVariant) {
+      alert("This item is currently unavailable");
+      return;
+    }
 
     const respnse = await handleAddToCart({
       productId: singleProduct._id,
@@ -182,11 +183,11 @@ const SingleProductDet = () => {
       attributes: selectedAttributes,
     });
     console.log(respnse);
+    is;
   };
 
   const handleAddBuy = () => {
-    // if (!user) return navigate("/login");
-    // Logic for buy now goes here
+    if (!user) return navigate("/login");
   };
   const handleAddVariants = () =>
     navigate(`/seller/product/${singleProduct._id}`);

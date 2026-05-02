@@ -2,15 +2,12 @@ import axios from "axios";
 
 
 
-const api = axios.create({
-    baseURL: "/api/auth",
-    withCredentials: true
-})
+import { api } from "../../utils/api.utils.js"
 
 
 export const register = async ({ fullName, email, phoneNumber, password, isSeller }) => {
     try {
-        const response = await api.post("/register", { fullName, email, phoneNumber, password, isSeller })
+        const response = await api.post("/auth/register", { fullName, email, phoneNumber, password, isSeller })
         // response.data will return the user obj user:{_id,something .....}
 
         return response.data
@@ -21,12 +18,13 @@ export const register = async ({ fullName, email, phoneNumber, password, isSelle
 }
 export const login = async ({ email, password }) => {
     try {
-        const response = await api.post("/login", { email, password })
+        const response = await api.post("/auth/login", { email, password })
 
         return response.data
     } catch (e) {
 
         console.log(`SERVICES  went wrong while login the user   ${e.message}`)
+        throw new Error(e.response?.data?.message || "API FAILED")
 
 
     }
@@ -34,17 +32,11 @@ export const login = async ({ email, password }) => {
 
 export const getme = async () => {
     try {
-        const res = await api.get("/me");
+        const res = await api.get("/auth/me");
         return res.data;
 
     } catch (e) {
-        if (e.response?.status === 401) {
-            const refreshed = await refreshToken();
-
-            if (refreshed) {
-                return await getme(); // retry once
-            }
-        }
+        throw new Error(e.response?.data?.message || "API FAILED")
 
         throw e;
     }
@@ -53,29 +45,27 @@ export const getme = async () => {
 
 export const logout = async () => {
     try {
-        const response = await api.get("/logout")
+        const response = await api.get("/auth/logout")
         return response.data
 
     } catch (e) {
+
         console.log(`SERVICES something went wrong while hitting the logout api  ${e.message}`)
+        throw new Error(e.response?.data?.message || "API FAILED")
+
 
     }
 }
+
+
 
 export const refreshToken = async () => {
-
     try {
-        const response = await api.get("/refreshToken")
-        return true
-
-    } catch (e) {
-        if (e.response?.status === 401) {
-            await logout()
-            return false
-        }
-        console.log(`SERVICES : something went wrong while calling the refreshToken function ${e.message}`)
-        return false
+        await axios.get("/api/auth/refreshToken", {
+            withCredentials: true
+        });
+        return true;
+    } catch {
+        return false;
     }
-
-}
-
+};

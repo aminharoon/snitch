@@ -9,6 +9,7 @@ const cartRoutes = express.Router()
 /**
  * @route GET /api/cart
  * @desc Get the authenticated user's cart
+ * @access Private
  */
 cartRoutes.get("/", verifyUser, cartController.getCartProducts)
 
