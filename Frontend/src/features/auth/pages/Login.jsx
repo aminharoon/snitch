@@ -35,21 +35,26 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#0f0f0f] flex items-center justify-center p-4">
-      <div className="w-full max-w-md bg-[#1a1a1a] rounded-2xl p-8 border border-[#333]">
-        <h2 className="text-[#F5C518] text-3xl font-bold mb-6 text-center">
-          Welcome Back
+    <div className="min-h-screen bg-[#FAF9F6] flex items-center justify-center p-4 selection:bg-black selection:text-white">
+      <div className="w-full max-w-md bg-white rounded-4xl p-10 border border-black/5 shadow-sm">
+        <h2 className="text-black text-4xl font-black mb-2 text-center tracking-tighter uppercase italic">
+          Welcome
         </h2>
+        <p className="text-gray-600 text-center mb-8 text-[10px] font-black uppercase tracking-[0.3em]">
+          Access your account
+        </p>
 
         {/* Google Login Button */}
-        <GoogleAuthButton />
+        <div className="mb-6">
+          <GoogleAuthButton />
+        </div>
 
-        <div className="relative mb-6">
+        <div className="relative mb-8">
           <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-[#333]"></div>
+            <div className="w-full border-t border-black/5"></div>
           </div>
-          <div className="relative flex justify-center text-sm">
-            <span className="px-2 bg-[#1a1a1a] text-gray-500">
+          <div className="relative flex justify-center text-[10px] font-black uppercase tracking-[0.2em]">
+            <span className="px-4 bg-white text-gray-600">
               Or continue with email
             </span>
           </div>
@@ -57,9 +62,9 @@ const Login = () => {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Email */}
-          <div>
+          <div className="space-y-2">
             <label
-              className="block text-gray-400 text-sm mb-1 ml-1"
+              className="block text-gray-600 text-[9px] font-black uppercase tracking-[0.2em] ml-1"
               htmlFor="email"
             >
               Email Address
@@ -69,24 +74,27 @@ const Login = () => {
               id="email"
               name="email"
               type="email"
-              placeholder="name@example.com"
+              placeholder="NAME@EXAMPLE.COM"
               value={formData.email}
               onChange={handleChange}
-              className="w-full bg-[#0f0f0f] text-white px-4 py-3 rounded-lg border border-[#333] focus:border-[#F5C518] focus:outline-none transition-colors"
+              className="w-full bg-[#FAF9F6] text-black px-6 py-4 rounded-2xl border border-black/5 focus:border-black/20 focus:outline-none transition-all placeholder:text-gray-400 font-medium"
             />
           </div>
 
           {/* Password */}
-          <div className="relative">
-            <div className="flex justify-between items-center mb-1 ml-1">
-              <label className="block text-gray-400 text-sm" htmlFor="password">
+          <div className="relative space-y-2">
+            <div className="flex justify-between items-center ml-1">
+              <label
+                className="block text-gray-600 text-[9px] font-black uppercase tracking-[0.2em]"
+                htmlFor="password"
+              >
                 Password
               </label>
               <a
                 href="#"
-                className="text-[#F5C518] text-xs hover:underline transition-colors"
+                className="text-black text-[9px] font-black uppercase tracking-[0.2em] hover:underline transition-colors"
               >
-                Forgot password?
+                Forgot?
               </a>
             </div>
             <div className="relative">
@@ -98,12 +106,12 @@ const Login = () => {
                 placeholder="••••••••"
                 value={formData.password}
                 onChange={handleChange}
-                className="w-full bg-[#0f0f0f] text-white px-4 py-3 rounded-lg border border-[#333] focus:border-[#F5C518] focus:outline-none transition-colors pr-12"
+                className="w-full bg-[#FAF9F6] text-black px-6 py-4 rounded-2xl border border-black/5 focus:border-black/20 focus:outline-none transition-all placeholder:text-gray-400 font-medium pr-14"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#F5C518] transition-colors p-1"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-black transition-colors p-2"
               >
                 {showPassword ? (
                   <svg
@@ -149,11 +157,11 @@ const Login = () => {
           <button
             type="submit"
             disabled={loading}
-            className={`w-full flex items-center justify-center bg-[#F5C518] hover:bg-[#e0b415] text-black font-bold py-3 rounded-lg transition-all duration-300 transform active:scale-[0.98] mt-2 shadow-lg shadow-[#F5C518]/10 ${loading ? "opacity-70 cursor-not-allowed" : ""}`}
+            className={`w-full flex items-center justify-center bg-black text-white text-[10px] font-black uppercase tracking-[0.3em] py-5 rounded-2xl hover:bg-gray-800 transition-all duration-500 transform active:scale-[0.98] mt-4 shadow-xl ${loading ? "opacity-70 cursor-not-allowed" : ""}`}
           >
             {loading ? (
               <svg
-                className="animate-spin h-5 w-5 text-black"
+                className="animate-spin h-5 w-5 text-white"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
@@ -178,11 +186,11 @@ const Login = () => {
           </button>
         </form>
 
-        <p className="text-gray-400 text-center mt-8 text-sm">
-          Don't have an account?{" "}
+        <p className="text-gray-600 text-center mt-10 text-[9px] font-black uppercase tracking-[0.2em]">
+          No account?{" "}
           <Link
             to="/register"
-            className="text-[#F5C518] hover:underline transition-colors font-medium"
+            className="text-black hover:underline transition-colors ml-1 font-black"
           >
             Create one
           </Link>

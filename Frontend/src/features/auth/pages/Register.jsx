@@ -1,106 +1,131 @@
-import React, { useState } from 'react';
-import { useAuth } from '../hooks/useAuth';
-import { Link } from 'react-router';
-import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router';
-import { GoogleAuthButton } from '../components';
+import React, { useState } from "react";
+import { useAuth } from "../hooks/useAuth";
+import { Link } from "react-router";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router";
+import { GoogleAuthButton } from "../components";
 
 const Register = () => {
   const { handleRegister } = useAuth();
   const loading = useSelector((state) => state.auth.loading);
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
-    fullName: '',
-    email: '',
-    phoneNumber: '',
-    password: '',
+    fullName: "",
+    email: "",
+    phoneNumber: "",
+    password: "",
     isSeller: false,
   });
-const navigate = useNavigate()
+  const navigate = useNavigate();
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value,
+      [name]: type === "checkbox" ? checked : value,
     }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     await handleRegister(formData);
-    navigate("/login")
+    navigate("/login");
   };
 
-
   return (
-    <div className="min-h-screen bg-[#0f0f0f] flex items-center justify-center p-4">
-      <div className="w-full max-w-md bg-[#1a1a1a] rounded-2xl p-8 border border-[#333]">
-        <h2 className="text-[#F5C518] text-3xl font-bold mb-6 text-center">Create Account</h2>
-        
-        {/* Google Login Button */}
-      <GoogleAuthButton />
+    <div className="min-h-screen bg-[#FAF9F6] flex items-center justify-center p-4 selection:bg-black selection:text-white">
+      <div className="w-full max-w-md bg-white rounded-4xl p-10 border border-black/5 shadow-sm my-10">
+        <h2 className="text-black text-4xl font-black mb-2 text-center tracking-tighter uppercase italic">
+          Create
+        </h2>
+        <p className="text-gray-600 text-center mb-8 text-[10px] font-black uppercase tracking-[0.3em]">
+          Join the collection
+        </p>
 
-        <div className="relative mb-6">
+        {/* Google Login Button */}
+        <div className="mb-6">
+          <GoogleAuthButton />
+        </div>
+
+        <div className="relative mb-8">
           <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-[#333]"></div>
+            <div className="w-full border-t border-black/5"></div>
           </div>
-          <div className="relative flex justify-center text-sm">
-            <span className="px-2 bg-[#1a1a1a] text-gray-500">Or continue with email</span>
+          <div className="relative flex justify-center text-[10px] font-black uppercase tracking-[0.2em]">
+            <span className="px-4 bg-white text-gray-600">
+              Or continue with email
+            </span>
           </div>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-5">
-        
-        
-
           {/* Full Name */}
-          <div>
-            <label className="block text-gray-400 text-sm mb-1 ml-1" htmlFor="fullName">Full Name</label>
+          <div className="space-y-2">
+            <label
+              className="block text-gray-600 text-[9px] font-black uppercase tracking-[0.2em] ml-1"
+              htmlFor="fullName"
+            >
+              Full Name
+            </label>
             <input
               required
               id="fullName"
               name="fullName"
               type="text"
-              placeholder="Test Test"
+              placeholder="YOUR FULL NAME"
               value={formData.fullName}
               onChange={handleChange}
-              className="w-full bg-[#0f0f0f] text-white px-4 py-3 rounded-lg border border-[#333] focus:border-[#F5C518] focus:outline-none transition-colors"
+              className="w-full bg-[#FAF9F6] text-black px-6 py-4 rounded-2xl border border-black/5 focus:border-black/20 focus:outline-none transition-all placeholder:text-gray-400 font-medium"
             />
           </div>
 
           {/* Email */}
-          <div>
-            <label className="block text-gray-400 text-sm mb-1 ml-1" htmlFor="email">Email Address</label>
+          <div className="space-y-2">
+            <label
+              className="block text-gray-600 text-[9px] font-black uppercase tracking-[0.2em] ml-1"
+              htmlFor="email"
+            >
+              Email Address
+            </label>
             <input
               required
               id="email"
               name="email"
               type="email"
-              placeholder="name@gmail.com"
+              placeholder="NAME@GMAIL.COM"
               value={formData.email}
               onChange={handleChange}
-              className="w-full bg-[#0f0f0f] text-white px-4 py-3 rounded-lg border border-[#333] focus:border-[#F5C518] focus:outline-none transition-colors"
+              className="w-full bg-[#FAF9F6] text-black px-6 py-4 rounded-2xl border border-black/5 focus:border-black/20 focus:outline-none transition-all placeholder:text-gray-400 font-medium"
             />
           </div>
 
           {/* Phone Number */}
-          <div>
-            <label className="block text-gray-400 text-sm mb-1 ml-1" htmlFor="phoneNumber">Phone Number</label>
+          <div className="space-y-2">
+            <label
+              className="block text-gray-600 text-[9px] font-black uppercase tracking-[0.2em] ml-1"
+              htmlFor="phoneNumber"
+            >
+              Phone Number
+            </label>
             <input
               required
               id="phoneNumber"
               name="phoneNumber"
               type="tel"
-              placeholder="+91 9797125874"
+              placeholder="+91 00000 00000"
               value={formData.phoneNumber}
               onChange={handleChange}
-              className="w-full bg-[#0f0f0f] text-white px-4 py-3 rounded-lg border border-[#333] focus:border-[#F5C518] focus:outline-none transition-colors"
+              className="w-full bg-[#FAF9F6] text-black px-6 py-4 rounded-2xl border border-black/5 focus:border-black/20 focus:outline-none transition-all placeholder:text-gray-400 font-medium"
             />
           </div>
 
           {/* Password */}
-          <div className="relative">
-            <label className="block text-gray-400 text-sm mb-1 ml-1" htmlFor="password">Password</label>
+          <div className="relative space-y-2">
+            <label
+              className="block text-gray-600 text-[9px] font-black uppercase tracking-[0.2em] ml-1"
+              htmlFor="password"
+            >
+              Password
+            </label>
             <div className="relative">
               <input
                 required
@@ -110,21 +135,47 @@ const navigate = useNavigate()
                 placeholder="••••••••"
                 value={formData.password}
                 onChange={handleChange}
-                className="w-full bg-[#0f0f0f] text-white px-4 py-3 rounded-lg border border-[#333] focus:border-[#F5C518] focus:outline-none transition-colors pr-12"
+                className="w-full bg-[#FAF9F6] text-black px-6 py-4 rounded-2xl border border-black/5 focus:border-black/20 focus:outline-none transition-all placeholder:text-gray-400 font-medium pr-14"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#F5C518] transition-colors p-1"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-black transition-colors p-2"
               >
                 {showPassword ? (
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88" />
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="w-5 h-5"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88"
+                    />
                   </svg>
                 ) : (
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.644C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="w-5 h-5"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M2.036 12.322a1.012 1.012 0 010-.644C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"
+                    />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                    />
                   </svg>
                 )}
               </button>
@@ -132,38 +183,64 @@ const navigate = useNavigate()
           </div>
 
           {/* Is Seller */}
-          <div className="flex items-center space-x-3 ml-1">
+          <div className="flex items-center space-x-3 ml-1 pt-2">
             <input
               id="isSeller"
               name="isSeller"
               type="checkbox"
               checked={formData.isSeller}
               onChange={handleChange}
-              className="w-4 h-4 rounded border-[#333] bg-[#0f0f0f] text-[#F5C518] focus:ring-[#F5C518] accent-[#F5C518]"
+              className="w-4 h-4 rounded border-black/10 bg-[#FAF9F6] text-black focus:ring-black/20 accent-black"
             />
-            <label htmlFor="isSeller" className="text-gray-300 text-sm cursor-pointer">Register as a Seller</label>
+            <label
+              htmlFor="isSeller"
+              className="text-gray-700 text-[10px] font-black uppercase tracking-[0.2em] cursor-pointer"
+            >
+              Register as a Seller
+            </label>
           </div>
 
           {/* Submit Button */}
           <button
             type="submit"
             disabled={loading}
-            className={`w-full flex items-center justify-center bg-[#F5C518] hover:bg-[#e0b415] text-black font-bold py-3 rounded-lg transition-all duration-300 transform active:scale-[0.98] mt-2 shadow-lg shadow-[#F5C518]/10 ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
+            className={`w-full flex items-center justify-center bg-black text-white text-[10px] font-black uppercase tracking-[0.3em] py-5 rounded-2xl hover:bg-gray-800 transition-all duration-500 transform active:scale-[0.98] mt-4 shadow-xl ${loading ? "opacity-70 cursor-not-allowed" : ""}`}
           >
             {loading ? (
-              <svg className="animate-spin h-5 w-5 text-black" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              <svg
+                className="animate-spin h-5 w-5 text-white"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                ></circle>
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                ></path>
               </svg>
             ) : (
               "Create Account"
             )}
           </button>
-
         </form>
 
-        <p className="text-gray-400 text-center mt-6 text-sm">
-          Already have an account? <Link to="/" className="text-[#F5C518] hover:underline transition-colors font-medium">Log in</Link>
+        <p className="text-gray-600 text-center mt-10 text-[9px] font-black uppercase tracking-[0.2em]">
+          Already have an account?{" "}
+          <Link
+            to="/login"
+            className="text-black hover:underline transition-colors ml-1 font-black"
+          >
+            Log in
+          </Link>
         </p>
       </div>
     </div>

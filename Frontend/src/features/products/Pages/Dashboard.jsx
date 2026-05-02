@@ -28,21 +28,21 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#0f0f0f] text-white p-4 md:p-8 ">
+    <div className="min-h-screen bg-[#FAF9F6] text-black pt-10 pb-20 px-4 md:px-10 selection:bg-black selection:text-white">
       <div className="max-w-7xl mx-auto">
         {/* Header Section */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4 ">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-8">
           <div>
-            <h1 className="text-3xl font-bold text-white mb-2">
-              Seller Dashboard
+            <h1 className="text-5xl font-black tracking-tighter text-black mb-3 uppercase italic">
+              Dashboard
             </h1>
-            <p className="text-gray-400">
-              Manage and track your listed products
+            <p className="text-gray-600 text-[10px] font-black uppercase tracking-[0.4em]">
+              Manage & Track Listings
             </p>
           </div>
           <Link
             to="/seller/create-products"
-            className="flex items-center justify-center gap-2 bg-[#F5C518] hover:bg-[#e0b415] text-black font-bold px-6 py-3 rounded-xl transition-all duration-300 shadow-lg shadow-[#F5C518]/10 active:scale-95"
+            className="flex items-center justify-center gap-3 bg-black text-white text-[10px] font-black uppercase tracking-[0.3em] px-10 py-5 rounded-2xl hover:bg-gray-800 transition-all duration-500 transform active:scale-[0.98] shadow-xl"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -50,7 +50,7 @@ const Dashboard = () => {
               viewBox="0 0 24 24"
               strokeWidth={2.5}
               stroke="currentColor"
-              className="w-5 h-5"
+              className="w-4 h-4"
             >
               <path
                 strokeLinecap="round"
@@ -58,41 +58,48 @@ const Dashboard = () => {
                 d="M12 4.5v15m7.5-7.5h-15"
               />
             </svg>
-            Add New Product
+            Add Product
           </Link>
         </div>
 
-        {/* Stats Summary (Optional Enhancement) */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          <div className="bg-[#1a1a1a] p-4 rounded-2xl border border-[#333]">
-            <p className="text-gray-500 text-xs font-semibold uppercase tracking-wider mb-1">
+        {/* Stats Summary */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+          <div className="bg-white p-8 rounded-4xl border border-black/5 shadow-sm">
+            <p className="text-gray-600 text-[9px] font-black uppercase tracking-[0.3em] mb-2">
               Total Products
             </p>
-            <p className="text-2xl font-bold text-[#F5C518]">
+            <p className="text-4xl font-black tracking-tighter text-black italic">
               {sellerProducts?.length || 0}
             </p>
           </div>
-          <div className="bg-[#1a1a1a] p-4 rounded-2xl border border-[#333]">
-            <p className="text-gray-500 text-xs font-semibold uppercase tracking-wider mb-1">
-              Live Listings
+          <div className="bg-white p-8 rounded-4xl border border-black/5 shadow-sm">
+            <p className="text-gray-600 text-[9px] font-black uppercase tracking-[0.3em] mb-2">
+              Active Listings
             </p>
-            <p className="text-2xl font-bold text-green-500">
+            <p className="text-4xl font-black tracking-tighter text-black italic">
               {sellerProducts?.length || 0}
             </p>
           </div>
-          {/* Add more stats if needed */}
+          <div className="bg-white p-8 rounded-4xl border border-black/5 shadow-sm">
+            <p className="text-gray-600 text-[9px] font-black uppercase tracking-[0.3em] mb-2">
+              Total Views
+            </p>
+            <p className="text-4xl font-black tracking-tighter text-black italic">
+              0
+            </p>
+          </div>
         </div>
 
         {/* Products Grid */}
         {!sellerProducts && loading ? (
-          <div className="flex flex-col items-center justify-center py-20">
-            <div className="w-12 h-12 border-4 border-[#F5C518] border-t-transparent rounded-full animate-spin mb-4"></div>
-            <p className="text-gray-400 font-medium">
-              Fetching your products...
+          <div className="flex flex-col items-center justify-center py-32 bg-white rounded-4xl border border-black/5 shadow-sm">
+            <div className="w-12 h-12 border-2 border-black border-t-transparent rounded-full animate-spin mb-6"></div>
+            <p className="text-gray-600 text-[10px] font-black uppercase tracking-[0.3em]">
+              Synchronizing...
             </p>
           </div>
         ) : sellerProducts && sellerProducts.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
             {sellerProducts.map((product) => (
               <ProductCard
                 key={product._id || product.id}
@@ -104,15 +111,15 @@ const Dashboard = () => {
             ))}
           </div>
         ) : (
-          <div className="bg-[#1a1a1a] rounded-3xl border-2 border-dashed border-[#333] py-20 flex flex-col items-center justify-center text-center px-4">
-            <div className="w-20 h-20 bg-[#0f0f0f] rounded-full flex items-center justify-center mb-6 text-gray-600 border border-[#333]">
+          <div className="bg-white rounded-4xl border border-dashed border-black/10 py-32 flex flex-col items-center justify-center text-center px-6">
+            <div className="w-24 h-24 bg-[#FAF9F6] rounded-full flex items-center justify-center mb-8 text-black/10 border border-black/5">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
-                strokeWidth={1.5}
+                strokeWidth={1}
                 stroke="currentColor"
-                className="w-10 h-10"
+                className="w-12 h-12"
               >
                 <path
                   strokeLinecap="round"
@@ -121,18 +128,17 @@ const Dashboard = () => {
                 />
               </svg>
             </div>
-            <h2 className="text-2xl font-bold text-white mb-2">
-              No products found
+            <h2 className="text-2xl font-black text-black mb-3 uppercase italic tracking-tight">
+              Inventory Empty
             </h2>
-            <p className="text-gray-400 max-w-md mb-8">
-              You haven't listed any products yet. Start selling by adding your
-              first product to the marketplace.
+            <p className="text-gray-600 text-[10px] font-black uppercase tracking-[0.2em] max-w-xs mb-10 leading-loose">
+              You haven't listed any items in the collection yet.
             </p>
             <Link
               to="/seller/create-products"
-              className="bg-[#F5C518] hover:bg-[#e0b415] text-black font-bold px-8 py-3 rounded-xl transition-all duration-300 active:scale-95"
+              className="bg-black text-white text-[10px] font-black uppercase tracking-[0.3em] px-12 py-5 rounded-2xl hover:bg-gray-800 transition-all duration-500 transform active:scale-[0.98] shadow-xl"
             >
-              Get Started
+              Add First Item
             </Link>
           </div>
         )}

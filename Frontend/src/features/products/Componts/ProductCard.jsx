@@ -21,25 +21,25 @@ const ProductCard = ({
   return (
     <div
       onClick={() => onClick && onClick(product)}
-      className="group bg-[#111111] rounded-2xl border border-[#222] overflow-hidden hover:border-gray-700 transition-all duration-500 hover:shadow-2xl hover:shadow-black/40 cursor-pointer flex flex-col h-full"
+      className="group bg-white rounded-2xl border border-black/5 overflow-hidden hover:border-black/10 transition-all duration-500 hover:shadow-xl cursor-pointer flex flex-col h-full"
     >
       {/* Product Image Section */}
-      <div className="relative aspect-[4/3] overflow-hidden bg-[#0a0a0a]">
+      <div className="relative aspect-[3/4] overflow-hidden bg-[#F5F5F7]">
         {mainImage ? (
           <img
             src={mainImage.url}
             alt={title}
-            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+            className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-gray-800">
+          <div className="w-full h-full flex items-center justify-center text-gray-300">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
               strokeWidth={1}
               stroke="currentColor"
-              className="w-16 h-16 opacity-20"
+              className="w-12 h-12"
             >
               <path
                 strokeLinecap="round"
@@ -51,21 +51,21 @@ const ProductCard = ({
         )}
 
         {extraImagesCount > 0 && (
-          <div className="absolute bottom-3 right-3 bg-black/70 backdrop-blur-md text-white text-[10px] font-semibold px-2.5 py-1 rounded-full border border-white/10">
-            +{extraImagesCount} Photos
+          <div className="absolute bottom-3 right-3 bg-white/80 backdrop-blur-md text-black text-[9px] font-bold px-2 py-0.5 rounded-full border border-black/5 uppercase tracking-tighter">
+            +{extraImagesCount}
           </div>
         )}
 
         {/* Action Buttons Overlay - Only show if handlers provided */}
         {(onEdit || onDelete) && (
-          <div className="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0">
+          <div className="absolute top-3 right-3 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300">
             {onEdit && (
               <button
                 onClick={(e) => {
                   e.stopPropagation();
                   onEdit(product);
                 }}
-                className="p-2.5 bg-black/80 hover:bg-white hover:text-black text-white rounded-xl transition-all duration-300 border border-white/10 shadow-2xl backdrop-blur-sm"
+                className="p-2 bg-white/90 hover:bg-black hover:text-white text-black rounded-full transition-all duration-300 border border-black/5 shadow-sm backdrop-blur-sm"
                 title="Edit Product"
               >
                 <svg
@@ -74,7 +74,7 @@ const ProductCard = ({
                   viewBox="0 0 24 24"
                   strokeWidth={1.5}
                   stroke="currentColor"
-                  className="w-4 h-4"
+                  className="w-3.5 h-3.5"
                 >
                   <path
                     strokeLinecap="round"
@@ -90,7 +90,7 @@ const ProductCard = ({
                   e.stopPropagation();
                   onDelete(product);
                 }}
-                className="p-2.5 bg-black/80 hover:bg-red-600 text-white rounded-xl transition-all duration-300 border border-white/10 shadow-2xl backdrop-blur-sm"
+                className="p-2 bg-white/90 hover:bg-red-500 hover:text-white text-red-500 rounded-full transition-all duration-300 border border-black/5 shadow-sm backdrop-blur-sm"
                 title="Delete Product"
               >
                 <svg
@@ -99,7 +99,7 @@ const ProductCard = ({
                   viewBox="0 0 24 24"
                   strokeWidth={1.5}
                   stroke="currentColor"
-                  className="w-4 h-4"
+                  className="w-3.5 h-3.5"
                 >
                   <path
                     strokeLinecap="round"
@@ -114,60 +114,44 @@ const ProductCard = ({
       </div>
 
       {/* Product Content Section */}
-      <div className="p-5 flex flex-col flex-grow">
-        <div className="flex justify-between items-start mb-2.5 gap-3">
-          <h3 className="text-gray-100 font-semibold text-lg leading-snug line-clamp-2 group-hover:text-white transition-colors uppercase">
+      <div className="p-4 flex flex-col flex-grow">
+        <div className="flex flex-col mb-4">
+          <h3 className="text-black font-bold text-sm tracking-tight mb-1 line-clamp-1 group-hover:text-black/70 transition-colors uppercase">
             {title}
           </h3>
-          <div className="flex flex-col items-end">
-            <span className="text-white font-bold text-xl tracking-tight">
-              {(price?.currency || price?.price?.currency || "INR") === "USD"
-                ? "$"
-                : "₹"}
-              {(
-                price?.amount ??
-                price?.price?.amount ??
-                (typeof price === "number" ? price : 0)
-              )?.toLocaleString?.()}
-            </span>
-          </div>
+          <span className="text-black font-medium text-xs">
+            {(price?.currency || price?.price?.currency || "INR") === "USD"
+              ? "$"
+              : "₹"}
+            {(
+              price?.amount ??
+              price?.price?.amount ??
+              (typeof price === "number" ? price : 0)
+            )?.toLocaleString?.()}
+          </span>
         </div>
 
-        <p className="text-gray-500 text-sm line-clamp-2 mb-6 flex-grow leading-relaxed font-normal">
+        <p className="text-gray-600 text-[11px] line-clamp-2 mb-4 flex-grow leading-relaxed font-medium">
           {description}
         </p>
 
-        <div className="flex items-center justify-between pt-4 border-t border-white/5">
+        <div className="flex items-center justify-between pt-4 border-t border-black/5">
           {showDate ? (
-            <div className="flex items-center text-[11px] text-gray-500 uppercase tracking-widest font-semibold">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="w-3.5 h-3.5 mr-2 opacity-30"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5"
-                />
-              </svg>
+            <div className="flex items-center text-[9px] text-gray-500 uppercase tracking-widest font-bold">
               {formattedDate}
             </div>
           ) : (
             <div className="flex-grow" />
           )}
-          <button className="text-[11px] font-bold text-gray-400 hover:text-white transition-colors flex items-center gap-1 group/btn">
-            View Details
+          <button className="text-[9px] font-black uppercase tracking-widest text-black hover:opacity-60 transition-colors flex items-center gap-1 group/btn">
+            DISCOVER
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
-              strokeWidth={2}
+              strokeWidth={2.5}
               stroke="currentColor"
-              className="w-3 h-3 transition-transform group-hover/btn:translate-x-0.5"
+              className="w-2.5 h-2.5 transition-transform group-hover/btn:translate-x-0.5"
             >
               <path
                 strokeLinecap="round"

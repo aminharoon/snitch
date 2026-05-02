@@ -60,10 +60,10 @@ const SingleProductDet = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#050505] text-white flex items-center justify-center">
+      <div className="min-h-screen bg-[#FAF9F6] text-black flex items-center justify-center">
         <div className="animate-pulse flex flex-col items-center">
-          <div className="w-16 h-16 border-t-2 border-white rounded-full animate-spin mb-6" />
-          <p className="text-gray-500 font-black tracking-[0.3em] uppercase text-[10px]">
+          <div className="w-16 h-16 border-t-2 border-black rounded-full animate-spin mb-6" />
+          <p className="text-gray-400 font-black tracking-[0.3em] uppercase text-[10px]">
             Synchronizing...
           </p>
         </div>
@@ -73,16 +73,16 @@ const SingleProductDet = () => {
 
   if (!singleProduct) {
     return (
-      <div className="min-h-screen bg-[#050505] text-white flex flex-col items-center justify-center px-6 text-center">
-        <h2 className="text-4xl font-black mb-4 tracking-tighter">
+      <div className="min-h-screen bg-[#FAF9F6] text-black flex flex-col items-center justify-center px-6 text-center">
+        <h2 className="text-4xl font-black mb-4 tracking-tighter uppercase">
           Lost in Space
         </h2>
-        <p className="text-gray-500 max-w-sm font-medium leading-relaxed mb-10">
+        <p className="text-gray-400 max-w-sm font-medium leading-relaxed mb-10 uppercase tracking-widest text-[10px]">
           The product you seek has vanished from our collection.
         </p>
         <button
           onClick={() => navigate(-1)}
-          className="px-10 py-4 bg-white text-black font-black uppercase tracking-widest rounded-full hover:scale-105 transition-transform"
+          className="px-10 py-4 bg-black text-white font-black uppercase tracking-widest rounded-full hover:scale-105 transition-transform"
         >
           Return Home
         </button>
@@ -194,7 +194,7 @@ const SingleProductDet = () => {
   const hasVariants = variants?.length > 0;
 
   return (
-    <div className="h-[calc(100vh-81px)] bg-[#050505] text-white pt-2 selection:bg-white selection:text-black flex flex-col overflow-hidden">
+    <div className="h-[calc(100vh-81px)] bg-[#FAF9F6] text-black pt-2 selection:bg-black selection:text-white flex flex-col overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 w-full flex-1 flex flex-col min-h-0">
         {/* Navigation */}
         <div className="flex-shrink-0">
@@ -213,8 +213,8 @@ const SingleProductDet = () => {
                     onClick={() => setActiveImage(index)}
                     className={`relative w-full aspect-[4/5] rounded-2xl overflow-hidden border-2 transition-all duration-700 flex-shrink-0 snap-start ${
                       activeImage === index
-                        ? "border-white scale-95 shadow-xl shadow-white/5"
-                        : "border-white/5 opacity-40 hover:opacity-100 hover:border-white/20"
+                        ? "border-black scale-95"
+                        : "border-black/5 opacity-40 hover:opacity-100 hover:border-black/20"
                     }`}
                   >
                     <img
@@ -228,7 +228,7 @@ const SingleProductDet = () => {
             )}
 
             {/* Main Image */}
-            <div className="flex-1 rounded-4xl overflow-hidden bg-[#0a0a0a] border border-white/5 group shadow-2xl relative h-full">
+            <div className="flex-1 rounded-4xl overflow-hidden bg-[#F5F5F7] border border-black/5 group shadow-sm relative h-full">
               {displayImages?.length > 0 ? (
                 <img
                   src={displayImages[activeImage]?.url}
@@ -236,7 +236,7 @@ const SingleProductDet = () => {
                   className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
                 />
               ) : (
-                <div className="w-full h-full flex flex-col items-center justify-center opacity-20">
+                <div className="w-full h-full flex flex-col items-center justify-center opacity-10">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -256,8 +256,6 @@ const SingleProductDet = () => {
                   </p>
                 </div>
               )}
-              {/* Overlay for depth */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-40 pointer-events-none" />
             </div>
           </div>
 
@@ -267,31 +265,31 @@ const SingleProductDet = () => {
               {/* Core Info */}
               <div className="space-y-6">
                 <div className="flex items-center gap-3">
-                  <span className="px-4 py-1.5 bg-white text-black text-[9px] font-black uppercase tracking-[0.3em] rounded-full">
+                  <span className="px-4 py-1.5 bg-black text-white text-[9px] font-black uppercase tracking-[0.3em] rounded-full">
                     Limited Edition
                   </span>
                   {(matchingVariant || !hasVariants) && (
                     <span
-                      className={`px-4 py-1.5 ${isOutOfStock ? "bg-red-500/10 text-red-500 border-red-500/20" : "bg-green-500/10 text-green-500 border-green-500/20"} text-[9px] font-black border rounded-full uppercase tracking-[0.3em]`}
+                      className={`px-4 py-1.5 ${isOutOfStock ? "bg-red-50 text-red-600 border-red-100" : "bg-green-50 text-green-600 border-green-100"} text-[9px] font-black border rounded-full uppercase tracking-[0.3em]`}
                     >
                       {isOutOfStock ? "Unavailable" : "In Stock"}
                     </span>
                   )}
                 </div>
 
-                <h1 className="text-4xl xl:text-5xl font-black tracking-tighter leading-[0.95] text-white uppercase italic">
+                <h1 className="text-4xl xl:text-5xl font-black tracking-tighter leading-[0.95] text-black uppercase italic">
                   {title}
                 </h1>
 
                 <div className="flex items-baseline gap-4">
-                  <span className="text-3xl font-light tracking-tighter text-white">
+                  <span className="text-3xl font-light tracking-tighter text-black">
                     {(displayPrice?.currency || "INR") === "USD" ? "$" : "₹"}
                     {(
                       displayPrice?.amount ?? displayPrice
                     )?.toLocaleString?.() ||
                       (displayPrice?.amount ?? displayPrice)}
                   </span>
-                  <span className="text-[9px] font-bold text-gray-700 uppercase tracking-widest">
+                  <span className="text-[9px] font-bold text-gray-400 uppercase tracking-widest">
                     Global Shipping Ready
                   </span>
                 </div>
@@ -299,25 +297,25 @@ const SingleProductDet = () => {
 
               {/* Description Block */}
               <div className="space-y-3">
-                <h3 className="text-[9px] font-black uppercase tracking-[0.4em] text-gray-500">
+                <h3 className="text-[9px] font-black uppercase tracking-[0.4em] text-gray-400">
                   The Narrative
                 </h3>
-                <p className="text-gray-400 text-lg leading-relaxed font-light italic">
+                <p className="text-gray-600 text-lg leading-relaxed font-light italic">
                   "{description}"
                 </p>
               </div>
 
               {/* Dynamic Variants */}
               {Object.keys(attributeGroups).length > 0 && (
-                <div className="space-y-8 py-6 border-y border-white/5">
+                <div className="space-y-8 py-6 border-y border-black/5">
                   {Object.entries(attributeGroups).map(([key, values]) => (
                     <div key={key} className="space-y-4">
                       <div className="flex justify-between items-center">
-                        <h3 className="text-[9px] font-black uppercase tracking-[0.4em] text-gray-500">
+                        <h3 className="text-[9px] font-black uppercase tracking-[0.4em] text-gray-400">
                           Select {key}
                         </h3>
                         {selectedAttributes[key] && (
-                          <span className="text-[9px] font-black text-white/40 uppercase tracking-[0.2em]">
+                          <span className="text-[9px] font-black text-black/40 uppercase tracking-[0.2em]">
                             {selectedAttributes[key]}
                           </span>
                         )}
@@ -335,15 +333,15 @@ const SingleProductDet = () => {
                               disabled={!enabled}
                               className={`relative flex items-center gap-2 px-6 py-3 rounded-xl text-[10px] font-black transition-all duration-500 border-2 ${
                                 active
-                                  ? "bg-white text-black border-white shadow-[0_0_30px_rgba(255,255,255,0.1)] scale-105"
+                                  ? "bg-black text-white border-black shadow-xl scale-105"
                                   : enabled
-                                    ? "bg-transparent text-gray-600 border-white/10 hover:border-white/40 hover:text-white"
-                                    : "bg-transparent text-gray-800 border-white/5 cursor-not-allowed opacity-10"
+                                    ? "bg-white text-gray-400 border-black/5 hover:border-black/20 hover:text-black"
+                                    : "bg-transparent text-gray-200 border-black/5 cursor-not-allowed opacity-30"
                               }`}
                             >
                               {key.toLowerCase() === "color" && (
                                 <span
-                                  className={`w-3 h-3 rounded-full border ${active ? "border-black/20" : "border-white/20"}`}
+                                  className={`w-3 h-3 rounded-full border ${active ? "border-white/20" : "border-black/20"}`}
                                   style={{
                                     backgroundColor: val
                                       .toLowerCase()
@@ -352,9 +350,6 @@ const SingleProductDet = () => {
                                 />
                               )}
                               {val}
-                              {active && (
-                                <div className="absolute -top-1 -right-1 w-3 h-3 bg-white rounded-full border-4 border-[#050505]" />
-                              )}
                             </button>
                           );
                         })}
@@ -365,18 +360,18 @@ const SingleProductDet = () => {
               )}
 
               {/* Status & Availability */}
-              <div className="flex items-center justify-between py-2 border-b border-white/5">
+              <div className="flex items-center justify-between py-2 border-b border-black/5">
                 <div className="flex items-center gap-3">
                   <div
-                    className={`w-2.5 h-2.5 rounded-full ${isOutOfStock ? "bg-red-600" : "bg-green-600"} animate-pulse shadow-[0_0_10px_rgba(0,255,0,0.2)]`}
+                    className={`w-2 h-2 rounded-full ${isOutOfStock ? "bg-red-500" : "bg-green-500"} animate-pulse`}
                   />
-                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500">
+                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400">
                     {isOutOfStock
                       ? "Stock Depleted"
                       : `${displayStock} Units In Vault`}
                   </span>
                 </div>
-                <span className="text-[10px] font-black text-gray-800 uppercase tracking-[0.3em]">
+                <span className="text-[10px] font-black text-gray-200 uppercase tracking-[0.3em]">
                   REF: {singleProduct._id.slice(-12).toUpperCase()}
                 </span>
               </div>
@@ -390,11 +385,11 @@ const SingleProductDet = () => {
                 <button
                   onClick={handleAddToKart}
                   disabled={isOutOfStock}
-                  className="flex-[2] py-5 bg-white text-black text-[10px] font-black uppercase tracking-[0.3em] rounded-2xl hover:bg-gray-200 disabled:opacity-20 disabled:cursor-not-allowed transition-all duration-500 shadow-2xl active:scale-[0.98] flex items-center justify-center gap-3 cursor-pointer"
+                  className="flex-[2] py-5 bg-black text-white text-[10px] font-black uppercase tracking-[0.3em] rounded-2xl hover:bg-gray-800 disabled:opacity-20 disabled:cursor-not-allowed transition-all duration-500 shadow-xl active:scale-[0.98] flex items-center justify-center gap-3 cursor-pointer"
                 >
                   {addKartLoading ? (
                     <svg
-                      className="animate-spin h-6 w-6 text-black"
+                      className="animate-spin h-6 w-6 text-white"
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
                       viewBox="0 0 24 24"
@@ -412,7 +407,6 @@ const SingleProductDet = () => {
                         fill="currentColor"
                         d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                       ></path>
-                      ADD TO CART...
                     </svg>
                   ) : (
                     "ADD TO CART"
@@ -435,7 +429,7 @@ const SingleProductDet = () => {
                 <button
                   onClick={handleAddBuy}
                   disabled={isOutOfStock}
-                  className="flex-1 py-5 bg-transparent border-2 border-white/10 text-white text-[10px] font-black uppercase tracking-[0.3em] rounded-2xl hover:bg-white hover:text-black hover:border-white disabled:opacity-20 transition-all duration-500 active:scale-[0.98]"
+                  className="flex-1 py-5 bg-transparent border-2 border-black/10 text-black text-[10px] font-black uppercase tracking-[0.3em] rounded-2xl hover:bg-black hover:text-white disabled:opacity-20 transition-all duration-500 active:scale-[0.98]"
                 >
                   BUY NOW
                 </button>
@@ -444,7 +438,7 @@ const SingleProductDet = () => {
               {user?.role === "seller" && (
                 <button
                   onClick={handleAddVariants}
-                  className="w-full py-5 bg-[#111] border-2 border-white/5 text-white text-[10px] font-black uppercase tracking-[0.3em] rounded-2xl hover:bg-white hover:text-black transition-all duration-500 flex items-center justify-center gap-3 shadow-xl shadow-black"
+                  className="w-full py-5 bg-black text-white text-[10px] font-black uppercase tracking-[0.3em] rounded-2xl hover:bg-gray-800 transition-all duration-500 flex items-center justify-center gap-3 shadow-xl"
                 >
                   Engineer Variants
                   <svg
@@ -465,7 +459,7 @@ const SingleProductDet = () => {
               )}
 
               {/* Trust Badges */}
-              <div className="grid grid-cols-3 gap-8 pt-10 border-t border-white/5">
+              <div className="grid grid-cols-3 gap-8 pt-10 border-t border-black/5">
                 {[
                   { label: "Complimentary Delivery", sub: "Global Logistics" },
                   { label: "Verified Heritage", sub: "100% Authentic" },
@@ -475,10 +469,10 @@ const SingleProductDet = () => {
                     key={i}
                     className="text-center space-y-2 group cursor-default"
                   >
-                    <p className="text-[8px] font-black text-white uppercase tracking-[0.3em] group-hover:text-white transition-colors">
+                    <p className="text-[8px] font-black text-black uppercase tracking-[0.3em]">
                       {badge.label}
                     </p>
-                    <p className="text-[7px] font-bold text-gray-700 uppercase tracking-[0.2em] leading-tight">
+                    <p className="text-[7px] font-bold text-gray-400 uppercase tracking-[0.2em] leading-tight">
                       {badge.sub}
                     </p>
                   </div>

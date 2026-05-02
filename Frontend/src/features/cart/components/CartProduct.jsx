@@ -27,35 +27,35 @@ const CartProduct = ({
   const currencySymbol = currency === "USD" ? "$" : "₹";
 
   return (
-    <div className="flex flex-col sm:flex-row gap-6 p-6 border border-white/5 rounded-4xl bg-[#0a0a0a] shadow-2xl group transition-all hover:border-white/10 relative h-35">
+    <div className="flex flex-col sm:flex-row gap-8 p-8 border border-black/5 rounded-4xl bg-white shadow-sm group transition-all hover:border-black/20 relative">
       {/* Delete Icon */}
       <button
         onClick={() => handleRemoveItem(item.product._id, item.variants)}
-        className="absolute top-6 right-6 text-white/20 hover:text-red-500 transition-colors"
+        className="absolute top-8 right-8 text-gray-500 hover:text-red-500 transition-colors p-2 hover:bg-red-50 rounded-xl"
         title="Remove from cart"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
-          strokeWidth={1.5}
+          strokeWidth={2}
           stroke="currentColor"
           className="w-5 h-5"
         >
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
-            d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
+            d="M6 18L18 6M6 6l12 12"
           />
         </svg>
       </button>
 
-      <div className="w-full sm:w-32 aspect-[4/5] sm:aspect-square flex-shrink-0 bg-[#111] rounded-2xl overflow-hidden border border-white/5 relative">
+      <div className="w-full sm:w-32 aspect-[4/5] sm:aspect-square flex-shrink-0 bg-[#FAF9F6] rounded-3xl overflow-hidden border border-black/5 relative">
         {imageUrl ? (
           <img
             src={imageUrl}
             alt={product?.title || "Product"}
-            className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+            className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
           />
         ) : (
           <div className="w-full h-full flex flex-col items-center justify-center opacity-20">
@@ -75,27 +75,26 @@ const CartProduct = ({
             </svg>
           </div>
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-40 pointer-events-none" />
       </div>
 
-      <div className="flex-1 flex flex-col justify-center pr-8">
+      <div className="flex-1 flex flex-col justify-center pr-12">
         <div className="flex flex-col items-start">
-          <h3 className="text-sm font-black tracking-tighter text-white uppercase italic pr-4">
+          <h3 className="text-xl font-black tracking-tighter text-black uppercase italic pr-4">
             {product?.title || "Unknown Product"}
           </h3>
 
           {/* Attributes (Size, Color, etc) */}
           {Object.keys(attributes).length > 0 && (
-            <div className="flex flex-wrap gap-1 mt-3">
+            <div className="flex flex-wrap gap-2 mt-4">
               {Object.entries(attributes).map(([key, val]) => (
                 <div
                   key={key}
-                  className="flex items-center gap-1 px-3 py-1 rounded-full border border-white/10 bg-white/5"
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-black/5 bg-[#FAF9F6]"
                 >
-                  <span className="text-[8px] font-black uppercase tracking-[0.2em] text-gray-500">
+                  <span className="text-[9px] font-black uppercase tracking-[0.2em] text-gray-600">
                     {key}:
                   </span>
-                  <span className="text-[10px] font-bold text-gray-300">
+                  <span className="text-[10px] font-black text-black">
                     {val}
                   </span>
                 </div>
@@ -104,13 +103,13 @@ const CartProduct = ({
           )}
         </div>
 
-        <div className="flex flex-wrap gap-8 items-end mt-2">
+        <div className="flex flex-wrap gap-12 items-end mt-8">
           <div>
-            <span className="text-[9px] font-black text-gray-500 uppercase tracking-[0.3em] block mb-1.5">
-              Price
+            <span className="text-[9px] font-black text-gray-600 uppercase tracking-[0.3em] block mb-2">
+              Unit Price
             </span>
             <div className="flex flex-col gap-1">
-              <span className="text-2xl font-light tracking-tighter text-white">
+              <span className="text-2xl font-light tracking-tighter text-black">
                 {currencySymbol}
                 {(item?.price?.amount ?? 0).toLocaleString()}
               </span>
@@ -118,25 +117,25 @@ const CartProduct = ({
                 <div
                   className={`w-1.5 h-1.5 rounded-full ${(variant?.stock || product?.stock) > 0 ? "bg-green-500" : "bg-red-500"} animate-pulse`}
                 />
-                <span className="text-[8px] font-black uppercase tracking-[0.1em] text-gray-500">
+                <span className="text-[8px] font-black uppercase tracking-[0.1em] text-gray-600">
                   {(variant?.stock || product?.stock) > 0
-                    ? `${variant?.stock || product?.stock} IN STOCK`
-                    : "OUT OF STOCK"}
+                    ? `In Stock`
+                    : "Unavailable"}
                 </span>
               </div>
             </div>
           </div>
           <div>
-            <span className="text-[5px] font-black text-gray-500 uppercase tracking-[0.3em] block mb-1.5">
+            <span className="text-[9px] font-black text-gray-600 uppercase tracking-[0.3em] block mb-2 ml-1">
               Quantity
             </span>
-            <div className="flex items-center gap-4 bg-[#111] rounded-full px-4 py-1.5 border border-white/5">
+            <div className="flex items-center gap-6 bg-[#FAF9F6] rounded-2xl px-5 py-2.5 border border-black/5">
               <button
                 onClick={() =>
                   handleDecrementQuantity(item.product._id, item.variants)
                 }
                 disabled={item?.quantity <= 1}
-                className="text-white/40 hover:text-white transition-colors disabled:opacity-20 disabled:hover:text-white/40"
+                className="text-gray-600 hover:text-black transition-colors disabled:opacity-20 disabled:cursor-not-allowed font-black"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -144,7 +143,7 @@ const CartProduct = ({
                   viewBox="0 0 24 24"
                   strokeWidth={2.5}
                   stroke="currentColor"
-                  className="w-3.5 h-3.5"
+                  className="w-4 h-4"
                 >
                   <path
                     strokeLinecap="round"
@@ -153,14 +152,14 @@ const CartProduct = ({
                   />
                 </svg>
               </button>
-              <span className="text-SM font-light text-white w-6 text-center">
+              <span className="text-lg font-black text-black w-6 text-center italic">
                 {item?.quantity}
               </span>
               <button
                 onClick={() =>
                   handleIncrementQuantity(item.product._id, item.variants)
                 }
-                className="text-white/40 hover:text-white transition-colors"
+                className="text-gray-600 hover:text-black transition-colors font-black"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -168,7 +167,7 @@ const CartProduct = ({
                   viewBox="0 0 24 24"
                   strokeWidth={2.5}
                   stroke="currentColor"
-                  className="w-3.5 h-3.5"
+                  className="w-4 h-4"
                 >
                   <path
                     strokeLinecap="round"

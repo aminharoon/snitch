@@ -112,28 +112,28 @@ const CreateProduct = () => {
     images.length > 0;
 
   return (
-    <div className="min-h-screen bg-[#0f0f0f] py-12 px-4 sm:px-6 lg:px-8 flex flex-col items-center">
-      <div className="w-full max-w-2xl ">
+    <div className="min-h-screen bg-[#FAF9F6] py-20 px-4 sm:px-6 lg:px-8 selection:bg-black selection:text-white">
+      <div className="w-full max-w-2xl mx-auto">
         {/* Header Section */}
-        <div className="text-center mb-10">
-          <h1 className="text-4xl font-bold text-[#F5C518] tracking-tight mb-3">
-            Create New Product
+        <div className="text-center mb-16">
+          <h1 className="text-5xl font-black text-black tracking-tighter mb-3 uppercase italic">
+            Create Item
           </h1>
-          <p className="text-gray-400">
-            Fill in the details below to list your item in the store.
+          <p className="text-gray-600 text-[10px] font-black uppercase tracking-[0.4em]">
+            Add to the collection
           </p>
         </div>
 
         {/* Form Section */}
         <form
           onSubmit={handleSubmit}
-          className="bg-[#1a1a1a] shadow-2xl rounded-2xl p-8 md:p-10 space-y-8 border border-[#333]"
+          className="bg-white shadow-sm rounded-4xl p-10 space-y-10 border border-black/5"
         >
           {/* Title Input */}
-          <div>
+          <div className="space-y-3">
             <label
               htmlFor="title"
-              className="block text-sm font-medium text-gray-400 mb-2 ml-1 capitalize"
+              className="block text-[9px] font-black text-gray-600 uppercase tracking-[0.2em] ml-1"
             >
               Product Title
             </label>
@@ -143,19 +143,19 @@ const CreateProduct = () => {
               name="title"
               value={formData.title}
               onChange={handleChange}
-              placeholder="e.g. Premium Wireless Headphones"
-              className={`w-full px-5 py-4 rounded-xl bg-[#0f0f0f] text-white border ${errors.title ? "border-red-500" : "border-[#333]"} focus:border-[#F5C518] focus:outline-none transition-colors placeholder:text-gray-600 font-medium`}
+              placeholder="E.G. OVERSIZED WOOL COAT"
+              className={`w-full px-6 py-5 rounded-2xl bg-[#FAF9F6] text-black border ${errors.title ? "border-red-500" : "border-black/5"} focus:border-black/20 focus:outline-none transition-all placeholder:text-gray-400 font-medium`}
             />
             {errors.title && (
-              <p className="mt-2 text-sm text-red-500 ml-1">{errors.title}</p>
+              <p className="mt-2 text-[10px] font-bold text-red-500 ml-1 uppercase tracking-wider">{errors.title}</p>
             )}
           </div>
 
           {/* Description Textarea */}
-          <div>
+          <div className="space-y-3">
             <label
               htmlFor="description"
-              className="block text-sm font-medium text-gray-400 mb-2 ml-1"
+              className="block text-[9px] font-black text-gray-600 uppercase tracking-[0.2em] ml-1"
             >
               Description
             </label>
@@ -164,23 +164,23 @@ const CreateProduct = () => {
               name="description"
               value={formData.description}
               onChange={handleChange}
-              placeholder="Describe your product features, dimensions, and condition..."
-              rows="2"
-              className={`w-full px-5 py-4 rounded-xl bg-[#0f0f0f] text-white border ${errors.description ? "border-red-500" : "border-[#333]"} focus:border-[#F5C518] focus:outline-none transition-colors placeholder:text-gray-600 font-medium leading-relaxed resize-none [scrollbar-width:none]`}
+              placeholder="Describe the silhouette, fabric, and fit..."
+              rows="4"
+              className={`w-full px-6 py-5 rounded-2xl bg-[#FAF9F6] text-black border ${errors.description ? "border-red-500" : "border-black/5"} focus:border-black/20 focus:outline-none transition-all placeholder:text-gray-400 font-medium leading-relaxed resize-none [scrollbar-width:none]`}
             ></textarea>
             {errors.description && (
-              <p className="mt-2 text-sm text-red-500 ml-1">
+              <p className="mt-2 text-[10px] font-bold text-red-500 ml-1 uppercase tracking-wider">
                 {errors.description}
               </p>
             )}
           </div>
 
           {/* Price & Currency Section */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="space-y-3">
               <label
                 htmlFor="priceAmount"
-                className="block text-sm font-medium text-gray-400 mb-2 ml-1"
+                className="block text-[9px] font-black text-gray-600 uppercase tracking-[0.2em] ml-1"
               >
                 Price Amount
               </label>
@@ -193,18 +193,18 @@ const CreateProduct = () => {
                 value={formData.priceAmount}
                 onChange={handleChange}
                 placeholder="0.00"
-                className={`w-full px-5 py-4 rounded-xl bg-[#0f0f0f] text-white border ${errors.priceAmount ? "border-red-500" : "border-[#333]"} focus:border-[#F5C518] focus:outline-none transition-colors placeholder:text-gray-600 font-medium no-spinner`}
+                className={`w-full px-6 py-5 rounded-2xl bg-[#FAF9F6] text-black border ${errors.priceAmount ? "border-red-500" : "border-black/5"} focus:border-black/20 focus:outline-none transition-all placeholder:text-gray-400 font-medium no-spinner`}
               />
               {errors.priceAmount && (
-                <p className="mt-2 text-sm text-red-500 ml-1">
+                <p className="mt-2 text-[10px] font-bold text-red-500 ml-1 uppercase tracking-wider">
                   {errors.priceAmount}
                 </p>
               )}
             </div>
-            <div>
+            <div className="space-y-3">
               <label
                 htmlFor="priceCurrency"
-                className="block text-sm font-medium text-gray-400 mb-2 ml-1"
+                className="block text-[9px] font-black text-gray-600 uppercase tracking-[0.2em] ml-1"
               >
                 Currency
               </label>
@@ -214,12 +214,12 @@ const CreateProduct = () => {
                   name="priceCurrency"
                   value={formData.priceCurrency}
                   onChange={handleChange}
-                  className="w-full px-5 py-4 rounded-xl bg-[#0f0f0f] text-white border border-[#333] focus:border-[#F5C518] focus:outline-none transition-colors appearance-none cursor-pointer font-medium"
+                  className="w-full px-6 py-5 rounded-2xl bg-[#FAF9F6] text-black border border-black/5 focus:border-black/20 focus:outline-none transition-all appearance-none cursor-pointer font-medium"
                 >
                   <option value="INR">INR (₹)</option>
                   <option value="USD">USD ($)</option>
                 </select>
-                <div className="absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none text-gray-500">
+                <div className="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
                   <svg
                     className="w-5 h-5"
                     fill="none"
@@ -238,14 +238,14 @@ const CreateProduct = () => {
             </div>
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-400 mb-3 ml-1">
-              Product Images (Max 4)
+          <div className="space-y-4">
+            <label className="block text-[9px] font-black text-gray-600 uppercase tracking-[0.2em] ml-1">
+              Visuals (Max 4)
             </label>
 
             <div
               onClick={() => images.length < 4 && fileInputRef.current.click()}
-              className={`group relative border-2 border-dashed rounded-2xl p-10 text-center transition-all ${images.length >= 4 ? "bg-[#1a1a1a] border-[#333] cursor-not-allowed opacity-50" : "border-[#333] hover:border-[#F5C518] hover:bg-[#F5C518]/2 cursor-pointer"}`}
+              className={`group relative border-2 border-dashed rounded-3xl p-16 text-center transition-all duration-500 ${images.length >= 4 ? "bg-[#FAF9F6] border-black/5 cursor-not-allowed opacity-50" : "border-black/10 hover:border-black/40 hover:bg-[#FAF9F6] cursor-pointer"}`}
             >
               <input
                 type="file"
@@ -255,40 +255,54 @@ const CreateProduct = () => {
                 accept="image/*"
                 className="hidden"
               />
-              <div className="flex flex-col items-center h-1 justify-center">
-                <span className="text-gray-300 font-bold">
-                  Add Product Images
+              <div className="flex flex-col items-center justify-center">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1}
+                  stroke="currentColor"
+                  className="w-10 h-10 mb-4 text-black/20 group-hover:text-black/40 transition-colors"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
+                  />
+                </svg>
+                <span className="text-black text-[10px] font-black uppercase tracking-[0.2em] mb-1">
+                  Upload Media
                 </span>
-                <span className="text-gray-500 text-sm">
-                  PNG, JPG or JPEG up to 10MB
+                <span className="text-gray-500 text-[9px] uppercase tracking-widest font-bold">
+                  Drop files or click to browse
                 </span>
               </div>
             </div>
 
             {/* Image Previews */}
             {images.length > 0 && (
-              <div className="mt-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+              <div className="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-4">
                 {images.map((img, index) => (
                   <div
                     key={index}
-                    className="relative aspect-square rounded-xl overflow-hidden border border-[#333] group shadow-xl"
+                    className="relative aspect-square rounded-2xl overflow-hidden border border-black/5 group shadow-sm"
                   >
                     <img
                       src={img.preview}
                       alt={`Preview ${index}`}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                     />
-                    <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-[2px]">
                       <button
                         type="button"
                         onClick={(e) => {
                           e.stopPropagation();
                           removeImage(index);
                         }}
-                        className="bg-white/10 hover:bg-red-500/20 text-white p-2 rounded-lg backdrop-blur-sm border border-white/20 transition-all"
+                        className="bg-white text-black p-3 rounded-full hover:bg-red-500 hover:text-white transition-all transform hover:scale-110"
                       >
                         <svg
-                          className="w-5 h-5 text-red-500"
+                          className="w-4 h-4"
                           fill="none"
                           viewBox="0 0 24 24"
                           stroke="currentColor"
@@ -297,7 +311,7 @@ const CreateProduct = () => {
                             strokeLinecap="round"
                             strokeLinejoin="round"
                             strokeWidth={2.5}
-                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                            d="M6 18L18 6M6 6l12 12"
                           />
                         </svg>
                       </button>
@@ -307,35 +321,35 @@ const CreateProduct = () => {
               </div>
             )}
             {errors.images && (
-              <p className="mt-3 text-sm text-red-500 ml-1">{errors.images}</p>
+              <p className="mt-3 text-[10px] font-bold text-red-500 ml-1 uppercase tracking-wider">{errors.images}</p>
             )}
-            <div className="mt-3 flex justify-between items-center px-1">
-              <p className="text-xs text-gray-500 font-medium">
-                {images.length}/5 images selected
+            <div className="mt-4 flex justify-between items-center px-1">
+              <p className="text-[9px] text-gray-600 font-black uppercase tracking-[0.2em]">
+                {images.length} / 4 Selected
               </p>
               {images.length > 0 && (
                 <button
                   type="button"
                   onClick={() => setImages([])}
-                  className="text-xs text-red-500 hover:underline font-bold transition-colors"
+                  className="text-[9px] text-black font-black uppercase tracking-[0.2em] hover:underline transition-all"
                 >
-                  Clear all
+                  Remove All
                 </button>
               )}
             </div>
           </div>
 
           {/* Action Button */}
-          <div className="pt-4">
+          <div className="pt-6">
             <button
               type="submit"
               disabled={!isFormValid || loading}
-              className={`w-full py-4 rounded-xl font-bold text-lg text-black transition-all transform active:scale-[0.98] flex items-center justify-center gap-3 shadow-lg shadow-[#F5C518]/10 ${!isFormValid || loading ? "bg-gray-700 text-gray-500 cursor-not-allowed opacity-50" : "bg-[#F5C518] hover:bg-[#e0b415]"}`}
+              className={`w-full py-6 rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] transition-all duration-500 transform active:scale-[0.98] flex items-center justify-center gap-4 shadow-xl ${!isFormValid || loading ? "bg-gray-100 text-gray-400 cursor-not-allowed" : "bg-black text-white hover:bg-gray-800"}`}
             >
               {loading ? (
                 <>
                   <svg
-                    className="animate-spin h-6 w-6 text-black"
+                    className="animate-spin h-5 w-5 text-white"
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
@@ -354,13 +368,13 @@ const CreateProduct = () => {
                       d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                     ></path>
                   </svg>
-                  <span>Creating Product...</span>
+                  <span>Syncing...</span>
                 </>
               ) : (
                 <>
-                  <span>List Product Now</span>
+                  <span>List Item</span>
                   <svg
-                    className="w-5 h-5"
+                    className="w-4 h-4"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -378,13 +392,13 @@ const CreateProduct = () => {
           </div>
         </form>
 
-        <p className="mt-12 text-center text-gray-500 text-sm font-medium">
-          Need help?{" "}
+        <p className="mt-16 text-center text-gray-600 text-[10px] font-black uppercase tracking-[0.2em]">
+          Need assistance?{" "}
           <a
             href="#"
-            className="text-[#F5C518] hover:underline transition-colors"
+            className="text-black hover:underline transition-colors ml-1 font-black"
           >
-            Contact Merchant Support
+            Contact Support
           </a>
         </p>
       </div>
