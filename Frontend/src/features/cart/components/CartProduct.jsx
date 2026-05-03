@@ -25,7 +25,7 @@ const CartProduct = ({
 
   const currency = item?.price?.currency || "INR";
   const currencySymbol = currency === "USD" ? "$" : "₹";
-  console.log("Item ", item);
+
   return (
     <div className="flex flex-col sm:flex-row gap-8 p-8 border border-black/5 rounded-4xl bg-white shadow-sm group transition-all hover:border-black/20 relative">
       {/* Delete Icon */}

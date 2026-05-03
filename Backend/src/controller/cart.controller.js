@@ -215,8 +215,7 @@ const increaseQuantity = async (req, res) => {
         item.variants.toString() === variantId.toString()
     )?.quantity || 0
 
-    console.log("item in the cart : ", itemQuantityInCart)
-    console.log("available stock : ", stock)
+
 
     if (itemQuantityInCart + 1 > stock) {
         throw new ApiError(409, "Stock exceeded");
