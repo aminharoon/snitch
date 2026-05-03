@@ -4,10 +4,10 @@ import { useNavigate } from "react-router";
 const BackButton = () => {
   const navigate = useNavigate();
   return (
-    <div className="mb-10 animate-in fade-in slide-in-from-top-4 duration-1000">
+    <div className="mb-10 animate-in fade-in slide-in-from-top-4 duration-1000 ">
       <button
         onClick={() => navigate(-1)}
-        className="group flex items-center gap-1 text-gray-900 hover:text-gray-950 transition-all"
+        className="group flex items-center gap-1 text-gray-900 hover:text-gray-950 transition-all "
       >
         <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-white/10 border border-white/5 transition-colors">
           <svg
@@ -16,7 +16,7 @@ const BackButton = () => {
             viewBox="0 0 24 24"
             strokeWidth={2}
             stroke="currentColor"
-            className="w-4 h-4 transition-transform group-hover:-translate-x-1"
+            className="w-4 h-4 transition-transform group-hover:-translate-x-1 cursor-pointer"
           >
             <path
               strokeLinecap="round"

@@ -135,7 +135,7 @@ const CartProduct = ({
                   handleDecrementQuantity(item.product._id, item.variants)
                 }
                 disabled={item?.quantity <= 1}
-                className="text-gray-600 hover:text-black transition-colors disabled:opacity-20 disabled:cursor-not-allowed font-black"
+                className="text-gray-600 hover:text-black transition-colors disabled:opacity-20 disabled:cursor-not-allowed font-black cursor-pointer"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -159,7 +159,7 @@ const CartProduct = ({
                 onClick={() =>
                   handleIncrementQuantity(item.product._id, item.variants)
                 }
-                className="text-gray-600 hover:text-black transition-colors font-black"
+                className="text-gray-600 hover:text-black transition-colors font-black cursor-pointer"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

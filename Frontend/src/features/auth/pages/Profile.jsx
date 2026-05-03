@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import BackButton from "../../components/BackButton";
 
 const Profile = () => {
   const { user } = useSelector((state) => state.auth);
-
+  const [preview, setPreview] = useState(null);
   // Fallback data in case user isn't loaded completely
   const displayUser = user || {
     fullName: "Loading...",
@@ -60,6 +60,7 @@ const Profile = () => {
                       {getInitials(displayUser.fullName)}
                     </div>
                   )}
+
                   {/* Hover Overlay */}
                   <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-full flex flex-col items-center justify-center gap-2 backdrop-blur-sm">
                     <svg
