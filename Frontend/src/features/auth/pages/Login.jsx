@@ -9,7 +9,7 @@ const Login = () => {
   const navigate = useNavigate();
   const { handleLogin } = useAuth();
 
-  const { loading } = useSelector((state) => state.auth);
+  const { loading, error } = useSelector((state) => state.auth);
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
@@ -31,7 +31,10 @@ const Login = () => {
       email: "",
       password: "",
     });
-    navigate("/");
+
+    if (user) {
+      navigate("/");
+    }
   };
 
   return (

@@ -210,8 +210,7 @@ const decreaseQuantity = async (req, res) => {
         item.variants.toString() === variantId.toString()
     )?.quantity || 0
 
-    console.log("item in the cart : ", itemQuantityInCart)
-    console.log("available stock : ", stock)
+
 
     if (itemQuantityInCart - 1 < 0) {
         throw new ApiError(409, "Quantity cannot be negative");

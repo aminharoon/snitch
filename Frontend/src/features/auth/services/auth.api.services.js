@@ -23,9 +23,7 @@ export const login = async ({ email, password }) => {
         return response.data
     } catch (e) {
 
-        console.log(`SERVICES  went wrong while login the user   ${e.message}`)
         throw new Error(e.response?.data?.message || "API FAILED")
-
 
     }
 }
