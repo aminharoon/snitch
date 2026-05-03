@@ -264,7 +264,7 @@ const decreaseQuantity = async (req, res) => {
 
 
 
-    if (itemQuantityInCart - 1 < 0) {
+    if (itemQuantityInCart - 1 <= 0) {
         throw new ApiError(409, "Quantity cannot be negative");
     }
 
