@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { getSellerProducts, createProduct, getAllProducts, getSingleProductDetails, deleteProduct, addProductVarients, deleteVariant, increaseStock } from "../services/api.products.js"
 import { setSellerProducts, setLoading, setError, setAllProducts, setSingleProduct, incProductStock } from "../State/state.product.js"
 import toast from "react-hot-toast"
@@ -6,6 +6,10 @@ import { useDispatch, useSelector } from "react-redux"
 
 export const useProduct = () => {
     const Dispatch = useDispatch()
+
+    useEffect(() => {
+        Dispatch(setLoading(false))
+    }, [])
     const { sellerProducts } = useSelector((state) => state.product)
 
 

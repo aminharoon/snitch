@@ -179,6 +179,7 @@ const UpdateSellerProduct = () => {
   const handleIncProductStock = async (productId, variantId) => {
     await handleIncStock({ productId, variantId });
   };
+  console.log(singleProduct);
 
   return (
     <div className="h-screen bg-[#FAF9F6] text-black pt-6 pb-6 px-4 sm:px-10 overflow-hidden selection:bg-black selection:text-white">
@@ -481,7 +482,7 @@ const UpdateSellerProduct = () => {
               <div className="grid grid-cols-2 gap-8">
                 <div className="space-y-3">
                   <label className="text-[9px] font-black uppercase tracking-[0.3em] text-gray-600 ml-1">
-                    Price (INR)
+                    Price ({singleProduct.price.currency})
                   </label>
                   <input
                     type="number"

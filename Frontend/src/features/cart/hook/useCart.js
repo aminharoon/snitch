@@ -2,11 +2,14 @@ import { useDispatch, useSelector } from "react-redux"
 import { addToCart, getCart, delateCartItem, incrementcartItem, decrementcartItem } from "../services/cart.api.services.js"
 import { setItems, setLoading, setError, deleteItemFromCart, incrementCartItemQuantity, decrementCartItemQuantity, incrementProsuctStock } from "../state/cart.slice.js"
 import toast from "react-hot-toast"
+import { useEffect } from "react"
 
 
 export const useCart = () => {
     const dispatch = useDispatch()
-
+    useEffect(() => {
+        dispatch(setLoading(false))
+    }, [])
 
     const handleAddToCart = async ({ productId, variantId, attributes }) => {
         try {

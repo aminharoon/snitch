@@ -99,6 +99,7 @@ const Cart = () => {
                     </span>
                     <span className="text-4xl font-light tracking-tighter">
                       {globalCurrencySymbol}
+
                       {subtotal.toLocaleString()}
                     </span>
                   </div>

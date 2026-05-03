@@ -3,6 +3,7 @@ import { cartModel } from '../models/cart.model.js'
 import { ApiError, ApiResponse } from "../utils/index.js"
 import { stockOfVariant } from '../dao/product.dao.js'
 import { validateCart } from "../validation/cart.validation.js";
+import mongoose from "mongoose";
 
 
 
@@ -81,14 +82,66 @@ const addToCart = async (req, res) => {
 const getCartProducts = async (req, res) => {
     const user = req.user
 
-    let cart = await cartModel
-        .findOne({ user: user._id })
-        .populate("items.product")
+    let cart = await cartModel.aggregate([
+        {
+            $match: {
+                user: new mongoose.Types.ObjectId(user._id)
+            }
+        },
+        { $unwind: { path: '$items' } },
+        {
+            $lookup: {
+                from: 'products',
+                localField: 'items.product',
+                foreignField: '_id',
+                as: 'items.product'
+            }
+        },
+        { $unwind: { path: '$items.product' } },
+        {
+            $unwind: { path: '$items.product.variants' }
+        },
+        {
+            $match: {
+                $expr: {
+                    $eq: [
+                        '$items.variants',
+                        '$items.product.variants._id'
+                    ]
+                }
+            }
+        },
+        {
+            $addFields: {
+                itemPrice: {
+                    price: {
+                        $multiply: [
+                            '$items.quantity',
+                            '$items.product.variants.price.amount'
+                        ]
+                    },
+                    currency:
+                        '$items.product.price.currency'
+                }
+            }
+        },
+        {
+            $group: {
+                _id: '$_id',
+                items: { $push: '$items' },
+                totalPrice: { $sum: '$itemPrice.price' },
+                currency: {
+                    $first: '$itemPrice.currency'
+                }
+            }
+        }
+    ])
+
 
     if (!cart) {
         cart = await cartModel.create({ user: user._id })
     }
-    console.log(cart.items.length)
+
     res.status(200).json(new ApiResponse(200, "cart fetched successfully", cart))
 
 }

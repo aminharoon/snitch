@@ -3,12 +3,14 @@ import { useProduct } from "../Hooks/useProducts.js";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import BackButton from "../../components/BackButton.jsx";
+import popUp from "../Componts/popUp.jsx";
 
 const CreateProduct = () => {
   const { handleCreateProduct } = useProduct();
   const { loading } = useSelector((state) => state.product);
   const fileInputRef = useRef(null);
   const navigate = useNavigate();
+  const [isModalOpen, setisModalOpen] = useState(false);
 
   const initialSateOfFormData = {
     title: "",
@@ -95,9 +97,9 @@ const CreateProduct = () => {
       images.forEach((img) => {
         data.append("images", img.file);
       });
-      alert("Do't Forget To Add An Variant like Stock and size  ");
+
+      alert("Please Add At Least One Variant Like Size And Stock ");
       const response = await handleCreateProduct(data);
-      console.log(response._id);
       setFormData(initialSateOfFormData);
       setImages([]);
       navigate(`/seller/product/${response._id}`);
@@ -409,6 +411,7 @@ const CreateProduct = () => {
           </a>
         </p>
       </div>
+      <popUp isModalOpen={isModalOpen} setisModalOpen={setisModalOpen} />
     </div>
   );
 };
