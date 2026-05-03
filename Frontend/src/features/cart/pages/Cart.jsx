@@ -12,6 +12,8 @@ const Cart = () => {
     handleDecrementCartItem,
   } = useCart();
   const items = useSelector((state) => state.cart.items);
+  const totalPrice = useSelector((state) => state.cart.totalPrice);
+  const currency = useSelector((state) => state.cart.currency);
 
   useEffect(() => {
     handleGetCartItems();
@@ -19,17 +21,10 @@ const Cart = () => {
 
   const cartItems = items || [];
 
-  const subtotal = useMemo(() => {
-    return cartItems.reduce((acc, item) => {
-      const price = item?.price?.amount || 0;
-      const quantity = item?.quantity || 1;
-      return acc + price * quantity;
-    }, 0);
-  }, [cartItems]);
+  const subtotal = totalPrice || 0;
 
-  // Determine global currency symbol from first item if available
-  const globalCurrency =
-    cartItems.length > 0 ? cartItems[0]?.price?.currency || "INR" : "INR";
+  // Determine global currency symbol
+  const globalCurrency = currency || "INR";
   const globalCurrencySymbol = globalCurrency === "USD" ? "$" : "₹";
 
   const handleIncrementQuantity = async (productId, variantId) => {

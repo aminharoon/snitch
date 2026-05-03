@@ -82,6 +82,7 @@ export const useAuth = () => {
             const response = await logout()
             dispatch(setUser(null))
             toast.success("user is logout successfully ")
+            window.location.href("/login")
             return response?.data
         } catch (e) {
             console.log(`SERVICES something went wrong while hitting the logout api ${e.message}`)

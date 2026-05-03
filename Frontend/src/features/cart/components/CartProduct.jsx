@@ -7,8 +7,8 @@ const CartProduct = ({
   handleRemoveItem,
 }) => {
   const product = item.product;
-  const variantId = item.variants; // From your data, item.variants is the ID string
-  const variant = product?.variants?.find((v) => v._id === variantId);
+  const variant = product?.variants;
+  const variantId = item.variants;
   const attributes = item.attributes || {};
 
   const getImageUrl = (img) => {
@@ -25,7 +25,7 @@ const CartProduct = ({
 
   const currency = item?.price?.currency || "INR";
   const currencySymbol = currency === "USD" ? "$" : "₹";
-
+  console.log("Item ", item);
   return (
     <div className="flex flex-col sm:flex-row gap-8 p-8 border border-black/5 rounded-4xl bg-white shadow-sm group transition-all hover:border-black/20 relative">
       {/* Delete Icon */}

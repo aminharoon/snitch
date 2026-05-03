@@ -6,12 +6,22 @@ export const cartSlice = createSlice({
     name: "cart",
     initialState: {
         items: [],
+        totalPrice: 0,
+        currency: "INR",
         loading: false,
         error: null
     },
     reducers: {
         setItems: (state, action) => {
-            state.items = action.payload
+            if (action.payload) {
+                state.items = action.payload.items || []
+                state.totalPrice = action.payload.totalPrice || 0
+                state.currency = action.payload.currency || "INR"
+            } else {
+                state.items = []
+                state.totalPrice = 0
+                state.currency = "INR"
+            }
         },
         addItem: (state, action) => {
             state.items.push(action.payload)
@@ -33,8 +43,9 @@ export const cartSlice = createSlice({
             )
 
             if (existingItem) {
+                // Update total price locally
+                state.totalPrice -= (existingItem.price.amount * existingItem.quantity)
                 state.items = state.items.filter(item => item._id !== existingItem._id)
-
             }
         },
         incrementCartItemQuantity: (state, action) => {
@@ -47,6 +58,7 @@ export const cartSlice = createSlice({
 
             if (existingItem) {
                 existingItem.quantity += 1
+                state.totalPrice += existingItem.price.amount
             }
         },
         decrementCartItemQuantity: (state, action) => {
@@ -58,8 +70,9 @@ export const cartSlice = createSlice({
                     item.variants === variantId
             )
 
-            if (existingItem) {
+            if (existingItem && existingItem.quantity > 1) {
                 existingItem.quantity -= 1
+                state.totalPrice -= existingItem.price.amount
             }
         }
 
