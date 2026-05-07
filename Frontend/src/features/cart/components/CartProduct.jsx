@@ -85,11 +85,11 @@ const CartProduct = ({
 
           {/* Attributes (Size, Color, etc) */}
           {Object.keys(attributes).length > 0 && (
-            <div className="flex flex-wrap gap-2 mt-4">
+            <div className="flex flex-wrap gap-2 mt-2">
               {Object.entries(attributes).map(([key, val]) => (
                 <div
                   key={key}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-black/5 bg-[#FAF9F6]"
+                  className="flex items-center gap-1.5  py-1.5 px-2 rounded-xl border border-black/5 bg-[#FAF9F6]"
                 >
                   <span className="text-[9px] font-black uppercase tracking-[0.2em] text-gray-600">
                     {key}:
@@ -103,7 +103,7 @@ const CartProduct = ({
           )}
         </div>
 
-        <div className="flex flex-wrap gap-12 items-end mt-8">
+        <div className="flex flex-wrap gap-12 items-end mt-4">
           <div>
             <span className="text-[9px] font-black text-gray-600 uppercase tracking-[0.3em] block mb-2">
               Unit Price

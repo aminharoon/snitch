@@ -53,5 +53,29 @@ cartRoutes.patch("/quantity/increase/:productId/:variantId", validateCartQuantit
 cartRoutes.patch("/quantity/decrease/:productId/:variantId", validateCartQuantity, verifyUser, cartController.decreaseQuantity)
 
 
+/**
+ * @route POST /api/product/cart/payment/create/order
+ * @desc Create an order for the items in the cart and initiate payment
+ * @access Private
+ * @arguments amount - Total amount for the order
+ * @arguments currency - Currency for the order (e.g., "INR")
+ */
+cartRoutes.post("/payment/create/order", verifyUser, cartController.createOrderController)
+
+/**
+ * @route POST /api/product/cart/payment/verify/order
+ * @desc Verify the payment for an order created from the cart
+ * @access Private
+ * @arguments razorpayOrderId - ID of the Razorpay order to verify
+ * @arguments razorpayPaymentId - ID of the Razorpay payment to verify
+ * @arguments razorpaySignature - Signature provided by Razorpay for verification
+ */
+
+cartRoutes.post("/payment/verify/order", verifyUser, cartController.verifyPayment)
+
+
+
+
+
 
 export default cartRoutes

@@ -2,9 +2,14 @@ import { setUser, setLoading, setError } from "../state/auth.slice.js"
 import { register, login, getme, logout } from "../services/auth.api.services.js"
 import { useDispatch } from "react-redux"
 import toast from "react-hot-toast"
+import { useEffect } from "react"
 
 export const useAuth = () => {
     const dispatch = useDispatch()
+    useEffect(() => {
+        dispatch(setLoading(false))
+    }, [])
+
 
     const handleRegister = async ({ fullName, email, phoneNumber, password, isSeller = false }) => {
         try {

@@ -10,10 +10,15 @@ const Cart = () => {
     handleDeleteCartIem,
     handleIncrementCartItem,
     handleDecrementCartItem,
+    handleCreateOrder,
+    handleverifyPayment,
   } = useCart();
+
   const items = useSelector((state) => state.cart.items);
   const totalPrice = useSelector((state) => state.cart.totalPrice);
   const currency = useSelector((state) => state.cart.currency);
+
+  const { user } = useSelector((state) => state.auth);
 
   useEffect(() => {
     handleGetCartItems();
@@ -36,6 +41,39 @@ const Cart = () => {
 
   const handleRemoveItem = async (productId, variantId) => {
     await handleDeleteCartIem({ productId, variantId });
+  };
+
+  const handleCreatepaymentOrder = async () => {
+    const order = await handleCreateOrder();
+
+    // Check if Razorpay script is loaded
+    if (!window.Razorpay) {
+      console.error("Razorpay script not loaded");
+      return;
+    }
+
+    const options = {
+      key: "rzp_test_SkqyGN8uA7EnFM",
+      amount: order.amount * 100, // Amount in paise
+      currency: order.currency,
+      name: "SNITCH",
+      description: "something ",
+      order_id: order.id, // Generate order_id on server
+      handler: async (response) => {
+        const isValid = await handleverifyPayment(response);
+        console.log(response);
+      },
+      prefill: {
+        name: user.fullName,
+        email: user.email,
+        contact: user.phoneNumber,
+      },
+      theme: {
+        color: "#F37254",
+      },
+    };
+    const razorpayInstance = new window.Razorpay(options);
+    razorpayInstance.open();
   };
 
   return (
@@ -100,7 +138,10 @@ const Cart = () => {
                   </div>
                 </div>
 
-                <button className="w-full py-5 bg-black text-white text-[10px] font-black uppercase tracking-[0.3em] rounded-2xl hover:bg-gray-800 transition-all duration-500 shadow-xl active:scale-[0.98]">
+                <button
+                  onClick={handleCreatepaymentOrder}
+                  className="w-full py-5 bg-black text-white text-[10px] font-black uppercase tracking-[0.3em] rounded-2xl hover:bg-gray-800 transition-all duration-500 shadow-xl active:scale-[0.98]"
+                >
                   Proceed to Checkout
                 </button>
 

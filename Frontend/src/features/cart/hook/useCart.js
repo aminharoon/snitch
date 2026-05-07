@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux"
-import { addToCart, getCart, delateCartItem, incrementcartItem, decrementcartItem } from "../services/cart.api.services.js"
+import { addToCart, getCart, delateCartItem, incrementcartItem, decrementcartItem, createOrder, verifyPayment } from "../services/cart.api.services.js"
 import { setItems, setLoading, setError, deleteItemFromCart, incrementCartItemQuantity, decrementCartItemQuantity, incrementProsuctStock, addItem } from "../state/cart.slice.js"
 import toast from "react-hot-toast"
 import { useEffect } from "react"
@@ -98,10 +98,51 @@ export const useCart = () => {
         }
     }
 
+    const handleCreateOrder = async () => {
+        try {
+            dispatch(setLoading(true))
+            const response = await createOrder()
+
+            if (response) {
+                dispatch(setLoading(true))
+                return response.data || response
+
+            }
+        } catch (e) {
+            dispatch(setLoading(false))
+            setError(`Failde to buy items cart : ${e.message}`)
+            toast.error(`Failde to cheack Out items cart : ${e.message}`)
+            throw new Error(e.response?.data?.message || " API FAILED")
+
+        }
+    }
+
+
+    const handleverifyPayment = async ({ razorpay_order_id, razorpay_payment_id, razorpay_signature
+    }) => {
+        try {
+            dispatch(setLoading(true))
+            const response = await verifyPayment({
+                razorpay_order_id,
+                razorpay_payment_id,
+                razorpay_signature
+            })
+            if (reportError) {
+                dispatch(setLoading(false))
+                return response.data
+            }
+        } catch (e) {
+            dispatch(setLoading(false))
+            setError(`Faildeto verify payment : ${e.message}`)
+            toast.error(`FAILED to verify payemnt : ${e.message}`)
+            throw new Error(`${e.message}`)
+
+        }
+    }
 
 
 
     return {
-        handleAddToCart, handleGetCartItems, handleDeleteCartIem, handleIncrementCartItem, handleDecrementCartItem
+        handleAddToCart, handleGetCartItems, handleDeleteCartIem, handleIncrementCartItem, handleDecrementCartItem, handleCreateOrder, handleverifyPayment
     }
 }

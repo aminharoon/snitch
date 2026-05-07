@@ -11,8 +11,7 @@ const userSchema = new mongoose.Schema({
         unique: true
     },
     phoneNumber: {
-        type: String,
-        select: false
+        type: String
 
     },
     password: {
@@ -71,7 +70,7 @@ userSchema.methods.generateAccessToken = async function () {
         fullname: this.fullName,
         email: this.email,
         username: this.username
-    }, envVariables.ACCESS_TOKEN, { expiresIn: "1h" })
+    }, envVariables.ACCESS_TOKEN, { expiresIn: "5h" })
 }
 
 userSchema.methods.generateRefreshToken = async function () {

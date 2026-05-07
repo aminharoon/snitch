@@ -4,6 +4,11 @@ import { ApiError, ApiResponse } from "../utils/index.js"
 import { stockOfVariant } from '../dao/product.dao.js'
 import { validateCart } from "../validation/cart.validation.js";
 import mongoose from "mongoose";
+import { cartDetails } from "../dao/cart.dao.js"
+import { createOrder } from "../services/payment.service.js"
+import { paymentModel } from "../models/payment.model.js";
+import { validatePaymentVerification } from "razorpay/dist/utils/razorpay-utils.js"
+import { envVariables } from "../config/config.js";
 
 
 
@@ -82,61 +87,7 @@ const addToCart = async (req, res) => {
 const getCartProducts = async (req, res) => {
     const user = req.user
 
-    let cart = await cartModel.aggregate([
-        {
-            $match: {
-                user: new mongoose.Types.ObjectId(user._id)
-            }
-        },
-        { $unwind: { path: '$items' } },
-        {
-            $lookup: {
-                from: 'products',
-                localField: 'items.product',
-                foreignField: '_id',
-                as: 'items.product'
-            }
-        },
-        { $unwind: { path: '$items.product' } },
-        {
-            $unwind: { path: '$items.product.variants' }
-        },
-        {
-            $match: {
-                $expr: {
-                    $eq: [
-                        '$items.variants',
-                        '$items.product.variants._id'
-                    ]
-                }
-            }
-        },
-        {
-            $addFields: {
-                itemPrice: {
-                    price: {
-                        $multiply: [
-                            '$items.quantity',
-                            '$items.product.variants.price.amount'
-                        ]
-                    },
-                    currency:
-                        '$items.product.price.currency'
-                }
-            }
-        },
-        {
-            $group: {
-                _id: '$_id',
-                items: { $push: '$items' },
-                totalPrice: { $sum: '$itemPrice.price' },
-                currency: {
-                    $first: '$itemPrice.currency'
-                }
-            }
-        }
-    ])
-
+    const cart = await cartDetails(user)
 
     if (!cart) {
         cart = await cartModel.create({ user: user._id })
@@ -282,11 +233,98 @@ const decreaseQuantity = async (req, res) => {
     res.status(200).json(new ApiResponse(200, "Quantity decreased successfully"));
 }
 
+const createOrderController = async (req, res) => {
+
+    const cart = await cartDetails(req.user)
+
+    if (!cart) {
+        throw new ApiError(404, "Cart is empty ")
+    }
+    const order = await createOrder({
+        amount: cart[0].totalPrice, currency: cart[0].currency
+
+    })
+
+    const payment = await paymentModel.create({
+        user: req.user._id,
+        razorpayDetails: {
+            orderId: order.id
+        },
+        price: {
+            amount: cart[0].totalPrice,
+            currency: cart[0].currency
+        },
+
+        orderItems: cart[0].items.map(item => ({
+            title: item.product.title,
+
+            quantity: item.quantity,
+
+            description: item.product.description,
+
+            price: {
+                amount: item.product.variants.price.amount || item.product.price.amount,
+                currency: item.product.variants.price.currency || item.product.price.currency
+            },
+            productId: item.product._id,
+            variantId: item.variants._id,
+            images: item.product.images || item.variants.images,
+            attributes: item.attributes
+        }))
+
+
+
+
+    })
+
+    res.status(200).json(new ApiResponse(200, "Order created successfully", order))
+
+
+}
+
+const verifyPayment = async (req, res) => {
+    console.log("this is called verify payement")
+    const { razorpay_order_id,
+        razorpay_payment_id,
+        razorpay_signature } = req.body
+
+    if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
+        throw new ApiError(400, "All payment details are required")
+    }
+    const payment = await paymentModel.findOne({ "razorpayDetails.orderId": razorpay_order_id, status: "pending" })
+
+    if (!payment) {
+        throw new ApiError(404, "Payment not found for this order")
+    }
+
+    const isValid = await validatePaymentVerification({
+        order_id: razorpay_order_id,
+        payment_id: razorpay_payment_id
+    }, razorpay_signature, envVariables.RAZORPAY_KEY_SECRET)
+    if (!isValid) {
+        throw new ApiError(400, "Invalid payment details")
+    }
+    payment.razorpayDetails.paymentId = razorpay_payment_id,
+        payment.razorpayDetails.signature = razorpay_signature
+    payment.status = "completed"
+
+    await payment.save()
+
+    res.status(200, "payment completed", payment)
+
+
+
+
+
+
+}
 
 export const cartController = {
     addToCart,
     getCartProducts,
     deleteCartItem,
     increaseQuantity,
-    decreaseQuantity
+    decreaseQuantity,
+    createOrderController,
+    verifyPayment
 }

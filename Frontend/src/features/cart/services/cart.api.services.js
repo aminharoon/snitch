@@ -65,3 +65,34 @@ export const decrementcartItem = async ({ productId, variantId }) => {
 
 }
 
+export const createOrder = async () => {
+    try {
+
+        const response = await api.post("/product/cart/payment/create/order")
+        return response.data
+
+    } catch (e) {
+        throw new Error(e.response?.data?.message || "API FAILED")
+
+    }
+}
+
+
+export const verifyPayment = async ({
+    razorpay_order_id,
+    razorpay_payment_id,
+    razorpay_signature
+}) => {
+    try {
+        const response = await api.post("/product/cart/payment/verify/order", {
+            razorpay_order_id,
+            razorpay_payment_id,
+            razorpay_signature
+        })
+        return response.data
+
+    } catch (e) {
+        throw new Error(e.response?.data?.message || "API FAILED")
+
+    }
+}
