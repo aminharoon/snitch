@@ -10,6 +10,7 @@ import {
 import { ProtectedComponent } from "../features/auth/components/index";
 import Layout from "./Layout";
 import Cart from "../features/cart/pages/Cart.jsx";
+import OrderSuccess from "../features/cart/pages/OrderSuccess.jsx";
 
 export const router = createBrowserRouter([
   {
@@ -49,6 +50,14 @@ export const router = createBrowserRouter([
         element: (
           <ProtectedComponent>
             <Cart />
+          </ProtectedComponent>
+        ),
+      },
+      {
+        path: "/order-success",
+        element: (
+          <ProtectedComponent>
+            <OrderSuccess />
           </ProtectedComponent>
         ),
       },

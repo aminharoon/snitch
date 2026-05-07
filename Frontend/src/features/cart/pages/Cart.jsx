@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { useCart } from "../hook/useCart";
 import CartProduct from "../components/CartProduct";
 import BackButton from "../../components/BackButton";
+import { useNavigate } from "react-router";
 
 const Cart = () => {
   const {
@@ -19,6 +20,7 @@ const Cart = () => {
   const currency = useSelector((state) => state.cart.currency);
 
   const { user } = useSelector((state) => state.auth);
+  const navigate = useNavigate();
 
   useEffect(() => {
     handleGetCartItems();
@@ -61,7 +63,9 @@ const Cart = () => {
       order_id: order.id, // Generate order_id on server
       handler: async (response) => {
         const isValid = await handleverifyPayment(response);
-        console.log(response);
+        if (isValid) {
+          navigate(`/order-success?order_id=${response?.razorpay_order_id}`);
+        }
       },
       prefill: {
         name: user.fullName,
@@ -69,7 +73,7 @@ const Cart = () => {
         contact: user.phoneNumber,
       },
       theme: {
-        color: "#F37254",
+        color: "#000000",
       },
     };
     const razorpayInstance = new window.Razorpay(options);
