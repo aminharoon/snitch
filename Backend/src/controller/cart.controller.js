@@ -11,6 +11,28 @@ import { validatePaymentVerification } from "razorpay/dist/utils/razorpay-utils.
 import { envVariables } from "../config/config.js";
 
 
+const handleStock = async (items) => {
+    for (const item of items) {
+
+
+        const stock = await stockOfVariant(
+            item.product._id,
+            item.variants
+        )
+        const product = await productModel.findOne({
+            _id: item.product._id,
+            "variants._id": item.variants,
+        })
+        const variant = product.variants.find(
+            (v) => v._id.toString() === item.variants.toString()
+        )
+        variant.stock -= item.quantity
+
+
+        await product.save()
+
+    }
+}
 
 
 const addToCart = async (req, res) => {
@@ -123,7 +145,7 @@ const deleteCartItem = async (req, res) => {
         item.product.toString() === productId.toString() &&
         item.variants.toString() === variantId.toString()
     )?.quantity || 0
-    console.log(itemQuantityInCart)
+
     await productModel.findOneAndUpdate(
         { _id: productId, "variants._id": variantId },
         { $inc: { "variants.$.stock": itemQuantityInCart } },
@@ -237,6 +259,10 @@ const createOrderController = async (req, res) => {
 
     const cart = await cartDetails(req.user)
 
+    await handleStock(cart[0].items)
+
+
+
     if (!cart) {
         throw new ApiError(404, "Cart is empty ")
     }
@@ -283,7 +309,9 @@ const createOrderController = async (req, res) => {
 }
 
 const verifyPayment = async (req, res) => {
-
+    await cartModel.findOneAndDelete({
+        user: req.user._id
+    })
 
     const { razorpay_order_id,
         razorpay_payment_id,
