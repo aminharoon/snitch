@@ -8,6 +8,7 @@ import {
   CreditCard,
   Hash,
 } from "lucide-react";
+import BackButton from "../../components/BackButton";
 
 /* ─────────────────────────────────────────────
    Helpers
@@ -93,10 +94,14 @@ const OrderSuccess = () => {
           to   { opacity: 1; transform: translateY(0); }
         }
       `}</style>
-
       {/* Page background – matches Cart: bg-[#FAF9F6] */}
-      <div className="min-h-screen bg-[#FAF9F6] text-black selection:bg-black selection:text-white flex items-center justify-center px-4 py-16">
+      <div className="min-h-screen bg-[#FAF9F6] text-black selection:bg-black selection:text-white flex items-center justify-center px-4 py-16n relative">
+        <div className="absolute top-5 left-20">
+          {" "}
+          <BackButton />
+        </div>
         {/* Card – matches Cart summary card */}
+
         <div
           className={`
             w-full max-w-md bg-white rounded-4xl border border-black/5 shadow-xl

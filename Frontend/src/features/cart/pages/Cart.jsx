@@ -3,7 +3,8 @@ import { useSelector } from "react-redux";
 import { useCart } from "../hook/useCart";
 import CartProduct from "../components/CartProduct";
 import BackButton from "../../components/BackButton";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
+import { ShoppingBag } from "lucide-react";
 
 const Cart = () => {
   const {
@@ -83,9 +84,23 @@ const Cart = () => {
   return (
     <div className="min-h-screen bg-[#FAF9F6] text-black pt-10 pb-16 selection:bg-black selection:text-white">
       <div className="max-w-6xl mx-auto px-6 relative">
-        <h1 className="text-4xl xl:text-5xl font-black tracking-tighter leading-[0.95] text-black uppercase italic mb-12">
-          Shopping Cart
-        </h1>
+        <div className="w-full flex items-center justify-between">
+          <h1 className="text-4xl xl:text-5xl font-black tracking-tighter leading-[0.95] text-black uppercase italic mb-12">
+            Shopping Cart
+          </h1>
+
+          <Link
+            to="/order"
+            id="btn-continue-shopping"
+            className="flex items-center justify-center gap-2 px-6 py-4 
+               bg-black text-white text-[8px] font-black uppercase tracking-[0.3em]
+               rounded-2xl hover:bg-gray-800 transition-all duration-500
+               shadow-xl active:scale-[0.98] cursor-pointer"
+          >
+            <ShoppingBag size={14} />
+            Orders
+          </Link>
+        </div>
         <BackButton />
 
         {cartItems.length === 0 ? (

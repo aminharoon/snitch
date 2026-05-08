@@ -15,6 +15,7 @@ import authRouter from "./routes/auth.routes.js";
 import googleAuthRouter from "./routes/auth.google.route.js";
 import productRoute from "./routes/product.routes.js"
 import cartRoutes from "./routes/cart.routes.js";
+import orderRoutes from "./routes/order.routes.js"
 
 const app = express();
 app.use(express.json());
@@ -36,6 +37,7 @@ app.use("/api/auth", authRouter)
 app.use("/api/auth", googleAuthRouter)
 app.use("/api/products", productRoute)
 app.use("/api/product/cart", cartRoutes)
+app.use("/api/orders", orderRoutes)
 
 
 
