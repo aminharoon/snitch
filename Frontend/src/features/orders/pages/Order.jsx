@@ -3,8 +3,6 @@ import { useSelector } from "react-redux";
 import { useOrder } from "../hooks/useOrder";
 import {
   Package,
-  Search,
-  Filter,
   ChevronRight,
   Clock,
   CheckCircle2,
@@ -43,10 +41,9 @@ const StatusBadge = ({ status }) => {
 
 const OrderItem = ({ item }) => {
   const currencySymbol = item.price?.currency === "USD" ? "$" : "₹";
-  console.log(item);
 
   return (
-    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 py-6 first:pt-0 last:pb-0 border-b last:border-0 border-black/5 group">
+    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 py-4 first:pt-0 last:pb-0 border-b last:border-0 border-black/5 group">
       <div className="relative w-24 h-32 flex-shrink-0 overflow-hidden rounded-2xl bg-gray-50 border border-black/5">
         <img
           src={item.images?.[0]?.url}
@@ -135,8 +132,6 @@ export const Order = () => {
   const { hnadleGetOrder } = useOrder();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [activeFilter, setActiveFilter] = useState("all");
 
   const { items } = useSelector((state) => state.order);
   const orders = items || [];
@@ -149,19 +144,6 @@ export const Order = () => {
     };
     fetchOrders();
   }, []);
-
-  const filteredOrders = useMemo(() => {
-    return orders.filter((order) => {
-      const matchesSearch =
-        order._id?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        order.razorpayDetails?.orderId
-          ?.toLowerCase()
-          .includes(searchQuery.toLowerCase());
-      const matchesFilter =
-        activeFilter === "all" || order.status === activeFilter;
-      return matchesSearch && matchesFilter;
-    });
-  }, [orders, searchQuery, activeFilter]);
 
   const orderStats = useMemo(() => {
     return {
@@ -198,64 +180,15 @@ export const Order = () => {
         <BackButton />
 
         {/* Header Section */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-12">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-12 ">
           <div className="space-y-4">
-            <h1 className="text-4xl xl:text-5xl font-black tracking-tighter leading-[0.95] text-black uppercase italic">
-              Order <br /> History
+            <h1 className="text-4xl xl:text-5xl font-black tracking-tighter leading-[0.95] text-black uppercase italic ">
+              Order <span className="ml-2">History</span>
             </h1>
-            <div className="flex items-center gap-3">
-              <div className="flex -space-x-2">
-                {[...Array(Math.min(3, orderStats.total))].map((_, i) => (
-                  <div
-                    key={i}
-                    className="w-6 h-6 rounded-full bg-black border-2 border-[#FAF9F6] flex items-center justify-center text-[8px] text-white font-black"
-                  >
-                    {i === 2 ? "+" : ""}
-                  </div>
-                ))}
-              </div>
-              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500">
-                {orderStats.total} Total Vaults Secured
-              </span>
-            </div>
-          </div>
-
-          <div className="flex flex-col sm:flex-row gap-4 flex-1 max-w-xl">
-            {/* Search */}
-            <div className="relative flex-1 group">
-              <Search
-                size={14}
-                className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-black transition-colors"
-              />
-              <input
-                type="text"
-                placeholder="SEARCH  ID..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-white border border-black/5 rounded-2xl py-4 pl-12 pr-4 text-[10px] font-black uppercase tracking-widest focus:outline-none focus:border-black/20 transition-all shadow-sm"
-              />
-            </div>
-
-            {/* Filter Pills */}
-            <div className="flex bg-white p-1.5 rounded-2xl border border-black/5 shadow-sm">
-              {["all", "pending", "completed"].map((filter) => (
-                <button
-                  key={filter}
-                  onClick={() => setActiveFilter(filter)}
-                  className={`px-6 py-2.5 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all ${
-                    activeFilter === filter
-                      ? "bg-black text-white shadow-lg"
-                      : "text-gray-400 hover:text-black"
-                  }`}
-                >
-                  {filter}
-                </button>
-              ))}
-            </div>
           </div>
         </div>
 
-        {filteredOrders.length === 0 ? (
+        {orders.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-32 px-6 text-center border border-black/5 rounded-4xl bg-white shadow-sm">
             <div className="w-24 h-24 bg-gray-50 rounded-full flex items-center justify-center mb-8 border border-black/5">
               <Package size={40} className="text-gray-300" />
@@ -275,10 +208,10 @@ export const Order = () => {
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start ">
             {/* Orders List */}
-            <div className="lg:col-span-8 space-y-8">
-              {filteredOrders.map((order) => (
+            <div className="lg:col-span-full space-y-8">
+              {orders.map((order) => (
                 <div
                   key={order._id}
                   className="bg-white rounded-[2.5rem] border border-black/5 overflow-hidden shadow-sm hover:shadow-xl hover:border-black/10 transition-all duration-500 group"
@@ -333,7 +266,7 @@ export const Order = () => {
                   </div>
 
                   {/* Order Items */}
-                  <div className="p-8 max-h-[500px] overflow-y-auto custom-scrollbar">
+                  <div className="p-8 max-h-[500px] overflow-y-auto custom-scrollbar ">
                     <div className="space-y-6">
                       {order.orderItems?.map((item, idx) => (
                         <OrderItem key={item._id || idx} item={item} />
@@ -354,87 +287,6 @@ export const Order = () => {
                   </div>
                 </div>
               ))}
-            </div>
-
-            {/* Sidebar Summary */}
-            <div className="lg:col-span-4 sticky top-24">
-              <div className=" text-white p-10 rounded-[3rem] shadow-2xl relative overflow-hidden group border border-black ">
-                {/* Decorative background element */}
-                <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-white/5 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-1000"></div>
-
-                <h2 className="text-[10px] font-black uppercase tracking-[0.4em] text-gray-800 mb-10 border-b border-white/10 pb-6">
-                  Account Insights
-                </h2>
-
-                <div className="space-y-8">
-                  <div className="flex justify-between items-center">
-                    <span className="text-[9px] font-black uppercase tracking-[0.3em] text-gray-800">
-                      Total Orders
-                    </span>
-                    <span className="text-3xl font-light italic">
-                      {orderStats.total}
-                    </span>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="bg-white/5 p-5 rounded-3xl border border-black/20">
-                      <p className="text-[8px] font-black uppercase tracking-widest text-gray-800 mb-2">
-                        Pending
-                      </p>
-                      <p className="text-xl text-gray-800">
-                        {orderStats.pending}
-                      </p>
-                    </div>
-                    <div className="bg-white/10 p-5 rounded-3xl border border-black/20">
-                      <p className="text-[8px] font-black uppercase tracking-widest text-gray-800 mb-2">
-                        Fulfilled
-                      </p>
-                      <p className="text-xl text-gray-800">
-                        {orderStats.completed}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="pt-8 border-t border-white/10">
-                    <div className="bg-white/20 rounded-3xl p-6 mb-8 border border-white/20">
-                      <div className="flex items-center gap-4 mb-4">
-                        <div className="w-10 h-10 rounded-2xl bg-white flex items-center justify-center text-black">
-                          <ShoppingBag size={18} />
-                        </div>
-                        <div>
-                          <p className="text-[9px] font-black uppercase tracking-widest">
-                            Active Cart
-                          </p>
-                          <p className="text-[8px] text-white/40 font-bold uppercase">
-                            Items waiting
-                          </p>
-                        </div>
-                      </div>
-                      <button
-                        onClick={() => navigate("/cart")}
-                        className="w-full py-3 bg-white text-black text-[9px] font-black uppercase tracking-widest rounded-xl hover:bg-gray-200 transition-all flex items-center justify-center gap-2"
-                      >
-                        Checkout Now <ArrowRight size={12} />
-                      </button>
-                    </div>
-
-                    <div className="space-y-4">
-                      <div className="flex items-center gap-3 text-white/40">
-                        <div className="w-1.5 h-1.5 rounded-full bg-emerald-500"></div>
-                        <span className="text-[8px] font-black uppercase tracking-widest">
-                          Verified Payments
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-3 text-white/40">
-                        <div className="w-1.5 h-1.5 rounded-full bg-amber-500"></div>
-                        <span className="text-[8px] font-black uppercase tracking-widest">
-                          Premium Logistics
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         )}

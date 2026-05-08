@@ -260,9 +260,7 @@ const createOrderController = async (req, res) => {
     const cart = await cartDetails(req.user)
 
     await handleStock(cart[0].items)
-    cart[0].items.map((item) => {
-        console.log(item)
-    })
+
 
 
     if (!cart) {
@@ -300,7 +298,8 @@ const createOrderController = async (req, res) => {
                 item.product.variants?.images?.length > 0
                     ? item.product.variants.images
                     : item.product.images,
-            attributes: item.attributes
+            attributes: item.attributes,
+            seller: item.product.seller
         }))
 
 

@@ -22,6 +22,7 @@ const paymentSchema = new mongoose.Schema({
         ref: "user",
         required: true
     },
+
     orderItems: [
         {
             title: String,
@@ -34,6 +35,11 @@ const paymentSchema = new mongoose.Schema({
             attributes: {
                 type: Map,
                 of: String
+            },
+            seller: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "user",
+                required: true
             }
         }
     ]

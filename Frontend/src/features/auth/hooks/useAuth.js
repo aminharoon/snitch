@@ -19,7 +19,7 @@ export const useAuth = () => {
             if (response) {
 
                 dispatch(setUser(response.user))
-                toast.success("Account created successfully!")
+
                 return response.data
             }
             dispatch(setLoading(false))
@@ -27,7 +27,7 @@ export const useAuth = () => {
             dispatch(setLoading(false))
             const errorMessage = error.response?.data?.message || error.message || "Registration failed"
             dispatch(setError(errorMessage))
-            toast.error(errorMessage)
+
         }
     }
 
@@ -40,7 +40,7 @@ export const useAuth = () => {
             if (response) {
 
                 dispatch(setUser(response.data))
-                toast.success("Welcome back!")
+
                 return response.data
             }
             dispatch(setLoading(false))
@@ -48,7 +48,7 @@ export const useAuth = () => {
             dispatch(setLoading(false))
             const errorMessage = error.response?.data?.message || error.message || "Login failed"
             dispatch(setError(errorMessage))
-            toast.error(errorMessage)
+
         }
     }
 
@@ -59,13 +59,13 @@ export const useAuth = () => {
 
             if (response) {
                 dispatch(setUser(response.data))
-                toast.success("user fetched successfully ")
+
                 return response.data
             }
         } catch (e) {
             dispatch(setUser(null))
             dispatch(setLoading(false))
-            console.log(`HOOK something went wrong while calling the getme api ${e.message}`)
+
             if (e.response?.status === 401) {
                 await handleLogout();
             }
@@ -86,11 +86,11 @@ export const useAuth = () => {
         try {
             const response = await logout()
             dispatch(setUser(null))
-            toast.success("user is logout successfully ")
+
             window.location.href("/login")
             return response?.data
         } catch (e) {
-            console.log(`SERVICES something went wrong while hitting the logout api ${e.message}`)
+
             // Even if logout fails on server, we should clear local state
             dispatch(setUser(null))
         } finally {

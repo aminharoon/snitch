@@ -19,13 +19,12 @@ export const useProduct = () => {
         try {
             const data = await createProduct(formData)
             if (data) {
-                toast.success("Product created successfully")
+
                 Dispatch(setLoading(false))
                 return data
             }
         } catch (e) {
-            console.log(`HOOK : something went wrong while calling the create product ${e.message}`)
-            toast.error(`${e.message}`)
+
             Dispatch(setLoading(false))
             Dispatch(setError(`faild to create the  ${e.message}`))
 
@@ -41,14 +40,13 @@ export const useProduct = () => {
 
 
             if (data) {
-                toast.success("Sellers porducts fetched successfully ")
+
 
                 Dispatch(setSellerProducts(data.data))
                 Dispatch(setLoading(false))
             }
         } catch (e) {
-            console.log(`HOOK : something went wrong while calling the get seller products ${e.message} `)
-            toast.error(`${e.message}`)
+
             Dispatch(setLoading(false))
             Dispatch(setError(`faild to set the data ${e.message}`))
         }
@@ -59,7 +57,7 @@ export const useProduct = () => {
             Dispatch(setLoading(true))
             const response = await getAllProducts()
             if (response) {
-                toast.success("All Products fetched successfully")
+
                 Dispatch(setAllProducts(response.data))
                 Dispatch(setLoading(false))
             }
@@ -67,7 +65,7 @@ export const useProduct = () => {
 
         } catch (e) {
             console.log(`HOOK something went wrong ${e.message}`)
-            toast.error(`${e.message}`)
+
             Dispatch(setLoading(false))
 
 
@@ -81,13 +79,13 @@ export const useProduct = () => {
             Dispatch(setLoading(true))
             const response = await getSingleProductDetails(productID)
             if (response) {
-                toast.success("Details about the single product")
+
                 Dispatch(setSingleProduct(response.data))
                 return response.data
 
             }
         } catch (e) {
-            console.log(`HOOK something went wrong ${e.message}`)
+
             Dispatch(setError(`failed to get product details: ${e.message}`))
         } finally {
             Dispatch(setLoading(false))
@@ -103,12 +101,12 @@ export const useProduct = () => {
                 const updatedProducts = sellerProducts?.filter(product => product._id !== productID) || []
                 Dispatch(setSellerProducts(updatedProducts))
                 Dispatch(setLoading(false))
-                toast.success(`product has been deleted successfully`)
+
             }
         } catch (e) {
             Dispatch(setLoading(false))
             console.log(`HOOK something went wrong while deleting product ${e.message}`)
-            toast.error(`${e.message}`)
+
         }
     }
     const handleAddVarients = async (productId, newProductVarients) => {
@@ -122,12 +120,12 @@ export const useProduct = () => {
             if (response) {
                 Dispatch(setSingleProduct(response.data))
                 Dispatch(setLoading(false))
-                toast.success("Variants Are Added successfully ")
+
                 return response
             }
         } catch (e) {
             Dispatch(setLoading(false))
-            toast.error(`${e.message}`)
+
             Dispatch(setError(`faild to add variants : ${e.message}`))
 
         } finally {
@@ -143,13 +141,13 @@ export const useProduct = () => {
             if (response) {
                 Dispatch(setSingleProduct(response.data))
                 Dispatch(setLoading(false))
-                toast.success("Variants are deleted successfully ")
+
                 return response
             }
 
         } catch (e) {
             Dispatch(setLoading(false))
-            toast.error(`${e.message}`)
+
             Dispatch(setError(`failed to delete variant: ${e.message}`))
 
         } finally {
@@ -169,7 +167,7 @@ export const useProduct = () => {
         } catch (e) {
             Dispatch(setLoading(false))
             setError(`Failde to delete items cart : ${e.message}`)
-            toast.error(`Failde to add stock items cart : ${e.message}`)
+
 
         }
     }

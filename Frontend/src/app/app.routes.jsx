@@ -12,6 +12,7 @@ import Layout from "./Layout";
 import Cart from "../features/cart/pages/Cart.jsx";
 import OrderSuccess from "../features/cart/pages/OrderSuccess.jsx";
 import { Order } from "../features/orders/pages/Order.jsx";
+import SellerOrder from "../features/orders/pages/SellerOrder.jsx";
 
 export const router = createBrowserRouter([
   {
@@ -94,6 +95,14 @@ export const router = createBrowserRouter([
             element: (
               <ProtectedComponent role="seller">
                 <UpdateSellerProduct />
+              </ProtectedComponent>
+            ),
+          },
+          {
+            path: "allorders",
+            element: (
+              <ProtectedComponent role="seller">
+                <SellerOrder />
               </ProtectedComponent>
             ),
           },

@@ -1,8 +1,9 @@
 import { useDispatch } from "react-redux"
-import { getOrders } from "../services/api.orders.js"
+import { getOrders, sellerSeeOrder } from "../services/api.orders.js"
 import { setItems, setLoading, setError } from "../state/order.slice.js"
 import { useEffect } from "react"
 import { AwardIcon } from "lucide-react"
+
 
 
 export const useOrder = () => {
@@ -31,8 +32,20 @@ export const useOrder = () => {
 
         }
     }
+    const handleSeeSellerOrders = async () => {
+        try {
+            const response = await sellerSeeOrder()
+            dispatch(setLoading(false))
+            dispatch(setItems(response.data))
+
+        } catch (e) {
+            dispatch(setLoading(false))
+            dispatch(setError(`API FAILED ${e.message}`))
+
+        }
+    }
 
     return {
-        hnadleGetOrder
+        hnadleGetOrder, handleSeeSellerOrders
     }
 }

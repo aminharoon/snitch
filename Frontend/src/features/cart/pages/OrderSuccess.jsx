@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router";
+import { Link, useNavigate, useSearchParams } from "react-router";
 import {
   CheckCircle2,
   ShoppingBag,
@@ -181,9 +181,9 @@ const OrderSuccess = () => {
               </button>
 
               {/* Secondary – outlined black */}
-              <button
+              <Link
+                to="/order"
                 id="btn-view-orders"
-                onClick={() => navigate("/profile")}
                 className="flex-1 flex items-center justify-center gap-2 py-4
                            bg-[#FAF9F6] border border-black/10
                            hover:border-black hover:bg-white
@@ -193,7 +193,7 @@ const OrderSuccess = () => {
               >
                 <ClipboardList size={14} />
                 View Orders
-              </button>
+              </Link>
             </div>
 
             {/* Footer note */}
