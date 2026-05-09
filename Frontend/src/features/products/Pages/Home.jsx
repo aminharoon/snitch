@@ -40,37 +40,39 @@ const Home = () => {
   return (
     <div className="min-h-screen bg-[#FAF9F6] text-black">
       {/* Hero Section */}
-      <section className="relative h-[90vh] w-full overflow-hidden">
-        <img
-          src="/images/home/hero.png"
-          alt="Hero Banner"
-          className="w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-black/10 flex flex-col items-center justify-center text-center px-6">
-          <div className="max-w-4xl animate-in fade-in slide-in-from-bottom-8 duration-1000">
-            <span className="text-[10px] font-black uppercase tracking-[0.5em] text-white mb-6 block">
-              New Collection 2026
-            </span>
-            <h1 className="text-6xl md:text-8xl font-black tracking-tighter text-white mb-8 leading-[0.9]">
-              THE NEW <br /> STANDARD.
-            </h1>
-            <p className="text-white/90 text-sm md:text-base max-w-lg mx-auto mb-10 font-medium uppercase tracking-widest">
-              Explore the intersection of luxury and streetwear. Curated for the
-              modern individual.
-            </p>
-            <button
-              onClick={() =>
-                document
-                  .getElementById("trending")
-                  ?.scrollIntoView({ behavior: "smooth" })
-              }
-              className="px-10 py-4 bg-white text-black text-[10px] font-black uppercase tracking-[0.3em] rounded-full hover:scale-105 transition-all active:scale-95 shadow-2xl"
-            >
-              Shop Collection
-            </button>
+      {!search && (
+        <section className="relative h-[90vh] w-full overflow-hidden">
+          <img
+            src="/images/home/hero.png"
+            alt="Hero Banner"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-black/10 flex flex-col items-center justify-center text-center px-6">
+            <div className="max-w-4xl animate-in fade-in slide-in-from-bottom-8 duration-1000">
+              <span className="text-[10px] font-black uppercase tracking-[0.5em] text-white mb-6 block">
+                New Collection 2026
+              </span>
+              <h1 className="text-6xl md:text-8xl font-black tracking-tighter text-white mb-8 leading-[0.9]">
+                THE NEW <br /> STANDARD.
+              </h1>
+              <p className="text-white/90 text-sm md:text-base max-w-lg mx-auto mb-10 font-medium uppercase tracking-widest">
+                Explore the intersection of luxury and streetwear. Curated for
+                the modern individual.
+              </p>
+              <button
+                onClick={() =>
+                  document
+                    .getElementById("trending")
+                    ?.scrollIntoView({ behavior: "smooth" })
+                }
+                className="px-10 py-4 bg-white text-black text-[10px] font-black uppercase tracking-[0.3em] rounded-full hover:scale-105 transition-all active:scale-95 shadow-2xl"
+              >
+                Shop Collection
+              </button>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Featured Categories */}
       {/* <section className="max-w-7xl mx-auto px-6 py-24">

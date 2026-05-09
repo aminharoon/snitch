@@ -24,27 +24,18 @@ const Navbar = ({ user, isLoggedIn = false, userName, pathname }) => {
     }
   }, [searchParams]);
 
-  // Debounced search logic for live search
-  useEffect(() => {
-    const delayDebounceFn = setTimeout(() => {
-      // Only navigate if the searchTerm has changed and is different from current URL param
-      const currentSearch = searchParams.get("search") || "";
-      if (searchTerm.trim() !== currentSearch) {
-        if (searchTerm.trim()) {
-          navigate(`/?search=${encodeURIComponent(searchTerm.trim())}`, {
-            replace: true,
-          });
-        } else if (currentSearch) {
-          navigate("/", { replace: true });
-        }
-      }
-    }, 500);
-
-    return () => clearTimeout(delayDebounceFn);
-  }, [searchTerm, navigate, searchParams]);
-
   const handleSearchChange = (e) => {
-    setSearchTerm(e.target.value);
+    const value = e.target.value;
+    setSearchTerm(value);
+
+    // Update URL instantly to hide hero section and filter products
+    if (value.trim()) {
+      navigate(`/?search=${encodeURIComponent(value.trim())}`, {
+        replace: true,
+      });
+    } else {
+      navigate("/", { replace: true });
+    }
   };
 
   const handleSearchSubmit = (e) => {
