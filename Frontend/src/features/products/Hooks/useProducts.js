@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { getSellerProducts, createProduct, getAllProducts, getSingleProductDetails, deleteProduct, addProductVarients, deleteVariant, increaseStock } from "../services/api.products.js"
+import { getSellerProducts, createProduct, getAllProducts, getSingleProductDetails, deleteProduct, addProductVarients, deleteVariant, increaseStock, searchedProducts } from "../services/api.products.js"
 import { setSellerProducts, setLoading, setError, setAllProducts, setSingleProduct, incProductStock } from "../State/state.product.js"
 import toast from "react-hot-toast"
 import { useDispatch, useSelector } from "react-redux"
@@ -172,11 +172,25 @@ export const useProduct = () => {
         }
     }
 
+    const handleSearch = async (search) => {
+        try {
+            Dispatch(setLoading(true))
+            const response = await searchedProducts(search)
+            Dispatch(setLoading(false))
+            Dispatch(setAllProducts(response.data))
+
+        } catch (e) {
+            Dispatch(setLoading(false))
+            Dispatch(setError(`${e.message}`))
+
+        }
+    }
+
 
     return {
         handleCreateProduct,
         handleGetSellerProducts, getAllProducts, handleGetAllProducts, getSingleProductDet
-        , handleDeleteProduct, handleAddVarients, handleDeleteVariant, handleIncStock
+        , handleDeleteProduct, handleAddVarients, handleDeleteVariant, handleIncStock, handleSearch
     }
 }
 

@@ -1,14 +1,63 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useSearchParams } from "react-router";
 import { useAuth } from "../features/auth/hooks/useAuth";
 import { useSelector } from "react-redux";
+import { useProduct } from "../features/products/Hooks/useProducts";
 
 const Navbar = ({ user, isLoggedIn = false, userName, pathname }) => {
+  const { handleSearch, handleGetAllProducts } = useProduct();
   const { items } = useSelector((state) => state.cart);
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
+  const [searchTerm, setSearchTerm] = useState(
+    searchParams.get("search") || "",
+  );
   const [hidden, setHidden] = useState(true);
   const { handleGetMe, handleLogout } = useAuth();
+
+  // Sync search input with URL params (e.g. when navigating back/forward or clearing)
+  useEffect(() => {
+    const urlSearch = searchParams.get("search") || "";
+    if (urlSearch !== searchTerm) {
+      setSearchTerm(urlSearch);
+    }
+  }, [searchParams]);
+
+  // Debounced search logic for live search
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      // Only navigate if the searchTerm has changed and is different from current URL param
+      const currentSearch = searchParams.get("search") || "";
+      if (searchTerm.trim() !== currentSearch) {
+        if (searchTerm.trim()) {
+          navigate(`/?search=${encodeURIComponent(searchTerm.trim())}`, {
+            replace: true,
+          });
+        } else if (currentSearch) {
+          navigate("/", { replace: true });
+        }
+      }
+    }, 500);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchTerm, navigate, searchParams]);
+
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const handleSearchSubmit = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault(); // Prevent form submission if any
+      const value = searchTerm.trim();
+      if (value) {
+        navigate(`/?search=${encodeURIComponent(value)}`);
+      } else {
+        navigate("/");
+      }
+    }
+  };
 
   const handleGetProfile = () => {
     setHidden((pre) => !pre);
@@ -63,6 +112,9 @@ const Navbar = ({ user, isLoggedIn = false, userName, pathname }) => {
             </div>
             <input
               type="text"
+              value={searchTerm}
+              onChange={handleSearchChange}
+              onKeyDown={handleSearchSubmit}
               placeholder="SEARCH PRODUCTS..."
               className="w-full bg-gray-50 border border-black/5 rounded-full py-2.5 pl-12 pr-6 text-[10px] font-bold uppercase tracking-[0.2em] text-black placeholder-gray-500 focus:outline-none focus:border-black/10 focus:bg-white transition-all"
             />

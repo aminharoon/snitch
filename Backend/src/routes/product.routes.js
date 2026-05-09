@@ -41,6 +41,13 @@ productRoute.delete("/delete/:productID", authenticateSeller, productController.
 productRoute.get("/", productController.getAllProductsForBuyers)
 
 /**
+ * @route GET /api/products/search
+ * @desc search products by name or description
+ * @access public
+ */
+productRoute.get("/search", productController.searchProducts)
+
+/**
  * @route GET /api/products/:productID
  * @desc Get single product details 
  * @access public

@@ -89,7 +89,7 @@ const getAllProductsForBuyers = async (req, res) => {
 
 const getSingleProductDetails = async (req, res) => {
     const { productID } = req.params
-    const product = await productModel.findById({ _id: productID })
+    const product = await productModel.findById(productID)
     res.status(200).json(new ApiResponse(200, "Product details fetched successfully", product))
 }
 
@@ -177,6 +177,22 @@ const increaseStock = async (req, res) => {
     res.status(200).json(new ApiResponse(400, "Stock Increased "))
 
 }
+
+const searchProducts = async (req, res) => {
+    const { query } = req.query;
+
+    if (!query || query.trim() === "") {
+        // return res.status(200).json(new ApiResponse(200, "Search results", []));
+        throw new ApiError(400, "Search query cannot be empty");
+    }
+
+    const products = await productModel.find({
+        title: { $regex: query, $options: "i" }
+    });
+
+    res.status(200).json(new ApiResponse(200, "Search results ", products));
+}
+
 export const productController = {
     createProduct,
     getAllProducts,
@@ -185,6 +201,7 @@ export const productController = {
     getSingleProductDetails,
     updateProduct,
     deleteVariant,
-    increaseStock
+    increaseStock,
+    searchProducts
 }
 

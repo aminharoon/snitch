@@ -2,6 +2,7 @@ import React from "react";
 import { Navbar } from "../components/index";
 import { Outlet, useLocation } from "react-router";
 import { useSelector } from "react-redux";
+import { Footer } from "../components/Footer";
 
 const Layout = () => {
   const { user } = useSelector((state) => state.auth);
@@ -21,6 +22,7 @@ const Layout = () => {
         />
       )}
       <Outlet />
+      <Footer />
     </>
   );
 };

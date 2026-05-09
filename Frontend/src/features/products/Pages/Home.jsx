@@ -2,16 +2,22 @@ import React, { useEffect } from "react";
 import { useProduct } from "../Hooks/useProducts";
 import { useSelector } from "react-redux";
 import ProductCard from "../Componts/ProductCard";
-import { useNavigate } from "react-router";
+import { useNavigate, useSearchParams } from "react-router";
 
 const Home = () => {
-  const { handleGetAllProducts } = useProduct();
+  const { handleGetAllProducts, handleSearch } = useProduct();
   const { allProducts, loading } = useSelector((state) => state.product);
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const search = searchParams.get("search");
 
   useEffect(() => {
-    handleGetAllProducts();
-  }, []);
+    if (search) {
+      handleSearch(search);
+    } else {
+      handleGetAllProducts();
+    }
+  }, [search]);
 
   const handleGetSingleProductDetail = (product) => {
     navigate(`/product/${product._id}`);
@@ -67,7 +73,7 @@ const Home = () => {
       </section>
 
       {/* Featured Categories */}
-      <section className="max-w-7xl mx-auto px-6 py-24">
+      {/* <section className="max-w-7xl mx-auto px-6 py-24">
         <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-4">
           <div>
             <span className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-600 mb-2 block">
@@ -102,7 +108,7 @@ const Home = () => {
             </div>
           ))}
         </div>
-      </section>
+      </section> */}
 
       {/* Trending Products */}
       <section id="trending" className="bg-white py-24">
@@ -110,15 +116,20 @@ const Home = () => {
           <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-4">
             <div>
               <span className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-600 mb-2 block">
-                Selected for you
+                {search ? "Search results for" : "Featured Collection"}
               </span>
               <h2 className="text-4xl font-black tracking-tighter uppercase">
-                Trending Now
+                {search ? `"${search}"` : "Trending Now"}
               </h2>
             </div>
-            <button className="text-[10px] font-black uppercase tracking-[0.2em] border-b-2 border-black pb-1 hover:opacity-50 transition-all">
-              View All Products
-            </button>
+            {search && (
+              <button
+                onClick={() => navigate("/")}
+                className="text-[10px] font-black uppercase tracking-[0.2em] border-b-2 border-black pb-1 hover:opacity-50 transition-all"
+              >
+                Clear Search
+              </button>
+            )}
           </div>
 
           {loading ? (
@@ -142,10 +153,23 @@ const Home = () => {
               ))}
             </div>
           ) : (
-            <div className="text-center py-20 bg-[#FAF9F6] rounded-3xl border border-black/5">
-              <p className="text-gray-500 font-bold uppercase tracking-widest text-[10px]">
-                No trending products at the moment.
+            <div className="text-center py-24 bg-[#FAF9F6] rounded-[2rem] border border-black/5">
+              <p className="text-gray-400 font-black uppercase tracking-[0.3em] text-[10px] mb-4">
+                {search ? "No Matches Found" : "Coming Soon"}
               </p>
+              <h3 className="text-2xl font-black uppercase tracking-tighter mb-8">
+                {search
+                  ? `Couldn't find anything for "${search}"`
+                  : "We're updating our collection. Check back soon!"}
+              </h3>
+              {search && (
+                <button
+                  onClick={() => navigate("/")}
+                  className="px-8 py-3 bg-black text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-full hover:bg-gray-800 transition-all active:scale-95"
+                >
+                  Clear Search
+                </button>
+              )}
             </div>
           )}
         </div>
@@ -179,65 +203,6 @@ const Home = () => {
       </section> */}
 
       {/* Footer */}
-      <footer className="bg-white border-t border-black/5 py-24 px-6">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-12">
-          <div className="max-w-xs">
-            <span className="text-3xl font-black tracking-tighter uppercase mb-6 block">
-              SNITCH
-            </span>
-            <p className="text-gray-600 text-[10px] leading-relaxed font-bold uppercase tracking-widest">
-              Defining the future of streetwear through minimalist excellence
-              and premium craftsmanship.
-            </p>
-          </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-12">
-            <div>
-              <h4 className="text-[11px] font-black uppercase tracking-[0.3em] mb-6">
-                Shop
-              </h4>
-              <ul className="space-y-4 text-[10px] font-bold text-gray-600 uppercase tracking-widest">
-                <li className="hover:text-black cursor-pointer">
-                  New Arrivals
-                </li>
-                <li className="hover:text-black cursor-pointer">
-                  Best Sellers
-                </li>
-                <li className="hover:text-black cursor-pointer">Collections</li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="text-[11px] font-black uppercase tracking-[0.3em] mb-6">
-                Help
-              </h4>
-              <ul className="space-y-4 text-[10px] font-bold text-gray-600 uppercase tracking-widest">
-                <li className="hover:text-black cursor-pointer">Shipping</li>
-                <li className="hover:text-black cursor-pointer">Returns</li>
-                <li className="hover:text-black cursor-pointer">Contact</li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="text-[11px] font-black uppercase tracking-[0.3em] mb-6">
-                Social
-              </h4>
-              <ul className="space-y-4 text-[10px] font-bold text-gray-600 uppercase tracking-widest">
-                <li className="hover:text-black cursor-pointer">Instagram</li>
-                <li className="hover:text-black cursor-pointer">Twitter</li>
-                <li className="hover:text-black cursor-pointer">TikTok</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div className="max-w-7xl mx-auto mt-24 pt-12 border-t border-black/5 flex flex-col sm:flex-row justify-between items-center gap-6">
-          <p className="text-[9px] font-black text-gray-500 uppercase tracking-[0.3em]">
-            &copy; {new Date().getFullYear()} SNITCH ARCHIVE. ALL RIGHTS
-            RESERVED.
-          </p>
-          <div className="flex gap-8 text-[9px] font-black text-gray-500 uppercase tracking-[0.3em]">
-            <span className="hover:text-black cursor-pointer">Privacy</span>
-            <span className="hover:text-black cursor-pointer">Terms</span>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 };

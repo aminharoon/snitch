@@ -98,3 +98,14 @@ export const increaseStock = async ({ productId, variantId }) => {
 
     }
 }
+
+export const searchedProducts = async (search) => {
+    try {
+        const response = await api.get(`/products/search?query=${search}`)
+        return response.data
+
+    } catch (e) {
+        throw new Error(`API FAILED ${e.message}`)
+
+    }
+}
