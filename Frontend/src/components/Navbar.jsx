@@ -3,11 +3,14 @@ import { useNavigate, useSearchParams } from "react-router";
 import { useAuth } from "../features/auth/hooks/useAuth";
 import { useSelector } from "react-redux";
 import { useProduct } from "../features/products/Hooks/useProducts";
+import { useDispatch } from "react-redux";
+import { setSearchTerm as setSearchTermRedux } from "../features/products/State/state.product.js";
 
 const Navbar = ({ user, isLoggedIn = false, userName, pathname }) => {
   const { handleSearch, handleGetAllProducts } = useProduct();
   const { items } = useSelector((state) => state.cart);
   const navigate = useNavigate();
+  const Dispatch = useDispatch();
   const [searchParams] = useSearchParams();
 
   const [searchTerm, setSearchTerm] = useState(
@@ -21,21 +24,33 @@ const Navbar = ({ user, isLoggedIn = false, userName, pathname }) => {
     const urlSearch = searchParams.get("search") || "";
     if (urlSearch !== searchTerm) {
       setSearchTerm(urlSearch);
+      Dispatch(setSearchTermRedux(urlSearch));
     }
   }, [searchParams]);
+
+  // Debounced search logic for live search
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      // Only navigate if the searchTerm has changed and is different from current URL param
+      const currentSearch = searchParams.get("search") || "";
+      if (searchTerm.trim() !== currentSearch) {
+        if (searchTerm.trim()) {
+          navigate(`/?search=${encodeURIComponent(searchTerm.trim())}`, {
+            replace: true,
+          });
+        } else if (currentSearch) {
+          navigate("/", { replace: true });
+        }
+      }
+    }, 500);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchTerm, navigate, searchParams]);
 
   const handleSearchChange = (e) => {
     const value = e.target.value;
     setSearchTerm(value);
-
-    // Update URL instantly to hide hero section and filter products
-    if (value.trim()) {
-      navigate(`/?search=${encodeURIComponent(value.trim())}`, {
-        replace: true,
-      });
-    } else {
-      navigate("/", { replace: true });
-    }
+    Dispatch(setSearchTermRedux(value));
   };
 
   const handleSearchSubmit = (e) => {

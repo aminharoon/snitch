@@ -7,9 +7,13 @@ export const productsSlice = createSlice({
         allProducts: [],
         singleProduct: null,
         loading: false,
-        error: null
+        error: null,
+        searchTerm: ""
     },
     reducers: {
+        setSearchTerm: (state, action) => {
+            state.searchTerm = action.payload
+        },
         setSellerProducts: (state, action) => {
             state.sellerProducts = action.payload
 
@@ -41,6 +45,6 @@ export const productsSlice = createSlice({
     }
 })
 
-export const { setSellerProducts, setLoading, setError, setAllProducts, setSingleProduct, incProductStock } = productsSlice.actions
+export const { setSellerProducts, setLoading, setError, setAllProducts, setSingleProduct, incProductStock, setSearchTerm } = productsSlice.actions
 
 export default productsSlice.reducer

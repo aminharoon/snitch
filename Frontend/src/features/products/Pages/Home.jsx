@@ -6,10 +6,13 @@ import { useNavigate, useSearchParams } from "react-router";
 
 const Home = () => {
   const { handleGetAllProducts, handleSearch } = useProduct();
-  const { allProducts, loading } = useSelector((state) => state.product);
+  const { allProducts, loading, searchTerm: reduxSearchTerm } = useSelector(
+    (state) => state.product
+  );
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const search = searchParams.get("search");
+  const isSearching = reduxSearchTerm || search;
 
   useEffect(() => {
     if (search) {
@@ -40,7 +43,7 @@ const Home = () => {
   return (
     <div className="min-h-screen bg-[#FAF9F6] text-black">
       {/* Hero Section */}
-      {!search && (
+      {!isSearching && (
         <section className="relative h-[90vh] w-full overflow-hidden">
           <img
             src="/images/home/hero.png"
