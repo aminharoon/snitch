@@ -21,7 +21,7 @@ const __dirname = path.resolve();
 
 const app = express();
 app.use(express.json());
-app.use(express.static(path.join(__dirname, "../public/dist")));
+app.use(express.static(path.join(__dirname, "../public")));
 
 app.use(morgan("dev"));
 app.use(cors({ origin: ["http://localhost:5173", "*"], credentials: true, }));
@@ -45,7 +45,7 @@ app.use("/api/orders", orderRoutes)
 
 
 app.use((req, res) => {
-    res.sendFile(path.join(__dirname, "dist", "index.html"))
+    res.sendFile(path.join(__dirname, "../public", "index.html"))
 })
 app.use(errorMiddleware);
 export default app;
