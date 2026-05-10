@@ -26,6 +26,10 @@ const handleStock = async (items) => {
         const variant = product.variants.find(
             (v) => v._id.toString() === item.variants.toString()
         )
+        if (item.quantity > stock || variant.stock <= 0) {
+            throw new ApiError(409, `Stock exceeded for product ${item.product.title} and variant ${variant._id}`)
+        }
+
         variant.stock -= item.quantity
 
 
