@@ -44,8 +44,8 @@ app.use("/api/product/cart", cartRoutes)
 app.use("/api/orders", orderRoutes)
 
 
-app.use("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "../public/dist/index.html"));
+app.use((req, res) => {
+    res.sendFile(path.join(__dirname, "dist", "index.html"))
 })
 app.use(errorMiddleware);
 export default app;
