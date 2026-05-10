@@ -2,7 +2,7 @@ import axios from "axios";
 
 
 export const api = axios.create({
-    baseURL: "/api",
+    baseURL: "https://snitch-1-2kt1.onrender.com/api",
     withCredentials: true
 });
 
