@@ -19,7 +19,7 @@ import orderRoutes from "./routes/order.routes.js"
 
 const app = express();
 app.use(express.json());
-app.use(express.static("../public"));
+app.use(express.static("../public/dist"));
 
 app.use(morgan("dev"));
 app.use(cors({ origin: ["http://localhost:5173", "*"], credentials: true, }));
