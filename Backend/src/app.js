@@ -6,6 +6,7 @@ import cookieParser from 'cookie-parser'
 import passport from "passport";
 import { Strategy as googleStrategy } from "passport-google-oauth20";
 import { envVariables } from '../src/config/config.js'
+import path from "path";
 
 /**
  * import routes
@@ -16,10 +17,11 @@ import googleAuthRouter from "./routes/auth.google.route.js";
 import productRoute from "./routes/product.routes.js"
 import cartRoutes from "./routes/cart.routes.js";
 import orderRoutes from "./routes/order.routes.js"
+const __dirname = path.resolve();
 
 const app = express();
 app.use(express.json());
-app.use(express.static("../public/dist"));
+app.use(express.static(path.join(__dirname, "../public/dist")));
 
 app.use(morgan("dev"));
 app.use(cors({ origin: ["http://localhost:5173", "*"], credentials: true, }));
@@ -42,7 +44,8 @@ app.use("/api/product/cart", cartRoutes)
 app.use("/api/orders", orderRoutes)
 
 
-
-
+app.use("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "../public/dist/index.html"));
+})
 app.use(errorMiddleware);
 export default app;
