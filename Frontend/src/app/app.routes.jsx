@@ -13,12 +13,17 @@ import Cart from "../features/cart/pages/Cart.jsx";
 import OrderSuccess from "../features/cart/pages/OrderSuccess.jsx";
 import { Order } from "../features/orders/pages/Order.jsx";
 import SellerOrder from "../features/orders/pages/SellerOrder.jsx";
+import PageNotFound from "../components/PageNotFound.jsx";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
     children: [
+      {
+        path: "*",
+        element: <PageNotFound />,
+      },
       {
         path: "",
         element: <Home />,
