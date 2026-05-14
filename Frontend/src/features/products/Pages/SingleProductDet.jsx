@@ -182,12 +182,28 @@ const SingleProductDet = () => {
       variantId: matchingVariant?._id || null,
       attributes: selectedAttributes,
     });
-    console.log(respnse);
-    is;
   };
 
-  const handleAddBuy = () => {
+  const handleAddBuy = async () => {
     if (!user) return navigate("/login");
+
+    // Only 'Size' is mandatory, 'Color' is optional
+    if (hasVariants && !selectedAttributes["SIZE"]) {
+      alert("Please select the Size");
+      return;
+    }
+
+    if (hasVariants && !matchingVariant) {
+      alert("This item is currently unavailable");
+      return;
+    }
+
+    const respnse = await handleAddToCart({
+      productId: singleProduct._id,
+      variantId: matchingVariant?._id || null,
+      attributes: selectedAttributes,
+    });
+    navigate("/cart");
   };
   const handleAddVariants = () =>
     navigate(`/seller/product/${singleProduct._id}`);

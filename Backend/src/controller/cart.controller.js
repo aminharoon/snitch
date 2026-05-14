@@ -260,12 +260,9 @@ const decreaseQuantity = async (req, res) => {
 }
 
 const createOrderController = async (req, res) => {
-
     const cart = await cartDetails(req.user)
 
     await handleStock(cart[0].items)
-
-
 
     if (!cart) {
         throw new ApiError(404, "Cart is empty ")
@@ -315,6 +312,8 @@ const createOrderController = async (req, res) => {
 
 
 }
+
+
 
 const verifyPayment = async (req, res) => {
     await cartModel.findOneAndDelete({
