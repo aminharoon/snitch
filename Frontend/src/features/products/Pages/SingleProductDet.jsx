@@ -211,24 +211,24 @@ const SingleProductDet = () => {
   const hasVariants = variants?.length > 0;
 
   return (
-    <div className="h-[calc(100vh-81px)] bg-[#FAF9F6] text-black pt-2 selection:bg-black selection:text-white flex flex-col overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6 w-full flex-1 flex flex-col min-h-0">
+    <div className="min-h-screen lg:h-[calc(100vh-81px)] bg-[#FAF9F6] text-black pt-2 selection:bg-black selection:text-white flex flex-col lg:overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 lg:px-6 w-full flex-1 flex flex-col min-h-0">
         {/* Navigation */}
         <div className="flex-shrink-0">
           <BackButton />
         </div>
 
-        <div className="flex-1 flex gap-8 xl:gap-12 min-h-0 overflow-hidden pb-8">
+        <div className="flex-1 flex flex-col lg:flex-row gap-8 xl:gap-12 min-h-0 lg:overflow-hidden pb-8">
           {/* Left Column: Media Gallery (Thumbnails + Main Image) */}
-          <div className="flex-1 flex gap-6 h-full min-h-0">
+          <div className="flex-1 flex flex-col-reverse lg:flex-row gap-6 h-full min-h-0">
             {/* Thumbnails */}
             {displayImages?.length > 1 && (
-              <div className="w-20 xl:w-24 flex-shrink-0 flex flex-col gap-4 overflow-y-auto scrollbar-hide snap-y pb-10">
+              <div className="w-full lg:w-20 xl:w-24 flex-shrink-0 flex flex-row lg:flex-col gap-4 overflow-x-auto lg:overflow-y-auto scrollbar-hide snap-x lg:snap-y pb-4 lg:pb-10">
                 {displayImages.map((img, index) => (
                   <button
                     key={index}
                     onClick={() => setActiveImage(index)}
-                    className={`relative w-full aspect-[4/5] rounded-2xl overflow-hidden border-2 transition-all duration-700 flex-shrink-0 snap-start ${
+                    className={`relative w-20 lg:w-full aspect-[4/5] rounded-2xl overflow-hidden border-2 transition-all duration-700 flex-shrink-0 snap-start ${
                       activeImage === index
                         ? "border-black scale-95"
                         : "border-black/5 opacity-40 hover:opacity-100 hover:border-black/20"
@@ -245,7 +245,7 @@ const SingleProductDet = () => {
             )}
 
             {/* Main Image */}
-            <div className="flex-1 rounded-4xl overflow-hidden bg-[#F5F5F7] border border-black/5 group shadow-sm relative h-full">
+            <div className="flex-1 aspect-[4/5] lg:aspect-auto rounded-3xl lg:rounded-4xl overflow-hidden bg-[#F5F5F7] border border-black/5 group shadow-sm relative lg:h-full">
               {displayImages?.length > 0 ? (
                 <img
                   src={displayImages[activeImage]?.url}
@@ -277,7 +277,7 @@ const SingleProductDet = () => {
           </div>
 
           {/* Right Column: Information & Selection */}
-          <div className="w-full lg:w-[450px] xl:w-[500px] flex-shrink-0 h-full overflow-y-auto scrollbar-hide flex flex-col py-2 pr-4">
+          <div className="w-full lg:w-[450px] xl:w-[500px] flex-shrink-0 lg:h-full lg:overflow-y-auto scrollbar-hide flex flex-col py-2 lg:pr-4">
             <div className="flex-grow space-y-6 animate-in fade-in slide-in-from-right-8 duration-1000">
               {/* Core Info */}
               <div className="space-y-6">
@@ -294,7 +294,7 @@ const SingleProductDet = () => {
                   )}
                 </div>
 
-                <h1 className="text-4xl xl:text-5xl font-black tracking-tighter leading-[0.95] text-black uppercase italic">
+                <h1 className="text-3xl sm:text-4xl xl:text-5xl font-black tracking-tighter leading-[0.95] text-black uppercase italic">
                   {title}
                 </h1>
 
@@ -476,7 +476,7 @@ const SingleProductDet = () => {
               )}
 
               {/* Trust Badges */}
-              <div className="grid grid-cols-3 gap-8 pt-10 border-t border-black/5">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 pt-10 border-t border-black/5">
                 {[
                   { label: "Complimentary Delivery", sub: "Global Logistics" },
                   { label: "Verified Heritage", sub: "100% Authentic" },
