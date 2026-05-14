@@ -15,6 +15,6 @@ googleAuthRouter.get("/google", passport.authenticate("google", { scope: ["profi
  * @desc Handle the callback from Google OAuth authentication
  * @access Public (Google will redirect to this route after authentication)
  */
-googleAuthRouter.get("/google/callback", passport.authenticate("google", { session: false, failureRedirect: "http://localhost:5173/login" }), googleAuth.googleAuthCallback)
+googleAuthRouter.get("/google/callback", passport.authenticate("google", { session: false, failureRedirect: "https://snitch-1-2kt1.onrender.com/login" }), googleAuth.googleAuthCallback)
 
 export default googleAuthRouter
